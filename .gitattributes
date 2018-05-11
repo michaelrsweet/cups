@@ -1,3 +1,5 @@
 .git* export-ignore
 .mailmap export-ignore
-tools export-ignore
+tools/makesrcdist export-ignore
+tools/testrpm export-ignore
+
