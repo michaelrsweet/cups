@@ -30,7 +30,7 @@ INSTALLSTATIC=@INSTALLSTATIC@
 # flags for C++ compiler:
 CFLAGS=""
 LDFLAGS="@EXPORT_LDFLAGS@"
-LIBS="@LIBGSSAPI@ @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
+LIBS="@EXPORT_TLSLIBS@ @LIBZ@ @LIBS@"
 
 # Check for local invocation...
 selfdir=`dirname $0`

@@ -1,10 +1,11 @@
 #
 # Top-level Makefile for CUPS.
 #
-# Copyright 2007-2016 by Apple Inc.
-# Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include Makedefs
@@ -14,7 +15,7 @@ include Makedefs
 # Directories to make...
 #
 
-DIRS	=	cups test $(BUILDDIRS)
+DIRS	=	cups tools $(BUILDDIRS)
 
 
 #
@@ -92,18 +93,10 @@ clean:
 
 distclean:	clean
 	$(RM) Makedefs config.h config.log config.status
-	$(RM) conf/cups-files.conf conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf
+	$(RM) conf/cups-files.conf conf/cupsd.conf
 	$(RM) cups-config
-	$(RM) data/testprint
-	$(RM) desktop/cups.desktop
-	$(RM) doc/index.html
-	$(RM) man/client.conf.man man/cups-files.conf.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man
-	$(RM) packaging/cups.list
-	$(RM) scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist scheduler/org.cups.cups-lpdAT.service scheduler/org.cups.cupsd.path scheduler/org.cups.cupsd.service scheduler/org.cups.cupsd.socket
-	$(RM) templates/header.tmpl
-	-$(RM) doc/*/index.html
-	-$(RM) templates/*/header.tmpl
-	-$(RM) -r autom4te*.cache clang cups/charmaps cups/locale
+	$(RM) scheduler/org.cups.cupsd.path scheduler/org.cups.cupsd.service scheduler/org.cups.cupsd.socket
+	-$(RM) -r autom4te*.cache cups/charmaps cups/locale
 
 
 #
@@ -115,53 +108,6 @@ depend:
 		echo Making dependencies in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) depend) || exit 1;\
 	done
-
-
-#
-# Run the Clang static code analysis tool on the sources, available here:
-#
-#    http://clang-analyzer.llvm.org
-#
-# At least checker-231 is required.
-#
-# Alternatively, use "--analyze -Xanalyzer -analyzer-output=text" for OPTIM (text
-# output instead of HTML...)
-#
-
-.PHONY: clang clang-changes
-clang:
-	$(RM) -r clang
-	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) clean all
-clang-changes:
-	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) all
-
-
-#
-# Run the STACK tool on the sources, available here:
-#
-#    http://css.csail.mit.edu/stack/
-#
-# Do the following to pass options to configure:
-#
-#    make CONFIGFLAGS="--foo --bar" stack
-#
-
-.PHONY: stack
-stack:
-	stack-build ./configure $(CONFIGFLAGS)
-	stack-build $(MAKE) $(MFLAGS) clean all
-	poptck
-	$(MAKE) $(MFLAGS) distclean
-	$(RM) */*.ll
-	$(RM) */*.ll.out
-
-
-#
-# Generate a ctags file...
-#
-
-ctags:
-	ctags -R .
 
 
 #
@@ -269,32 +215,6 @@ apihelp:
 
 
 #
-# Create an Xcode docset using Mini-XML's mxmldoc (http://www.msweet.org/)...
-#
-
-docset:	apihelp
-	echo Generating docset directory tree...
-	$(RM) -r org.cups.docset
-	mkdir -p org.cups.docset/Contents/Resources/Documentation/help
-	mkdir -p org.cups.docset/Contents/Resources/Documentation/images
-	cd man; $(MAKE) $(MFLAGS) html
-	cd doc; $(MAKE) $(MFLAGS) docset
-	cd cgi-bin; $(MAKE) $(MFLAGS) makedocset
-	cgi-bin/makedocset org.cups.docset \
-		`svnversion . | sed -e '1,$$s/[a-zA-Z]//g'` \
-		doc/help/api-*.tokens
-	$(RM) doc/help/api-*.tokens
-	echo Indexing docset...
-	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil index org.cups.docset
-	echo Generating docset archive and feed...
-	$(RM) org.cups.docset.atom
-	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil package --output org.cups.docset.xar \
-		--atom org.cups.docset.atom \
-		--download-url http://www.cups.org/org.cups.docset.xar \
-		org.cups.docset
-
-
-#
 # Lines of code computation...
 #
 
@@ -302,26 +222,6 @@ sloc:
 	for dir in cups scheduler; do \
 		(cd $$dir; $(MAKE) $(MFLAGS) sloc) || exit 1;\
 	done
-
-
-#
-# Make software distributions using EPM (http://www.msweet.org/)...
-#
-
-EPMFLAGS	=	-v --output-dir dist $(EPMARCH)
-
-bsd deb epm pkg rpm slackware:
-	epm $(EPMFLAGS) -f $@ cups packaging/cups.list
-
-.PHONY:	dist
-dist:	all
-	$(RM) -r dist
-	$(MAKE) $(MFLAGS) epm
-	case `uname` in \
-		*BSD*) $(MAKE) $(MFLAGS) bsd;; \
-		Linux*) test ! -x /usr/bin/rpm || $(MAKE) $(MFLAGS) rpm;; \
-		SunOS*) $(MAKE) $(MFLAGS) pkg;; \
-	esac
 
 
 #

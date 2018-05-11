@@ -1,10 +1,11 @@
 #
 # Man page makefile for CUPS.
 #
-# Copyright 2007-2017 by Apple Inc.
-# Copyright 1993-2006 by Easy Software Products.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1993-2006 by Easy Software Products.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include ../Makedefs
@@ -14,60 +15,44 @@ include ../Makedefs
 # Man pages...
 #
 
-MAN1	=	cancel.$(MAN1EXT) \
-		cups.$(MAN1EXT) \
-		cups-config.$(MAN1EXT) \
-		cupstestdsc.$(MAN1EXT) \
-		cupstestppd.$(MAN1EXT) \
-		$(IPPFIND_MAN) \
-		ipptool.$(MAN1EXT) \
-		lp.$(MAN1EXT) \
-		lpoptions.$(MAN1EXT) \
-		lpq.$(MAN1EXT) \
-		lprm.$(MAN1EXT) \
-		lpr.$(MAN1EXT) \
-		lpstat.$(MAN1EXT) \
-		ppdc.$(MAN1EXT) \
-		ppdhtml.$(MAN1EXT) \
-		ppdi.$(MAN1EXT) \
-		ppdmerge.$(MAN1EXT) \
-		ppdpo.$(MAN1EXT)
-MAN5	=	classes.conf.$(MAN5EXT) \
-		client.conf.$(MAN5EXT) \
-		cups-files.conf.$(MAN5EXT) \
-		cups-snmp.conf.$(MAN5EXT) \
-		cupsd.conf.$(MAN5EXT) \
-		cupsd-logs.$(MAN5EXT) \
-		ipptoolfile.$(MAN5EXT) \
-		mailto.conf.$(MAN5EXT) \
-		mime.convs.$(MAN5EXT) \
-		mime.types.$(MAN5EXT) \
-		ppdcfile.$(MAN5EXT) \
-		printers.conf.$(MAN5EXT) \
-		subscriptions.conf.$(MAN5EXT)
-MAN7	=	backend.$(MAN7EXT) \
-		filter.$(MAN7EXT) \
-		notifier.$(MAN7EXT)
-MAN8	=	cupsaccept.$(MAN8EXT) \
-		cupsaddsmb.$(MAN8EXT) \
-		cupsctl.$(MAN8EXT) \
-		cupsfilter.$(MAN8EXT) \
-		cups-lpd.$(MAN8EXT) \
-		cups-snmp.$(MAN8EXT) \
-		cupsd.$(MAN8EXT) \
-		cupsd-helper.$(MAN8EXT) \
-		cupsenable.$(MAN8EXT) \
-		lpadmin.$(MAN8EXT) \
-		lpinfo.$(MAN8EXT) \
-		lpmove.$(MAN8EXT) \
-		lpc.$(MAN8EXT)
+MAN1	=	cancel.1 \
+		cups.1 \
+		cups-config.1 \
+		ippfind.1 \
+		ippserver.1 \
+		ipptool.1 \
+		lp.1 \
+		lpoptions.1 \
+		lpq.1 \
+		lprm.1 \
+		lpr.1 \
+		lpstat.1
+MAN5	=	client.conf.5 \
+		cups-files.conf.5 \
+		cupsd.conf.5 \
+		cupsd-logs.5 \
+		ipptoolfile.5
+MAN8	=	cupsaccept.8 \
+		cupsctl.8 \
+		cupsd.8 \
+		cupsd-helper.8 \
+		cupsenable.8 \
+		lpadmin.8 \
+		lpmove.8 \
+		lpc.8
+HTML	=	$(MAN1:.1=.html) $(MAN5:.5=.html) $(MAN8:.8=.html)
+
+.SUFFIXES:	.1 .5 .8 .html
+.1.html .5.html .8.html: mantohtml
+	echo Converting $< to HTML...
+	./mantohtml $< >$@
 
 
 #
 # Make everything...
 #
 
-all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8)
+all:
 
 
 #
@@ -89,8 +74,7 @@ unittests:
 #
 
 clean:
-	$(RM) mantohtml mantohtml.o
-	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
+	$(RM) mantohtml mantohtml.o $(HTML)
 
 
 #
@@ -122,26 +106,15 @@ install-data: all
 		echo Installing $$file in $(MANDIR)/man5...; \
 		$(INSTALL_MAN) $$file $(MANDIR)/man5; \
 	done
-	$(INSTALL_DIR) -m 755 $(MANDIR)/man7
-	for file in $(MAN7); do \
-		echo Installing $$file in $(MANDIR)/man7...; \
-		$(INSTALL_MAN) $$file $(MANDIR)/man7; \
-	done
-	$(INSTALL_DIR) -m 755 $(AMANDIR)/man$(MAN8DIR)
+	$(INSTALL_DIR) -m 755 $(MANDIR)/man8
 	for file in $(MAN8); do \
-		echo Installing $$file in $(AMANDIR)/man$(MAN8DIR)...; \
-		$(INSTALL_MAN) $$file $(AMANDIR)/man$(MAN8DIR); \
+		echo Installing $$file in $(MANDIR)/man8...; \
+		$(INSTALL_MAN) $$file $(MANDIR)/man8; \
 	done
-	for file in accept cupsreject reject; do \
-		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
-		$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
-	done
-	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
-	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
-	for file in cups-deviced cups-driverd cups-exec; do \
-		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
-		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
-	done
+	$(RM) $(MANDIR)/man8/cupsreject.8
+	$(LN) cupsaccept.8 $(MANDIR)/man8/cupsreject.8
+	$(RM) $(MANDIR)/man8/cupsdisable.8
+	$(LN) cupsenable.8 $(MANDIR)/man8/cupsdisable.8
 
 
 #
@@ -178,18 +151,12 @@ uninstall:
 		$(RM) $(MANDIR)/man5/$$file; \
 	done
 	-$(RMDIR) $(MANDIR)/man5
-	for file in $(MAN7); do \
-		$(RM) $(MANDIR)/man7/$$file; \
-	done
-	-$(RMDIR) $(MANDIR)/man7
 	for file in $(MAN8); do \
-		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file; \
+		$(RM) $(MANDIR)/man8/$$file; \
 	done
-	$(RM) $(AMANDIR)/man$(MAN8DIR)/accept.$(MAN8EXT)
-	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
-	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
-	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
-	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
+	$(RM) $(MANDIR)/man8/cupsreject.8
+	$(RM) $(MANDIR)/man8/cupsdisable.8
+	-$(RMDIR) $(MANDIR)/man8
 
 
 #
@@ -203,26 +170,9 @@ local:	html
 # Make html versions of man pages...
 #
 
-html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
-	echo Converting man pages to HTML...
-	for file in $(MAN1); do \
-		echo "    $$file..."; \
-		./mantohtml `basename $$file .$(MAN1EXT)`.man >../doc/help/man-`basename $$file .$(MAN1EXT)`.html; \
-	done
-	for file in $(MAN5); do \
-		echo "    $$file..."; \
-		./mantohtml `basename $$file .$(MAN5EXT)`.man >../doc/help/man-`basename $$file .$(MAN5EXT)`.html; \
-	done
-	for file in $(MAN7); do \
-		echo "    $$file..."; \
-		./mantohtml `basename $$file .$(MAN7EXT)`.man >../doc/help/man-`basename $$file .$(MAN7EXT)`.html; \
-	done
-	for file in $(MAN8); do \
-		echo "    $$file..."; \
-		./mantohtml `basename $$file .$(MAN8EXT)`.man >../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
-	done
+html:	$(HTML)
 
 mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o \
-		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(TLSLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)

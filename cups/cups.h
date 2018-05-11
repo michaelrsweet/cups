@@ -1,10 +1,11 @@
 /*
  * API definitions for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 #ifndef _CUPS_CUPS_H_
@@ -41,25 +42,19 @@ extern "C" {
  * Constants...
  */
 
-#  define CUPS_VERSION			2.0300
-#  define CUPS_VERSION_MAJOR		2
-#  define CUPS_VERSION_MINOR		3
+#  define CUPS_VERSION			3.0000
+#  define CUPS_VERSION_MAJOR		3
+#  define CUPS_VERSION_MINOR		0
 #  define CUPS_VERSION_PATCH		0
 
-#  define CUPS_BC_FD			3
-					/* Back-channel file descriptor for
-					 * select/poll */
 #  define CUPS_DATE_ANY			(time_t)-1
-#  define CUPS_EXCLUDE_NONE		(const char *)0
 #  define CUPS_FORMAT_AUTO		"application/octet-stream"
-#  define CUPS_FORMAT_COMMAND		"application/vnd.cups-command"
 #  define CUPS_FORMAT_JPEG		"image/jpeg"
 #  define CUPS_FORMAT_PDF		"application/pdf"
 #  define CUPS_FORMAT_POSTSCRIPT	"application/postscript"
 #  define CUPS_FORMAT_RAW		"application/vnd.cups-raw"
 #  define CUPS_FORMAT_TEXT		"text/plain"
 #  define CUPS_HTTP_DEFAULT		(http_t *)0
-#  define CUPS_INCLUDE_ALL		(const char *)0
 #  define CUPS_JOBID_ALL		-1
 #  define CUPS_JOBID_CURRENT		0
 #  define CUPS_LENGTH_VARIABLE		(ssize_t)0

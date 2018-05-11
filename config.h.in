@@ -1,10 +1,11 @@
 /*
  * Configuration file for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -16,25 +17,6 @@
 
 #define CUPS_SVERSION	""
 #define CUPS_MINIMAL	""
-
-
-/*
- * Default user and groups...
- */
-
-#define CUPS_DEFAULT_USER	"lp"
-#define CUPS_DEFAULT_GROUP	"sys"
-#define CUPS_DEFAULT_SYSTEM_GROUPS	"sys root system"
-#define CUPS_DEFAULT_PRINTOPERATOR_AUTH	"@SYSTEM"
-#define CUPS_DEFAULT_SYSTEM_AUTHKEY	"system.print.admin"
-
-
-/*
- * Default file permissions...
- */
-
-#define CUPS_DEFAULT_CONFIG_FILE_PERM	0640
-#define CUPS_DEFAULT_LOG_FILE_PERM	0644
 
 
 /*
@@ -53,34 +35,10 @@
 
 
 /*
- * Default browsing settings...
- */
-
-#define CUPS_DEFAULT_BROWSING	1
-#define CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS	""
-#define CUPS_DEFAULT_DEFAULT_SHARED 1
-
-
-/*
  * Default IPP port...
  */
 
 #define CUPS_DEFAULT_IPP_PORT	631
-
-
-/*
- * Default printcap file...
- */
-
-#define CUPS_DEFAULT_PRINTCAP	"/etc/printcap"
-
-
-/*
- * Default Samba and LPD config files...
- */
-
-#define CUPS_DEFAULT_SMB_CONFIG_FILE	""
-#define CUPS_DEFAULT_LPD_CONFIG_FILE	""
 
 
 /*
@@ -95,13 +53,6 @@
  */
 
 #undef CUPS_DEFAULT_DOMAINSOCKET
-
-
-/*
- * Default WebInterface value...
- */
-
-#undef CUPS_DEFAULT_WEBIF
 
 
 /*
@@ -138,30 +89,6 @@
 
 #undef HAVE_LIBZ
 #undef HAVE_INFLATECOPY
-
-
-/*
- * Do we have PAM stuff?
- */
-
-#define HAVE_LIBPAM 0
-#undef HAVE_PAM_PAM_APPL_H
-#undef HAVE_PAM_SET_ITEM
-#undef HAVE_PAM_SETCRED
-
-
-/*
- * Do we have <shadow.h>?
- */
-
-#undef HAVE_SHADOW_H
-
-
-/*
- * Do we have <crypt.h>?
- */
-
-#undef HAVE_CRYPT_H
 
 
 /*
@@ -216,17 +143,11 @@
 
 
 /*
- * Do we have the geteuid() function?
+ * Do we have the (v)snprintf() functions?
  */
 
-#undef HAVE_GETEUID
-
-
-/*
- * Do we have the setpgid() function?
- */
-
-#undef HAVE_SETPGID
+#undef HAVE_SNPRINTF
+#undef HAVE_VSNPRINTF
 
 
 /*
@@ -244,14 +165,6 @@
 
 
 /*
- * Do we have the (v)snprintf() functions?
- */
-
-#undef HAVE_SNPRINTF
-#undef HAVE_VSNPRINTF
-
-
-/*
  * What signal functions to use?
  */
 
@@ -265,21 +178,6 @@
 
 #undef HAVE_WAITPID
 #undef HAVE_WAIT3
-
-
-/*
- * Do we have the mallinfo function and malloc.h?
- */
-
-#undef HAVE_MALLINFO
-#undef HAVE_MALLOC_H
-
-
-/*
- * Do we have the POSIX ACL functions?
- */
-
-#undef HAVE_ACL_INIT
 
 
 /*
@@ -357,13 +255,6 @@
 
 
 /*
- * Do we have libpaper?
- */
-
-#undef HAVE_LIBPAPER
-
-
-/*
  * Do we have mDNSResponder for DNS Service Discovery (aka Bonjour)?
  */
 
@@ -378,13 +269,6 @@
 
 
 /*
- * Do we have <sys/ioctl.h>?
- */
-
-#undef HAVE_SYS_IOCTL_H
-
-
-/*
  * Does the "stat" structure contain the "st_gen" member?
  */
 
@@ -396,13 +280,6 @@
  */
 
 #undef HAVE_TM_GMTOFF
-
-
-/*
- * Do we have rresvport_af()?
- */
-
-#undef HAVE_RRESVPORT_AF
 
 
 /*
@@ -521,56 +398,11 @@
 
 
 /*
- * Do we have the getgrouplist() function?
- */
-
-#undef HAVE_GETGROUPLIST
-
-
-/*
- * Do we have macOS 10.4's mbr_XXX functions?
- */
-
-#undef HAVE_MEMBERSHIP_H
-#undef HAVE_MEMBERSHIPPRIV_H
-#undef HAVE_MBR_UID_TO_UUID
-
-
-/*
  * Do we have Darwin's notify_post header and function?
  */
 
 #undef HAVE_NOTIFY_H
 #undef HAVE_NOTIFY_POST
-
-
-/*
- * Do we have DBUS?
- */
-
-#undef HAVE_DBUS
-#undef HAVE_DBUS_MESSAGE_ITER_INIT_APPEND
-#undef HAVE_DBUS_THREADS_INIT
-
-
-/*
- * Do we have the GSSAPI support library (for Kerberos support)?
- */
-
-#undef HAVE_GSS_ACQUIRE_CRED_EX_F
-#undef HAVE_GSS_C_NT_HOSTBASED_SERVICE
-#undef HAVE_GSS_GSSAPI_H
-#undef HAVE_GSS_GSSAPI_SPI_H
-#undef HAVE_GSSAPI
-#undef HAVE_GSSAPI_GSSAPI_H
-#undef HAVE_GSSAPI_H
-
-
-/*
- * Default GSS service name...
- */
-
-#define CUPS_DEFAULT_GSSSERVICENAME	""
 
 
 /*
@@ -583,38 +415,10 @@
 
 
 /*
- * Do we have the <dlfcn.h> header?
- */
-
-#undef HAVE_DLFCN_H
-
-
-/*
  * Do we have <sys/param.h>?
  */
 
 #undef HAVE_SYS_PARAM_H
-
-
-/*
- * Do we have <sys/ucred.h>?
- */
-
-#undef HAVE_SYS_UCRED_H
-
-
-/*
- * Do we have removefile()?
- */
-
-#undef HAVE_REMOVEFILE
-
-
-/*
- * Do we have <sandbox.h>?
- */
-
-#undef HAVE_SANDBOX_H
 
 
 /*
@@ -641,20 +445,6 @@
 
 
 /*
- * Do we have libusb?
- */
-
-#undef HAVE_LIBUSB
-
-
-/*
- * Do we have libwrap and tcpd.h?
- */
-
-#undef HAVE_TCPD_H
-
-
-/*
  * Do we have <iconv.h>?
  */
 
@@ -678,21 +468,6 @@
  */
 
 #undef CUPS_BUNDLEDIR
-
-
-/*
- * Do we have XPC?
- */
-
-#undef HAVE_XPC
-#undef HAVE_XPC_PRIVATE_H
-
-
-/*
- * Do we have Mini-XML?
- */
-
-#undef HAVE_MXML_H
 
 
 /*

@@ -1,27 +1,28 @@
 dnl
 dnl TLS stuff for CUPS.
 dnl
-dnl Copyright 2007-2017 by Apple Inc.
-dnl Copyright 1997-2007 by Easy Software Products, all rights reserved.
+dnl Copyright © 2007-2018 by Apple Inc.
+dnl Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 dnl
-dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more
+dnl information.
 dnl
 
-AC_ARG_ENABLE(ssl, [  --disable-ssl           disable SSL/TLS support])
-AC_ARG_ENABLE(cdsassl, [  --enable-cdsassl        use CDSA for SSL/TLS support, default=first])
+AC_ARG_ENABLE(tls, [  --disable-tls           disable SSL/TLS support])
+AC_ARG_ENABLE(cdsa, [  --enable-cdsa           use CDSA for SSL/TLS support, default=first])
 AC_ARG_ENABLE(gnutls, [  --enable-gnutls         use GNU TLS for SSL/TLS support, default=second])
 
-SSLFLAGS=""
-SSLLIBS=""
-have_ssl=0
+TLSFLAGS=""
+TLSLIBS=""
+have_tls=0
 CUPS_SERVERKEYCHAIN=""
 
-if test x$enable_ssl != xno; then
+if test x$enable_tls != xno; then
     dnl Look for CDSA...
-    if test $have_ssl = 0 -a "x$enable_cdsassl" != "xno"; then
+    if test $have_tls = 0 -a "x$enable_cdsa" != "xno"; then
 	if test $host_os_name = darwin; then
 	    AC_CHECK_HEADER(Security/SecureTransport.h, [
-	    	have_ssl=1
+	    	have_tls=1
 		AC_DEFINE(HAVE_SSL)
 		AC_DEFINE(HAVE_CDSASSL)
 		CUPS_SERVERKEYCHAIN="/Library/Keychains/System.keychain"
@@ -55,27 +56,27 @@ if test x$enable_ssl != xno; then
     fi
 
     dnl Then look for GNU TLS...
-    if test $have_ssl = 0 -a "x$enable_gnutls" != "xno" -a "x$PKGCONFIG" != x; then
+    if test $have_tls = 0 -a "x$enable_gnutls" != "xno" -a "x$PKGCONFIG" != x; then
     	AC_PATH_TOOL(LIBGNUTLSCONFIG,libgnutls-config)
 	if $PKGCONFIG --exists gnutls; then
-	    have_ssl=1
-	    SSLLIBS=`$PKGCONFIG --libs gnutls`
-	    SSLFLAGS=`$PKGCONFIG --cflags gnutls`
+	    have_tls=1
+	    TLSLIBS=`$PKGCONFIG --libs gnutls`
+	    TLSFLAGS=`$PKGCONFIG --cflags gnutls`
 	    AC_DEFINE(HAVE_SSL)
 	    AC_DEFINE(HAVE_GNUTLS)
 	elif test "x$LIBGNUTLSCONFIG" != x; then
-	    have_ssl=1
-	    SSLLIBS=`$LIBGNUTLSCONFIG --libs`
-	    SSLFLAGS=`$LIBGNUTLSCONFIG --cflags`
+	    have_tls=1
+	    TLSLIBS=`$LIBGNUTLSCONFIG --libs`
+	    TLSFLAGS=`$LIBGNUTLSCONFIG --cflags`
 	    AC_DEFINE(HAVE_SSL)
 	    AC_DEFINE(HAVE_GNUTLS)
 	fi
 
-	if test $have_ssl = 1; then
+	if test $have_tls = 1; then
 	    CUPS_SERVERKEYCHAIN="ssl"
 
 	    SAVELIBS="$LIBS"
-	    LIBS="$LIBS $SSLLIBS"
+	    LIBS="$LIBS $TLSLIBS"
 	    AC_CHECK_FUNC(gnutls_transport_set_pull_timeout_function, AC_DEFINE(HAVE_GNUTLS_TRANSPORT_SET_PULL_TIMEOUT_FUNCTION))
 	    AC_CHECK_FUNC(gnutls_priority_set_direct, AC_DEFINE(HAVE_GNUTLS_PRIORITY_SET_DIRECT))
 	    LIBS="$SAVELIBS"
@@ -83,19 +84,16 @@ if test x$enable_ssl != xno; then
     fi
 fi
 
-IPPALIASES="http"
-if test $have_ssl = 1; then
-    AC_MSG_RESULT([    Using SSLLIBS="$SSLLIBS"])
-    AC_MSG_RESULT([    Using SSLFLAGS="$SSLFLAGS"])
-    IPPALIASES="http https ipps"
+if test $have_tls = 1; then
+    AC_MSG_RESULT([    Using TLSLIBS="$TLSLIBS"])
+    AC_MSG_RESULT([    Using TLSFLAGS="$TLSFLAGS"])
 elif test x$enable_cdsa = xyes -o x$enable_gnutls = xyes; then
-    AC_MSG_ERROR([Unable to enable SSL support.])
+    AC_MSG_ERROR([Unable to enable TLS support.])
 fi
 
 AC_SUBST(CUPS_SERVERKEYCHAIN)
-AC_SUBST(IPPALIASES)
-AC_SUBST(SSLFLAGS)
-AC_SUBST(SSLLIBS)
+AC_SUBST(TLSFLAGS)
+AC_SUBST(TLSLIBS)
 
-EXPORT_SSLLIBS="$SSLLIBS"
-AC_SUBST(EXPORT_SSLLIBS)
+EXPORT_TLSLIBS="$TLSLIBS"
+AC_SUBST(EXPORT_TLSLIBS)

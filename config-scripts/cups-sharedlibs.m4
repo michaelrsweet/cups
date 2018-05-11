@@ -13,37 +13,27 @@ DSOFLAGS="${DSOFLAGS:=}"
 AC_ARG_ENABLE(shared, [  --disable-shared        do not create shared libraries])
 
 cupsbase="cups"
-LIBCUPSBASE="lib$cupsbase"
 LIBCUPSSTATIC="lib$cupsbase.a"
 
 if test x$enable_shared != xno; then
 	case "$host_os_name" in
 		sunos*)
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSCGI="libcupscgi.so.1"
 			LIBCUPSIMAGE="libcupsimage.so.2"
-			LIBCUPSMIME="libcupsmime.so.1"
-			LIBCUPSPPDC="libcupsppdc.so.1"
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
 			DSOFLAGS="$DSOFLAGS -Wl,-h\`basename \$@\` -G \$(OPTIM)"
 			;;
 		linux* | gnu* | *bsd*)
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSCGI="libcupscgi.so.1"
 			LIBCUPSIMAGE="libcupsimage.so.2"
-			LIBCUPSMIME="libcupsmime.so.1"
-			LIBCUPSPPDC="libcupsppdc.so.1"
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
 			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared \$(OPTIM)"
 			;;
 		darwin*)
 			LIBCUPS="lib$cupsbase.2.dylib"
-			LIBCUPSCGI="libcupscgi.1.dylib"
 			LIBCUPSIMAGE="libcupsimage.2.dylib"
-			LIBCUPSMIME="libcupsmime.1.dylib"
-			LIBCUPSPPDC="libcupsppdc.1.dylib"
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
 			DSOFLAGS="$DSOFLAGS -dynamiclib -single_module -lc"
@@ -52,10 +42,7 @@ if test x$enable_shared != xno; then
 			echo "Warning: shared libraries may not be supported.  Trying -shared"
 			echo "         option with compiler."
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSCGI="libcupscgi.so.1"
 			LIBCUPSIMAGE="libcupsimage.so.2"
-			LIBCUPSMIME="libcupsmime.so.1"
-			LIBCUPSPPDC="libcupsppdc.so.1"
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
 			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared \$(OPTIM)"
@@ -64,10 +51,7 @@ if test x$enable_shared != xno; then
 else
 	PICFLAG=0
 	LIBCUPS="lib$cupsbase.a"
-	LIBCUPSCGI="libcupscgi.a"
 	LIBCUPSIMAGE="libcupsimage.a"
-	LIBCUPSMIME="libcupsmime.a"
-	LIBCUPSPPDC="libcupsppdc.a"
 	DSO=":"
 	DSOXX=":"
 fi
@@ -76,11 +60,7 @@ AC_SUBST(DSO)
 AC_SUBST(DSOXX)
 AC_SUBST(DSOFLAGS)
 AC_SUBST(LIBCUPS)
-AC_SUBST(LIBCUPSBASE)
-AC_SUBST(LIBCUPSCGI)
 AC_SUBST(LIBCUPSIMAGE)
-AC_SUBST(LIBCUPSMIME)
-AC_SUBST(LIBCUPSPPDC)
 AC_SUBST(LIBCUPSSTATIC)
 
 if test x$enable_shared = xno; then
