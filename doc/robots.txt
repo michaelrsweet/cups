@@ -1,6 +1,0 @@
-#
-# This file tells search engines not to index your CUPS server.
-#
-
-User-agent: *
-Disallow: /
