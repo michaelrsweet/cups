@@ -99,15 +99,6 @@
 
 
 /*
- * Use <string.h>, <strings.h>, and/or <bstring.h>?
- */
-
-#undef HAVE_STRING_H
-#undef HAVE_STRINGS_H
-#undef HAVE_BSTRING_H
-
-
-/*
  * Do we have the long long type?
  */
 
@@ -419,6 +410,13 @@
  */
 
 #undef HAVE_SYS_PARAM_H
+
+
+/*
+ * Do we have <sys/ucred.h>?
+ */
+
+#undef HAVE_SYS_UCRED_H
 
 
 /*

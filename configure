@@ -730,8 +730,6 @@ LIBZ
 INSTALL_GZIP
 EGREP
 GREP
-LIBPAPER
-LIBMALLOC
 PKGCONFIG
 INSTALLSTATIC
 INSTALL
@@ -815,8 +813,6 @@ ac_user_opts='
 enable_option_checking
 with_cups_build
 enable_static
-enable_mallinfo
-enable_libpaper
 with_components
 with_privateinclude
 with_lpdconfig
@@ -1512,8 +1508,6 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-static         install static libraries
-  --enable-mallinfo       build with malloc debug logging
-  --enable-libpaper       build with libpaper support
   --disable-shared        do not create shared libraries
   --enable-libtool-unsupported=/path/to/libtool
                           build with libtool (UNSUPPORTED!)
@@ -4395,62 +4389,6 @@ if test "$ac_res" != no; then :
 
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing crypt" >&5
-$as_echo_n "checking for library containing crypt... " >&6; }
-if ${ac_cv_search_crypt+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char crypt ();
-int
-main ()
-{
-return crypt ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' crypt; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_crypt=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_crypt+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_crypt+:} false; then :
-
-else
-  ac_cv_search_crypt=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_crypt" >&5
-$as_echo "$ac_cv_search_crypt" >&6; }
-ac_res=$ac_cv_search_crypt
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-fi
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing fmod" >&5
 $as_echo_n "checking for library containing fmod... " >&6; }
 if ${ac_cv_search_fmod+:} false; then :
@@ -4505,191 +4443,6 @@ ac_res=$ac_cv_search_fmod
 if test "$ac_res" != no; then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
 
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing getspent" >&5
-$as_echo_n "checking for library containing getspent... " >&6; }
-if ${ac_cv_search_getspent+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char getspent ();
-int
-main ()
-{
-return getspent ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' sec gen; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_getspent=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_getspent+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_getspent+:} false; then :
-
-else
-  ac_cv_search_getspent=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_getspent" >&5
-$as_echo "$ac_cv_search_getspent" >&6; }
-ac_res=$ac_cv_search_getspent
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-fi
-
-
-LIBMALLOC=""
-# Check whether --enable-mallinfo was given.
-if test "${enable_mallinfo+set}" = set; then :
-  enableval=$enable_mallinfo;
-fi
-
-
-if test x$enable_mallinfo = xyes; then
-	SAVELIBS="$LIBS"
-	LIBS=""
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing mallinfo" >&5
-$as_echo_n "checking for library containing mallinfo... " >&6; }
-if ${ac_cv_search_mallinfo+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char mallinfo ();
-int
-main ()
-{
-return mallinfo ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' malloc; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_mallinfo=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_mallinfo+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_mallinfo+:} false; then :
-
-else
-  ac_cv_search_mallinfo=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_mallinfo" >&5
-$as_echo "$ac_cv_search_mallinfo" >&6; }
-ac_res=$ac_cv_search_mallinfo
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-  $as_echo "#define HAVE_MALLINFO 1" >>confdefs.h
-
-fi
-
-	LIBMALLOC="$LIBS"
-	LIBS="$SAVELIBS"
-fi
-
-
-
-# Check whether --enable-libpaper was given.
-if test "${enable_libpaper+set}" = set; then :
-  enableval=$enable_libpaper;
-fi
-
-
-if test x$enable_libpaper = xyes; then
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for systempapername in -lpaper" >&5
-$as_echo_n "checking for systempapername in -lpaper... " >&6; }
-if ${ac_cv_lib_paper_systempapername+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lpaper  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char systempapername ();
-int
-main ()
-{
-return systempapername ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_paper_systempapername=yes
-else
-  ac_cv_lib_paper_systempapername=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_paper_systempapername" >&5
-$as_echo "$ac_cv_lib_paper_systempapername" >&6; }
-if test "x$ac_cv_lib_paper_systempapername" = xyes; then :
-  $as_echo "#define HAVE_LIBPAPER 1" >>confdefs.h
-
-		LIBPAPER="-lpaper"
-else
-  LIBPAPER=""
-fi
-
-else
-	LIBPAPER=""
 fi
 
 
@@ -4977,6 +4730,13 @@ fi
 ac_fn_c_check_header_mongrel "$LINENO" "sys/param.h" "ac_cv_header_sys_param_h" "$ac_includes_default"
 if test "x$ac_cv_header_sys_param_h" = xyes; then :
   $as_echo "#define HAVE_SYS_PARAM_H 1" >>confdefs.h
+
+fi
+
+
+ac_fn_c_check_header_mongrel "$LINENO" "sys/ucred.h" "ac_cv_header_sys_ucred_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_ucred_h" = xyes; then :
+  $as_echo "#define HAVE_SYS_UCRED_H 1" >>confdefs.h
 
 fi
 

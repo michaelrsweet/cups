@@ -83,35 +83,7 @@ AC_PATH_TOOL(PKGCONFIG, pkg-config)
 
 dnl Check for libraries...
 AC_SEARCH_LIBS(abs, m, AC_DEFINE(HAVE_ABS))
-AC_SEARCH_LIBS(crypt, crypt)
 AC_SEARCH_LIBS(fmod, m)
-AC_SEARCH_LIBS(getspent, sec gen)
-
-LIBMALLOC=""
-AC_ARG_ENABLE(mallinfo, [  --enable-mallinfo       build with malloc debug logging])
-
-if test x$enable_mallinfo = xyes; then
-	SAVELIBS="$LIBS"
-	LIBS=""
-	AC_SEARCH_LIBS(mallinfo, malloc, AC_DEFINE(HAVE_MALLINFO))
-	LIBMALLOC="$LIBS"
-	LIBS="$SAVELIBS"
-fi
-
-AC_SUBST(LIBMALLOC)
-
-dnl Check for libpaper support...
-AC_ARG_ENABLE(libpaper, [  --enable-libpaper       build with libpaper support])
-
-if test x$enable_libpaper = xyes; then
-	AC_CHECK_LIB(paper,systempapername,
-		AC_DEFINE(HAVE_LIBPAPER)
-		LIBPAPER="-lpaper",
-		LIBPAPER="")
-else
-	LIBPAPER=""
-fi
-AC_SUBST(LIBPAPER)
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -119,6 +91,7 @@ AC_CHECK_HEADER(langinfo.h,AC_DEFINE(HAVE_LANGINFO_H))
 AC_CHECK_HEADER(stdint.h,AC_DEFINE(HAVE_STDINT_H))
 AC_CHECK_HEADER(string.h,AC_DEFINE(HAVE_STRING_H))
 AC_CHECK_HEADER(sys/param.h,AC_DEFINE(HAVE_SYS_PARAM_H))
+AC_CHECK_HEADER(sys/ucred.h,AC_DEFINE(HAVE_SYS_UCRED_H))
 
 dnl Checks for iconv.h and iconv_open
 AC_CHECK_HEADER(iconv.h,

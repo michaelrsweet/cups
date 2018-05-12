@@ -36,23 +36,6 @@
 #    define CUPS_SOCAST
 #  endif /* WIN32 */
 
-#  ifdef HAVE_GSSAPI
-#    ifdef HAVE_GSS_GSSAPI_H
-#      include <GSS/gssapi.h>
-#    elif defined(HAVE_GSSAPI_GSSAPI_H)
-#      include <gssapi/gssapi.h>
-#    elif defined(HAVE_GSSAPI_H)
-#      include <gssapi.h>
-#    endif /* HAVE_GSS_GSSAPI_H */
-#    ifndef HAVE_GSS_C_NT_HOSTBASED_SERVICE
-#      define GSS_C_NT_HOSTBASED_SERVICE gss_nt_service_name
-#    endif /* !HAVE_GSS_C_NT_HOSTBASED_SERVICE */
-#  endif /* HAVE_GSSAPI */
-
-#  ifdef HAVE_AUTHORIZATION_H
-#    include <Security/Authorization.h>
-#  endif /* HAVE_AUTHORIZATION_H */
-
 #  if defined(__APPLE__) && !defined(_SOCKLEN_T)
 /*
  * macOS 10.2.x does not define socklen_t, and in fact uses an int instead of
@@ -324,14 +307,6 @@ struct _http_s				/**** HTTP connection structure ****/
 
   /**** New in CUPS 1.3 ****/
   char			*authstring;	/* Current Authorization field */
-#  ifdef HAVE_GSSAPI
-  gss_OID 		gssmech;	/* Authentication mechanism */
-  gss_ctx_id_t		gssctx;		/* Authentication context */
-  gss_name_t		gssname;	/* Authentication server name */
-#  endif /* HAVE_GSSAPI */
-#  ifdef HAVE_AUTHORIZATION_H
-  AuthorizationRef	auth_ref;	/* Authorization ref */
-#  endif /* HAVE_AUTHORIZATION_H */
 
   /**** New in CUPS 1.5 ****/
   http_tls_credentials_t tls_credentials;
@@ -340,9 +315,6 @@ struct _http_s				/**** HTTP connection structure ****/
   void			*timeout_data;	/* User data pointer */
   double		timeout_value;	/* Timeout in seconds */
   int			wait_value;	/* httpWait value for timeout */
-#  ifdef HAVE_GSSAPI
-  char			gsshost[256];	/* Hostname for Kerberos */
-#  endif /* HAVE_GSSAPI */
 
   /**** New in CUPS 1.7 ****/
   int			tls_upgrade;	/* Non-zero if we are doing an upgrade */
