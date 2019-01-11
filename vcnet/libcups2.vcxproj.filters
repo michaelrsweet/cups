@@ -24,9 +24,6 @@
     <ClCompile Include="..\cups\auth.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\cups\backend.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\cups\debug.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
     <ClCompile Include="..\cups\request.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\cups\snmp.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\cups\snprintf.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -162,20 +156,39 @@
     <ClCompile Include="..\cups\hash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\cups\raster-error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\raster-interpret.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\raster-interstub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\raster-stream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\raster-stubs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\ipp-file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cups\ipp-vars.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\cups\libcups2.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cups\adminutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\cups\array.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cups\backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
@@ -208,9 +221,6 @@
     <ClInclude Include="..\cups\http.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\cups\i18n.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\cups\ipp-private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -218,15 +228,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\cups\language.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cups\md5-apple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cups\md5.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cups\normalize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\cups\ppd-private.h">
@@ -245,6 +246,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\cups\transcode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\raster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\raster-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\array-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\versioning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\language-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\md5-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cups\pwg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

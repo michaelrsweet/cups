@@ -31,7 +31,7 @@
 #include <limits.h>
 #include <sys/stat.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #  include <fcntl.h>
 #  include <io.h>
 #  include <process.h>
@@ -45,7 +45,7 @@ extern char **environ;
 #  include <sys/fcntl.h>
 #  include <sys/wait.h>
 #  include <poll.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 #ifdef HAVE_DNSSD
 #  include <dns_sd.h>
@@ -405,8 +405,7 @@ static void		html_escape(_ipp_client_t *client, const char *s,
 static void		html_footer(_ipp_client_t *client);
 static void		html_header(_ipp_client_t *client, const char *title);
 static void		html_printf(_ipp_client_t *client, const char *format,
-			            ...) __attribute__((__format__(__printf__,
-			                                           2, 3)));
+			            ...) _CUPS_FORMAT(2, 3);
 static void		ipp_cancel_job(_ipp_client_t *client);
 static void		ipp_close_job(_ipp_client_t *client);
 static void		ipp_create_job(_ipp_client_t *client);
@@ -432,13 +431,12 @@ static int		respond_http(_ipp_client_t *client, http_status_t code,
 				     const char *content_coding,
 				     const char *type, size_t length);
 static void		respond_ipp(_ipp_client_t *client, ipp_status_t status,
-			            const char *message, ...)
-			__attribute__ ((__format__ (__printf__, 3, 4)));
+			            const char *message, ...) _CUPS_FORMAT(3, 4);
 static void		respond_unsupported(_ipp_client_t *client,
 			                    ipp_attribute_t *attr);
 static void		run_printer(_ipp_printer_t *printer);
 static char		*time_string(time_t tv, char *buffer, size_t bufsize);
-static void		usage(int status) __attribute__((noreturn));
+static void		usage(int status) _CUPS_NORETURN;
 static int		valid_doc_attributes(_ipp_client_t *client);
 static int		valid_job_attributes(_ipp_client_t *client);
 
@@ -664,7 +662,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (!port)
   {
-#ifdef WIN32
+#ifdef _WIN32
    /*
     * Windows is almost always used as a single user system, so use a default
     * port number of 8631.
@@ -678,7 +676,7 @@ main(int  argc,				/* I - Number of command-line args */
     */
 
     port = 8000 + ((int)getuid() % 1000);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
     fprintf(stderr, "Listening on port %d.\n", port);
   }
@@ -687,7 +685,7 @@ main(int  argc,				/* I - Number of command-line args */
   {
     const char *tmpdir;			/* Temporary directory */
 
-#ifdef WIN32
+#ifdef _WIN32
     if ((tmpdir = getenv("TEMP")) == NULL)
       tmpdir = "C:/TEMP";
 #elif defined(__APPLE__) && !TARGET_OS_IOS
@@ -696,7 +694,7 @@ main(int  argc,				/* I - Number of command-line args */
 #else
     if ((tmpdir = getenv("TMPDIR")) == NULL)
       tmpdir = "/tmp";
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
     snprintf(directory, sizeof(directory), "%s/ippserver.%d", tmpdir, (int)getpid());
 
@@ -1292,9 +1290,9 @@ create_printer(const char *servername,	/* I - Server hostname (NULL for default)
 {
   int			i, j;		/* Looping vars */
   _ipp_printer_t	*printer;	/* Printer */
-#ifndef WIN32
+#ifndef _WIN32
   char			path[1024];	/* Full path to command */
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
   char			uri[1024],	/* Printer URI */
 #ifdef HAVE_SSL
 			securi[1024],	/* Secure printer URI */
@@ -1497,7 +1495,7 @@ create_printer(const char *servername,	/* I - Server hostname (NULL for default)
   };
 
 
-#ifndef WIN32
+#ifndef _WIN32
  /*
   * If a command was specified, make sure it exists and is executable...
   */
@@ -1523,7 +1521,7 @@ create_printer(const char *servername,	/* I - Server hostname (NULL for default)
       command = path;
     }
   }
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
  /*
   * Allocate memory for the printer...
@@ -2499,9 +2497,9 @@ filter_cb(_ipp_filter_t   *filter,	/* I - Filter parameters */
   * Filter attributes as needed...
   */
 
-#ifndef WIN32 /* Avoid MS compiler bug */
+#ifndef _WIN32 /* Avoid MS compiler bug */
   (void)dst;
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
   ipp_tag_t group = ippGetGroupTag(attr);
   const char *name = ippGetName(attr);
@@ -6059,13 +6057,13 @@ process_job(_ipp_job_t *job)		/* I - Job */
     ipp_attribute_t *attr;		/* Job attribute */
     char	val[1280],		/* IPP_NAME=value */
 		*valptr;		/* Pointer into string */
-#ifndef WIN32
+#ifndef _WIN32
     int		mypipe[2];		/* Pipe for stderr */
     char	line[2048],		/* Line from stderr */
 		*ptr,			/* Pointer into line */
 		*endptr;		/* End of line */
     ssize_t	bytes;			/* Bytes read */
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
     fprintf(stderr, "Running command \"%s %s\".\n", job->printer->command,
             job->filename);
@@ -6123,7 +6121,7 @@ process_job(_ipp_job_t *job)		/* I - Job */
     * Now run the program...
     */
 
-#ifdef WIN32
+#ifdef _WIN32
     status = _spawnvpe(_P_WAIT, job->printer->command, myargv, myenvp);
 
 #else
@@ -6233,20 +6231,20 @@ process_job(_ipp_job_t *job)		/* I - Job */
       while (wait(&status) < 0);
 #  endif /* HAVE_WAITPID */
     }
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
     if (status)
     {
-#ifndef WIN32
+#ifndef _WIN32
       if (WIFEXITED(status))
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 	fprintf(stderr, "Command \"%s\" exited with status %d.\n",
 		job->printer->command, WEXITSTATUS(status));
-#ifndef WIN32
+#ifndef _WIN32
       else
 	fprintf(stderr, "Command \"%s\" terminated with signal %d.\n",
 		job->printer->command, WTERMSIG(status));
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
       job->state = IPP_JSTATE_ABORTED;
     }
     else if (status < 0)

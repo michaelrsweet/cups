@@ -91,40 +91,35 @@ echo ""
 case "$testtype" in
 	0)
 		echo "Running in test mode (0)"
-		nprinters1=0
-		nprinters2=0
+		nprinters=0
 		pjobs=0
 		pprinters=0
 		loglevel="debug2"
 		;;
 	2)
 		echo "Running the medium tests (2)"
-		nprinters1=10
-		nprinters2=20
+		nprinters=20
 		pjobs=20
 		pprinters=10
 		loglevel="debug"
 		;;
 	3)
 		echo "Running the extreme tests (3)"
-		nprinters1=500
-		nprinters2=1000
+		nprinters=1000
 		pjobs=100
 		pprinters=50
 		loglevel="debug"
 		;;
 	4)
 		echo "Running the torture tests (4)"
-		nprinters1=10000
-		nprinters2=20000
+		nprinters=20000
 		pjobs=200
 		pprinters=100
 		loglevel="debug"
 		;;
 	*)
 		echo "Running the timid tests (1)"
-		nprinters1=0
-		nprinters2=0
+		nprinters=0
 		pjobs=10
 		pprinters=0
 		loglevel="debug2"
@@ -489,11 +484,6 @@ StrictConformance Yes
 Browsing Off
 Listen localhost:$port
 Listen $BASE/sock
-PassEnv DYLD_LIBRARY_PATH
-PassEnv LD_LIBRARY_PATH
-PassEnv LD_PRELOAD
-PassEnv LOCALEDIR
-PassEnv SHLIB_PATH
 MaxSubscriptions 3
 MaxLogSize 0
 AccessLogLevel actions
@@ -529,6 +519,15 @@ TempDir $BASE/spool/temp
 AccessLog $BASE/log/access_log
 ErrorLog $BASE/log/error_log
 PageLog $BASE/log/page_log
+
+PassEnv DYLD_INSERT_LIBRARIES
+PassEnv DYLD_LIBRARY_PATH
+PassEnv LD_LIBRARY_PATH
+PassEnv LD_PRELOAD
+PassEnv LOCALEDIR
+PassEnv ASAN_OPTIONS
+
+Sandboxing Off
 EOF
 
 if test $ssltype != 0 -a `uname` = Darwin; then
@@ -536,13 +535,13 @@ if test $ssltype != 0 -a `uname` = Darwin; then
 fi
 
 #
-# Setup lots of test queues - half with PPD files, half without...
+# Setup lots of test queues with PPD files...
 #
 
 echo "Creating printers.conf for test..."
 
 i=1
-while test $i -le $nprinters1; do
+while test $i -le $nprinters; do
 	cat >>$BASE/printers.conf <<EOF
 <Printer test-$i>
 Accepting Yes
@@ -560,22 +559,6 @@ EOF
 	i=`expr $i + 1`
 done
 
-while test $i -le $nprinters2; do
-	cat >>$BASE/printers.conf <<EOF
-<Printer test-$i>
-Accepting Yes
-DeviceURI file:/dev/null
-Info Test raw printer $i
-JobSheets none none
-Location CUPS test suite
-State Idle
-StateMessage Printer $1 is idle.
-</Printer>
-EOF
-
-	i=`expr $i + 1`
-done
-
 if test -f $BASE/printers.conf; then
 	cp $BASE/printers.conf $BASE/printers.conf.orig
 else
@@ -583,57 +566,84 @@ else
 fi
 
 #
-# Setup the paths...
+# Create a helper script to run programs with...
 #
 
 echo "Setting up environment variables for test..."
 
-if test "x$LD_LIBRARY_PATH" = x; then
-	LD_LIBRARY_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc"
-else
-	LD_LIBRARY_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc:$LD_LIBRARY_PATH"
+if test "x$ASAN_OPTIONS" = x; then
+	# AddressSanitizer on Linux reports memory leaks from the main function
+	# which is basically useless - in general, programs do not need to free
+	# every object before exit since the OS will recover the process's
+	# memory.
+	ASAN_OPTIONS="detect_leaks=false"
+	export ASAN_OPTIONS
 fi
 
-export LD_LIBRARY_PATH
+if test -f "$root/cups/libcups.so.2"; then
+	if test "x$LD_LIBRARY_PATH" = x; then
+		LD_LIBRARY_PATH="$root/cups"
+	else
+		LD_LIBRARY_PATH="$root/cups:$LD_LIBRARY_PATH"
+	fi
 
-LD_PRELOAD="$root/cups/libcups.so.2:$root/cups/libcupsimage.so.2:$root/cgi-bin/libcupscgi.so.1:$root/scheduler/libcupsmime.so.1:$root/ppdc/libcupsppdc.so.1"
-if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
-	LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
-fi
-export LD_PRELOAD
-
-if test -f $root/cups/libcups.2.dylib; then
-        if test "x$DYLD_INSERT_LIBRARIES" = x; then
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib"
-        else
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib:$DYLD_INSERT_LIBRARIES"
-        fi
-
-        export DYLD_INSERT_LIBRARIES
+	LD_PRELOAD="$root/cups/libcups.so.2:$root/cups/libcupsimage.so.2"
+	if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
+		LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
+	fi
 fi
 
-if test "x$DYLD_LIBRARY_PATH" = x; then
-	DYLD_LIBRARY_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc"
-else
-	DYLD_LIBRARY_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc:$DYLD_LIBRARY_PATH"
+if test -f "$root/cups/libcups.2.dylib"; then
+	if test "x$DYLD_INSERT_LIBRARIES" = x; then
+		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib"
+	else
+		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$DYLD_INSERT_LIBRARIES"
+	fi
+
+	if test "x$DYLD_LIBRARY_PATH" = x; then
+		DYLD_LIBRARY_PATH="$root/cups"
+	else
+		DYLD_LIBRARY_PATH="$root/cups:$DYLD_LIBRARY_PATH"
+	fi
 fi
 
-export DYLD_LIBRARY_PATH
-
-if test "x$SHLIB_PATH" = x; then
-	SHLIB_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc"
-else
-	SHLIB_PATH="$root/cups:$root/filter:$root/cgi-bin:$root/scheduler:$root/ppdc:$SHLIB_PATH"
-fi
-
-export SHLIB_PATH
-
+# These get exported because they don't have side-effects...
 CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
 CUPS_SERVER=localhost:$port; export CUPS_SERVER
 CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
 CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
 CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
+IPP_PORT=$port; export IPP_PORT
 LOCALEDIR=$BASE/share/locale; export LOCALEDIR
+
+echo "Creating wrapper script..."
+
+runcups="$BASE/runcups"; export runcups
+
+echo "#!/bin/sh" >$runcups
+echo "# Helper script for running CUPS test instance." >>$runcups
+echo "" >>$runcups
+echo "# Set required environment variables..." >>$runcups
+echo "CUPS_DATADIR=\"$CUPS_DATADIR\"; export CUPS_DATADIR" >>$runcups
+echo "CUPS_SERVER=\"$CUPS_SERVER\"; export CUPS_SERVER" >>$runcups
+echo "CUPS_SERVERROOT=\"$CUPS_SERVERROOT\"; export CUPS_SERVERROOT" >>$runcups
+echo "CUPS_STATEDIR=\"$CUPS_STATEDIR\"; export CUPS_STATEDIR" >>$runcups
+echo "DYLD_INSERT_LIBRARIES=\"$DYLD_INSERT_LIBRARIES\"; export DYLD_INSERT_LIBRARIES" >>$runcups
+echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$runcups
+# IPP_PORT=$port; export IPP_PORT
+echo "LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"; export LD_LIBRARY_PATH" >>$runcups
+echo "LD_PRELOAD=\"$LD_PRELOAD\"; export LD_PRELOAD" >>$runcups
+echo "LOCALEDIR=\"$LOCALEDIR\"; export LOCALEDIR" >>$runcups
+if test "x$CUPS_DEBUG_LEVEL" != x; then
+	echo "CUPS_DEBUG_FILTER='$CUPS_DEBUG_FILTER'; export CUPS_DEBUG_FILTER" >>$runcups
+	echo "CUPS_DEBUG_LEVEL=$CUPS_DEBUG_LEVEL; export CUPS_DEBUG_LEVEL" >>$runcups
+	echo "CUPS_DEBUG_LOG='$CUPS_DEBUG_LOG'; export CUPS_DEBUG_LOG" >>$runcups
+fi
+echo "" >>$runcups
+echo "# Run command..." >>$runcups
+echo "exec \"\$@\"" >>$runcups
+
+chmod +x $runcups
 
 #
 # Set a new home directory to avoid getting user options mixed in...
@@ -657,20 +667,10 @@ export LC_MESSAGES
 #
 
 echo "Starting scheduler:"
-echo "    $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &"
+echo "    $runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &"
 echo ""
 
-if test `uname` = Darwin -a "x$VALGRIND" = x; then
-        if test "x$DYLD_INSERT_LIBRARIES" = x; then
-                insert="/usr/lib/libgmalloc.dylib"
-        else
-                insert="/usr/lib/libgmalloc.dylib:$DYLD_INSERT_LIBRARIES"
-        fi
-
-	DYLD_INSERT_LIBRARIES="$insert" MallocStackLogging=1 ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
-else
-	$VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
-fi
+$runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
 
 cupsd=$!
 
@@ -678,33 +678,6 @@ if test "x$testtype" = x0; then
 	# Not running tests...
 	echo "Scheduler is PID $cupsd and is listening on port $port."
 	echo ""
-
-	# Create a helper script to run programs with...
-	runcups="$BASE/runcups"
-
-	echo "#!/bin/sh" >$runcups
-	echo "# Helper script for running CUPS test instance." >>$runcups
-	echo "" >>$runcups
-	echo "# Set required environment variables..." >>$runcups
-	echo "CUPS_DATADIR=\"$CUPS_DATADIR\"; export CUPS_DATADIR" >>$runcups
-	echo "CUPS_SERVER=\"$CUPS_SERVER\"; export CUPS_SERVER" >>$runcups
-	echo "CUPS_SERVERROOT=\"$CUPS_SERVERROOT\"; export CUPS_SERVERROOT" >>$runcups
-	echo "CUPS_STATEDIR=\"$CUPS_STATEDIR\"; export CUPS_STATEDIR" >>$runcups
-	echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$runcups
-	echo "LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"; export LD_LIBRARY_PATH" >>$runcups
-	echo "LD_PRELOAD=\"$LD_PRELOAD\"; export LD_PRELOAD" >>$runcups
-	echo "LOCALEDIR=\"$LOCALEDIR\"; export LOCALEDIR" >>$runcups
-	echo "SHLIB_PATH=\"$SHLIB_PATH\"; export SHLIB_PATH" >>$runcups
-	if test "x$CUPS_DEBUG_LEVEL" != x; then
-		echo "CUPS_DEBUG_FILTER='$CUPS_DEBUG_FILTER'; export CUPS_DEBUG_FILTER" >>$runcups
-		echo "CUPS_DEBUG_LEVEL=$CUPS_DEBUG_LEVEL; export CUPS_DEBUG_LEVEL" >>$runcups
-		echo "CUPS_DEBUG_LOG='$CUPS_DEBUG_LOG'; export CUPS_DEBUG_LOG" >>$runcups
-	fi
-	echo "" >>$runcups
-	echo "# Run command..." >>$runcups
-	echo "exec \"\$@\"" >>$runcups
-
-	chmod +x $runcups
 
 	echo "The $runcups helper script can be used to test programs"
 	echo "with the server."
@@ -721,10 +694,8 @@ else
 	sleep 2
 fi
 
-IPP_PORT=$port; export IPP_PORT
-
 while true; do
-	running=`../systemv/lpstat -r 2>/dev/null`
+	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
 	if test "x$running" = "xscheduler is running"; then
 		break
 	fi
@@ -761,6 +732,7 @@ fail=0
 for file in 4*.test ipp-2.1.test; do
 	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile
+        echo $ac_n "`date '+[%d/%b/%Y:%H:%M:%S %z]'` $ac_c" >>$strfile
 
 	if test $file = ipp-2.1.test; then
 		uri="ipp://localhost:$port/printers/Test1"
@@ -769,7 +741,7 @@ for file in 4*.test ipp-2.1.test; do
 		uri="ipp://localhost:$port/printers"
 		options=""
 	fi
-	$VALGRIND ./ipptool -tI $options $uri $file >> $strfile
+	$runcups $VALGRIND ./ipptool -tI $options $uri $file >> $strfile
 	status=$?
 
 	if test $status != 0; then
@@ -798,7 +770,7 @@ echo "    <pre>" >>$strfile
 for file in 5*.sh; do
 	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile
-	echo "\"$file\":" >>$strfile
+        echo "`date '+[%d/%b/%Y:%H:%M:%S %z]'` \"$file\":" >>$strfile
 
 	sh $file $pjobs $pprinters >> $strfile
 	status=$?
@@ -812,33 +784,25 @@ for file in 5*.sh; do
 done
 
 #
-# Log all allocations made by the scheduler...
-#
-
-if test `uname` = Darwin -a "x$VALGRIND" = x; then
-	malloc_history $cupsd -callTree -showContent >$BASE/log/malloc_log 2>&1
-fi
-
-#
 # Restart the server...
 #
 
 echo $ac_n "Performing restart test: $ac_c"
 echo "" >>$strfile
-echo "\"5.10-restart\":" >>$strfile
+echo "`date '+[%d/%b/%Y:%H:%M:%S %z]'` \"5.10-restart\":" >>$strfile
 
 kill -HUP $cupsd
 
 while true; do
 	sleep 10
 
-	running=`../systemv/lpstat -r 2>/dev/null`
+	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
 	if test "x$running" = "xscheduler is running"; then
 		break
 	fi
 done
 
-description="`../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
+description="`$runcups ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
 if test "x$description" != "xTest Printer 1"; then
 	echo "Failed, printer-info for Test1 is '$description', expected 'Test Printer 1'." >>$strfile
 	echo "FAIL (got '$description', expected 'Test Printer 1')"
@@ -926,7 +890,7 @@ fi
 
 # Requests logged
 count=`wc -l $BASE/log/access_log | awk '{print $1}'`
-expected=`expr 37 + 18 + 30 + $pjobs \* 8 + $pprinters \* $pjobs \* 4`
+expected=`expr 35 + 18 + 30 + $pjobs \* 8 + $pprinters \* $pjobs \* 4`
 if test $count != $expected; then
 	echo "FAIL: $count requests logged, expected $expected."
 	echo "    <p>FAIL: $count requests logged, expected $expected.</p>" >>$strfile
@@ -1063,9 +1027,13 @@ fi
 
 # Debug2 log messages
 count=`$GREP '^d ' $BASE/log/error_log | wc -l | awk '{print $1}'`
-if test $count = 0; then
+if test $count = 0 -a $loglevel = debug2; then
 	echo "FAIL: $count debug2 messages, expected more than 0."
 	echo "    <p>FAIL: $count debug2 messages, expected more than 0.</p>" >>$strfile
+	fail=`expr $fail + 1`
+elif test $count != 0 -a $loglevel = debug; then
+	echo "FAIL: $count debug2 messages, expected 0."
+	echo "    <p>FAIL: $count debug2 messages, expected 0.</p>" >>$strfile
 	fail=`expr $fail + 1`
 else
 	echo "PASS: $count debug2 messages."

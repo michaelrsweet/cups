@@ -1,10 +1,11 @@
 /*
  * Private string definitions for CUPS.
  *
- * Copyright 2007-2015 by Apple Inc.
- * Copyright 1997-2006 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 #ifndef _CUPS_STRING_PRIVATE_H_
@@ -14,6 +15,7 @@
  * Include necessary headers...
  */
 
+#  include "config.h"
 #  include <stdio.h>
 #  include <stdlib.h>
 #  include <stdarg.h>
@@ -23,14 +25,14 @@
 #  include <locale.h>
 #  include <time.h>
 
-#  include "config.h"
+#  include <cups/versioning.h>
 
-#  if defined(WIN32) && !defined(__CUPS_SSIZE_T_DEFINED)
+#  if defined(_WIN32) && !defined(__CUPS_SSIZE_T_DEFINED)
 #    define __CUPS_SSIZE_T_DEFINED
 #    include <stddef.h>
 /* Windows does not support the ssize_t type, so map it to long... */
 typedef long ssize_t;			/* @private@ */
-#  endif /* WIN32 && !__CUPS_SSIZE_T_DEFINED */
+#  endif /* _WIN32 && !__CUPS_SSIZE_T_DEFINED */
 
 
 /*
@@ -135,36 +137,35 @@ extern int _cups_toupper(int ch);
  * Prototypes...
  */
 
-extern ssize_t	_cups_safe_vsnprintf(char *, size_t, const char *, va_list);
-extern void	_cups_strcpy(char *dst, const char *src);
+extern ssize_t	_cups_safe_vsnprintf(char *buffer, size_t bufsize, const char *format, va_list args) _CUPS_PRIVATE;
+extern void	_cups_strcpy(char *dst, const char *src) _CUPS_PRIVATE;
 
 #  ifndef HAVE_STRDUP
-extern char	*_cups_strdup(const char *);
+extern char	*_cups_strdup(const char *) _CUPS_PRIVATE;
 #    define strdup _cups_strdup
 #  endif /* !HAVE_STRDUP */
 
-extern int	_cups_strcasecmp(const char *, const char *);
+extern int	_cups_strcasecmp(const char *, const char *) _CUPS_PRIVATE;
 
-extern int	_cups_strncasecmp(const char *, const char *, size_t n);
+extern int	_cups_strncasecmp(const char *, const char *, size_t n) _CUPS_PRIVATE;
 
 #  ifndef HAVE_STRLCAT
-extern size_t _cups_strlcat(char *, const char *, size_t);
+extern size_t _cups_strlcat(char *, const char *, size_t) _CUPS_PRIVATE;
 #    define strlcat _cups_strlcat
 #  endif /* !HAVE_STRLCAT */
 
 #  ifndef HAVE_STRLCPY
-extern size_t _cups_strlcpy(char *, const char *, size_t);
+extern size_t _cups_strlcpy(char *, const char *, size_t) _CUPS_PRIVATE;
 #    define strlcpy _cups_strlcpy
 #  endif /* !HAVE_STRLCPY */
 
 #  ifndef HAVE_SNPRINTF
-extern int	_cups_snprintf(char *, size_t, const char *, ...)
-		__attribute__ ((__format__ (__printf__, 3, 4)));
+extern int	_cups_snprintf(char *, size_t, const char *, ...) _CUPS_FORMAT(3, 4) _CUPS_PRIVATE;
 #    define snprintf _cups_snprintf
 #  endif /* !HAVE_SNPRINTF */
 
 #  ifndef HAVE_VSNPRINTF
-extern int	_cups_vsnprintf(char *, size_t, const char *, va_list);
+extern int	_cups_vsnprintf(char *, size_t, const char *, va_list) _CUPS_PRIVATE;
 #    define vsnprintf _cups_vsnprintf
 #  endif /* !HAVE_VSNPRINTF */
 
@@ -172,11 +173,11 @@ extern int	_cups_vsnprintf(char *, size_t, const char *, va_list);
  * String pool functions...
  */
 
-extern char	*_cupsStrAlloc(const char *s);
-extern void	_cupsStrFlush(void);
-extern void	_cupsStrFree(const char *s);
-extern char	*_cupsStrRetain(const char *s);
-extern size_t	_cupsStrStatistics(size_t *alloc_bytes, size_t *total_bytes);
+extern char	*_cupsStrAlloc(const char *s) _CUPS_PRIVATE;
+extern void	_cupsStrFlush(void) _CUPS_PRIVATE;
+extern void	_cupsStrFree(const char *s) _CUPS_PRIVATE;
+extern char	*_cupsStrRetain(const char *s) _CUPS_PRIVATE;
+extern size_t	_cupsStrStatistics(size_t *alloc_bytes, size_t *total_bytes) _CUPS_PRIVATE;
 
 
 /*
@@ -184,16 +185,16 @@ extern size_t	_cupsStrStatistics(size_t *alloc_bytes, size_t *total_bytes);
  */
 
 extern char	*_cupsStrFormatd(char *buf, char *bufend, double number,
-		                 struct lconv *loc);
+		                 struct lconv *loc) _CUPS_PRIVATE;
 extern double	_cupsStrScand(const char *buf, char **bufptr,
-		              struct lconv *loc);
+		              struct lconv *loc) _CUPS_PRIVATE;
 
 
 /*
  * Date function...
  */
 
-extern char	*_cupsStrDate(char *buf, size_t bufsize, time_t timeval);
+extern char	*_cupsStrDate(char *buf, size_t bufsize, time_t timeval) _CUPS_PRIVATE;
 
 
 /*

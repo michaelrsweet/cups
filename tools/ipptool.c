@@ -13,10 +13,9 @@
  */
 
 #include <cups/cups-private.h>
-#include <cups/file-private.h>
 #include <regex.h>
 #include <sys/stat.h>
-#ifdef WIN32
+#ifdef _WIN32
 #  include <windows.h>
 #  ifndef R_OK
 #    define R_OK 0
@@ -24,7 +23,7 @@
 #else
 #  include <signal.h>
 #  include <termios.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 #ifndef O_BINARY
 #  define O_BINARY 0
 #endif /* !O_BINARY */
@@ -165,8 +164,9 @@ static int	Cancel = 0;		/* Cancel test? */
  * Local functions...
  */
 
-static void	add_stringf(cups_array_t *a, const char *s, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
+static void	add_stringf(cups_array_t *a, const char *s, ...) _CUPS_FORMAT(2, 3);
 static int      compare_uris(const char *a, const char *b);
+static void	copy_hex_string(char *buffer, unsigned char *data, int datalen, size_t bufsize);
 static int	do_test(_ipp_file_t *f, _ipp_vars_t *vars, _cups_testdata_t *data);
 static int	do_tests(const char *testfile, _ipp_vars_t *vars, _cups_testdata_t *data);
 static int	error_cb(_ipp_file_t *f, _cups_testdata_t *data, const char *error);
@@ -178,19 +178,19 @@ static char	*iso_date(const ipp_uchar_t *date);
 static void	pause_message(const char *message);
 static void	print_attr(cups_file_t *outfile, int output, ipp_attribute_t *attr, ipp_tag_t *group);
 static void	print_csv(_cups_testdata_t *data, ipp_t *ipp, ipp_attribute_t *attr, int num_displayed, char **displayed, size_t *widths);
-static void	print_fatal_error(_cups_testdata_t *data, const char *s, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
+static void	print_fatal_error(_cups_testdata_t *data, const char *s, ...) _CUPS_FORMAT(2, 3);
 static void	print_ippserver_attr(_cups_testdata_t *data, ipp_attribute_t *attr, int indent);
 static void	print_ippserver_string(_cups_testdata_t *data, const char *s, size_t len);
 static void	print_line(_cups_testdata_t *data, ipp_t *ipp, ipp_attribute_t *attr, int num_displayed, char **displayed, size_t *widths);
 static void	print_xml_header(_cups_testdata_t *data);
 static void	print_xml_string(cups_file_t *outfile, const char *element, const char *s);
 static void	print_xml_trailer(_cups_testdata_t *data, int success, const char *message);
-#ifndef WIN32
+#ifndef _WIN32
 static void	sigterm_handler(int sig);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 static int	timeout_cb(http_t *http, void *user_data);
 static int	token_cb(_ipp_file_t *f, _ipp_vars_t *vars, _cups_testdata_t *data, const char *token);
-static void	usage(void) __attribute__((noreturn));
+static void	usage(void) _CUPS_NORETURN;
 static const char *with_flags_string(int flags);
 static int      with_value(_cups_testdata_t *data, cups_array_t *errors, char *value, int flags, ipp_attribute_t *attr, char *matchbuf, size_t matchlen);
 static int      with_value_from(cups_array_t *errors, ipp_attribute_t *fromattr, ipp_attribute_t *attr, char *matchbuf, size_t matchlen);
@@ -221,14 +221,14 @@ main(int  argc,				/* I - Number of command-line args */
 					/* Global data */
 
 
-#ifndef WIN32
+#ifndef _WIN32
  /*
   * Catch SIGINT and SIGTERM...
   */
 
   signal(SIGINT, sigterm_handler);
   signal(SIGTERM, sigterm_handler);
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
  /*
   * Initialize the locale and variables...
@@ -463,9 +463,9 @@ main(int  argc,				/* I - Number of command-line args */
 
 		snprintf(filename, sizeof(filename), "%s.gz", argv[i]);
                 if (access(filename, 0) && filename[0] != '/'
-#ifdef WIN32
+#ifdef _WIN32
                     && (!isalpha(filename[0] & 255) || filename[1] != ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
                     )
 		{
 		  snprintf(filename, sizeof(filename), "%s/ipptool/%s", cg->cups_datadir, argv[i]);
@@ -650,9 +650,9 @@ main(int  argc,				/* I - Number of command-line args */
       }
 
       if (access(argv[i], 0) && argv[i][0] != '/'
-#ifdef WIN32
+#ifdef _WIN32
           && (!isalpha(argv[i][0] & 255) || argv[i][1] != ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
           )
       {
         snprintf(testname, sizeof(testname), "%s/ipptool/%s", cg->cups_datadir, argv[i]);
@@ -813,6 +813,69 @@ compare_uris(const char *a,             /* I - First URI */
     return (_cups_strcasecmp(aresource, bresource));
   else
     return (strcmp(aresource, bresource));
+}
+
+
+/*
+ * 'copy_hex_string()' - Copy an octetString to a C string and encode as hex if
+ *                       needed.
+ */
+
+static void
+copy_hex_string(char          *buffer,	/* I - String buffer */
+		unsigned char *data,	/* I - octetString data */
+		int           datalen,	/* I - octetString length */
+		size_t        bufsize)	/* I - Size of string buffer */
+{
+  char		*bufptr,		/* Pointer into string buffer */
+		*bufend = buffer + bufsize - 2;
+					/* End of string buffer */
+  unsigned char	*dataptr,		/* Pointer into octetString data */
+		*dataend = data + datalen;
+					/* End of octetString data */
+  static const char *hexdigits = "0123456789ABCDEF";
+					/* Hex digits */
+
+
+ /*
+  * First see if there are any non-ASCII bytes in the octetString...
+  */
+
+  for (dataptr = data; dataptr < dataend; dataptr ++)
+    if (*dataptr < 0x20 || *dataptr >= 0x7f)
+      break;
+
+  if (*dataptr)
+  {
+   /*
+    * Yes, encode as hex...
+    */
+
+    *buffer = '<';
+
+    for (bufptr = buffer + 1, dataptr = data; bufptr < bufend && dataptr < dataend; dataptr ++)
+    {
+      *bufptr++ = hexdigits[*dataptr >> 4];
+      *bufptr++ = hexdigits[*dataptr & 15];
+    }
+
+    if (bufptr < bufend)
+      *bufptr++ = '>';
+
+    *bufptr = '\0';
+  }
+  else
+  {
+   /*
+    * No, copy as a string...
+    */
+
+    if ((size_t)datalen > bufsize)
+      datalen = (int)bufsize - 1;
+
+    memcpy(buffer, data, (size_t)datalen);
+    buffer[datalen] = '\0';
+  }
 }
 
 
@@ -1030,11 +1093,11 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
 	}
 
 	if (!Cancel && status == HTTP_STATUS_ERROR && httpError(data->http) != EINVAL &&
-#ifdef WIN32
+#ifdef _WIN32
 	    httpError(data->http) != WSAETIMEDOUT)
 #else
 	    httpError(data->http) != ETIMEDOUT)
-#endif /* WIN32 */
+#endif /* _WIN32 */
 	{
 	  if (httpReconnect2(data->http, 30000, NULL))
 	    data->prev_pass = 0;
@@ -1057,11 +1120,11 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
     }
 
     if (!Cancel && status == HTTP_STATUS_ERROR && httpError(data->http) != EINVAL &&
-#ifdef WIN32
+#ifdef _WIN32
 	httpError(data->http) != WSAETIMEDOUT)
 #else
 	httpError(data->http) != ETIMEDOUT)
-#endif /* WIN32 */
+#endif /* _WIN32 */
     {
       if (httpReconnect2(data->http, 30000, NULL))
 	data->prev_pass = 0;
@@ -1351,7 +1414,12 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
 	    _ippVarsGet(vars, expect->if_not_defined))
 	  continue;
 
-	found = ippFindAttribute(response, expect->name, IPP_TAG_ZERO);
+	if ((found = ippFindAttribute(response, expect->name, IPP_TAG_ZERO)) != NULL && expect->in_group && expect->in_group != ippGetGroupTag(found))
+	{
+	  while ((found = ippFindNextAttribute(response, expect->name, IPP_TAG_ZERO)) != NULL)
+	    if (expect->in_group == ippGetGroupTag(found))
+	      break;
+	}
 
 	do
 	{
@@ -1953,9 +2021,9 @@ get_filename(const char *testfile,	/* I - Current test file */
       *dstptr = '\0';
   }
   else if (!access(src, R_OK) || *src == '/'
-#ifdef WIN32
+#ifdef _WIN32
            || (isalpha(*src & 255) && src[1] == ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
            )
   {
    /*
@@ -2114,7 +2182,7 @@ iso_date(const ipp_uchar_t *date)	/* I - IPP (RFC 1903) date/time value */
 static void
 pause_message(const char *message)	/* I - Message */
 {
-#ifdef WIN32
+#ifdef _WIN32
   HANDLE	tty;			/* Console handle */
   DWORD		mode;			/* Console mode */
   char		key;			/* Key press */
@@ -2162,7 +2230,7 @@ pause_message(const char *message)	/* I - Message */
     close(tty);
     return;
   }
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
  /*
   * Display the prompt...
@@ -2170,7 +2238,7 @@ pause_message(const char *message)	/* I - Message */
 
   cupsFilePrintf(cupsFileStdout(), "%s\n---- PRESS ANY KEY ----", message);
 
-#ifdef WIN32
+#ifdef _WIN32
  /*
   * Read a key...
   */
@@ -2196,7 +2264,7 @@ pause_message(const char *message)	/* I - Message */
 
   tcsetattr(tty, TCSAFLUSH, &original);
   close(tty);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
  /*
   * Erase the "press any key" prompt...
@@ -2859,7 +2927,7 @@ print_xml_trailer(
 }
 
 
-#ifndef WIN32
+#ifndef _WIN32
 /*
  * 'sigterm_handler()' - Handle SIGINT and SIGTERM.
  */
@@ -2874,7 +2942,7 @@ sigterm_handler(int sig)		/* I - Signal number (unused) */
   signal(SIGINT, SIG_DFL);
   signal(SIGTERM, SIG_DFL);
 }
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 
 /*
@@ -3718,6 +3786,7 @@ token_cb(_ipp_file_t      *f,		/* I - IPP file data */
 	     !_cups_strcasecmp(token, "WITH-VALUE"))
     {
       off_t	lastpos;		/* Last file position */
+      int	lastline;		/* Last line number */
 
       if (data->last_expect)
       {
@@ -3747,8 +3816,9 @@ token_cb(_ipp_file_t      *f,		/* I - IPP file data */
 
       for (;;)
       {
-        lastpos = cupsFileTell(f->fp);
-        ptr     += strlen(ptr);
+        lastpos  = cupsFileTell(f->fp);
+        lastline = f->linenum;
+        ptr      += strlen(ptr);
 
 	if (!_ippFileReadToken(f, ptr, (sizeof(temp) - (size_t)(ptr - temp))))
 	  break;
@@ -3771,6 +3841,7 @@ token_cb(_ipp_file_t      *f,		/* I - IPP file data */
           */
 
           cupsFileSeek(f->fp, lastpos);
+          f->linenum = lastline;
           *ptr = '\0';
           break;
 	}
@@ -4227,33 +4298,31 @@ usage(void)
 {
   _cupsLangPuts(stderr, _("Usage: ipptool [options] URI filename [ ... filenameN ]"));
   _cupsLangPuts(stderr, _("Options:"));
-  _cupsLangPuts(stderr, _("  --help                  Show help."));
-  _cupsLangPuts(stderr, _("  --ippserver filename    Produce ippserver attribute file."));
-  _cupsLangPuts(stderr, _("  --stop-after-include-error\n"
-                          "                          Stop tests after a failed INCLUDE."));
-  _cupsLangPuts(stderr, _("  --version               Show version."));
-  _cupsLangPuts(stderr, _("  -4                      Connect using IPv4."));
-  _cupsLangPuts(stderr, _("  -6                      Connect using IPv6."));
-  _cupsLangPuts(stderr, _("  -C                      Send requests using "
-                          "chunking (default)."));
-  _cupsLangPuts(stderr, _("  -E                      Test with encryption using HTTP Upgrade to TLS."));
-  _cupsLangPuts(stderr, _("  -I                      Ignore errors."));
-  _cupsLangPuts(stderr, _("  -L                      Send requests using content-length."));
-  _cupsLangPuts(stderr, _("  -P filename.plist       Produce XML plist to a file and test report to standard output."));
-  _cupsLangPuts(stderr, _("  -S                      Test with encryption using HTTPS."));
-  _cupsLangPuts(stderr, _("  -T seconds              Set the receive/send timeout in seconds."));
-  _cupsLangPuts(stderr, _("  -V version              Set default IPP version."));
-  _cupsLangPuts(stderr, _("  -X                      Produce XML plist instead of plain text."));
-  _cupsLangPuts(stderr, _("  -c                      Produce CSV output."));
-  _cupsLangPuts(stderr, _("  -d name=value           Set named variable to value."));
-  _cupsLangPuts(stderr, _("  -f filename             Set default request filename."));
-  _cupsLangPuts(stderr, _("  -h                      Validate HTTP response headers."));
-  _cupsLangPuts(stderr, _("  -i seconds              Repeat the last file with the given time interval."));
-  _cupsLangPuts(stderr, _("  -l                      Produce plain text output."));
-  _cupsLangPuts(stderr, _("  -n count                Repeat the last file the given number of times."));
-  _cupsLangPuts(stderr, _("  -q                      Run silently."));
-  _cupsLangPuts(stderr, _("  -t                      Produce a test report."));
-  _cupsLangPuts(stderr, _("  -v                      Be verbose."));
+  _cupsLangPuts(stderr, _("--ippserver filename    Produce ippserver attribute file"));
+  _cupsLangPuts(stderr, _("--stop-after-include-error\n"
+                          "                        Stop tests after a failed INCLUDE"));
+  _cupsLangPuts(stderr, _("--version               Show version"));
+  _cupsLangPuts(stderr, _("-4                      Connect using IPv4"));
+  _cupsLangPuts(stderr, _("-6                      Connect using IPv6"));
+  _cupsLangPuts(stderr, _("-C                      Send requests using chunking (default)"));
+  _cupsLangPuts(stderr, _("-E                      Test with encryption using HTTP Upgrade to TLS"));
+  _cupsLangPuts(stderr, _("-I                      Ignore errors"));
+  _cupsLangPuts(stderr, _("-L                      Send requests using content-length"));
+  _cupsLangPuts(stderr, _("-P filename.plist       Produce XML plist to a file and test report to standard output"));
+  _cupsLangPuts(stderr, _("-S                      Test with encryption using HTTPS"));
+  _cupsLangPuts(stderr, _("-T seconds              Set the receive/send timeout in seconds"));
+  _cupsLangPuts(stderr, _("-V version              Set default IPP version"));
+  _cupsLangPuts(stderr, _("-X                      Produce XML plist instead of plain text"));
+  _cupsLangPuts(stderr, _("-c                      Produce CSV output"));
+  _cupsLangPuts(stderr, _("-d name=value           Set named variable to value"));
+  _cupsLangPuts(stderr, _("-f filename             Set default request filename"));
+  _cupsLangPuts(stderr, _("-h                      Validate HTTP response headers"));
+  _cupsLangPuts(stderr, _("-i seconds              Repeat the last file with the given time interval"));
+  _cupsLangPuts(stderr, _("-l                      Produce plain text output"));
+  _cupsLangPuts(stderr, _("-n count                Repeat the last file the given number of times"));
+  _cupsLangPuts(stderr, _("-q                      Run silently"));
+  _cupsLangPuts(stderr, _("-t                      Produce a test report"));
+  _cupsLangPuts(stderr, _("-v                      Be verbose"));
 
   exit(1);
 }
@@ -4700,6 +4769,99 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 	    add_stringf(data->errors, "GOT: %s=\"%s\"", name, ippGetString(attr, i, NULL));
         }
 	break;
+
+    case IPP_TAG_STRING :
+        {
+          unsigned char	withdata[1023],	/* WITH-VALUE data */
+			*adata;		/* Pointer to octetString data */
+	  int		withlen,	/* Length of WITH-VALUE data */
+			adatalen;	/* Length of octetString */
+
+          if (*value == '<')
+          {
+           /*
+            * Grab hex-encoded value...
+            */
+
+            if ((withlen = (int)strlen(value)) & 1 || withlen > (int)(2 * (sizeof(withdata) + 1)))
+            {
+	      print_fatal_error(data, "Bad WITH-VALUE hex value.");
+              return (0);
+	    }
+
+	    withlen = withlen / 2 - 1;
+
+            for (valptr = value + 1, adata = withdata; *valptr; valptr += 2)
+            {
+              int ch;			/* Current character/byte */
+
+	      if (isdigit(valptr[0]))
+	        ch = (valptr[0] - '0') << 4;
+	      else if (isalpha(valptr[0]))
+	        ch = (tolower(valptr[0]) - 'a' + 10) << 4;
+	      else
+	        break;
+
+	      if (isdigit(valptr[1]))
+	        ch |= valptr[1] - '0';
+	      else if (isalpha(valptr[1]))
+	        ch |= tolower(valptr[1]) - 'a' + 10;
+	      else
+	        break;
+
+	      *adata++ = (unsigned char)ch;
+	    }
+
+	    if (*valptr)
+	    {
+	      print_fatal_error(data, "Bad WITH-VALUE hex value.");
+              return (0);
+	    }
+          }
+          else
+          {
+           /*
+            * Copy literal string value...
+            */
+
+            withlen = (int)strlen(value);
+
+            memcpy(withdata, value, (size_t)withlen);
+	  }
+
+	  for (i = 0; i < count; i ++)
+	  {
+	    adata = ippGetOctetString(attr, i, &adatalen);
+
+	    if (withlen == adatalen && !memcmp(withdata, adata, (size_t)withlen))
+	    {
+	      if (!matchbuf[0])
+	        copy_hex_string(matchbuf, adata, adatalen, matchlen);
+
+	      if (!(flags & _CUPS_WITH_ALL))
+	      {
+	        match = 1;
+	        break;
+	      }
+	    }
+	    else if (flags & _CUPS_WITH_ALL)
+	    {
+	      match = 0;
+	      break;
+	    }
+	  }
+
+	  if (!match && errors)
+	  {
+	    for (i = 0; i < count; i ++)
+	    {
+	      adata = ippGetOctetString(attr, i, &adatalen);
+	      copy_hex_string(temp, adata, adatalen, sizeof(temp));
+	      add_stringf(data->errors, "GOT: %s=\"%s\"", name, temp);
+	    }
+	  }
+        }
+        break;
 
     default :
         break;

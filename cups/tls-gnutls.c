@@ -394,7 +394,7 @@ httpCredentialsAreValidForName(
         for (i = 0; i < count; i ++)
 	{
 	  rserial_size = sizeof(rserial);
-          if (!gnutls_x509_crl_get_crt_serial(tls_crl, (unsigned)i, rserial, &rserial_size, NULL) && cserial_size == rserial_size && !memcmp(cserial, rserial, (int)rserial_size))
+          if (!gnutls_x509_crl_get_crt_serial(tls_crl, (unsigned)i, rserial, &rserial_size, NULL) && cserial_size == rserial_size && !memcmp(cserial, rserial, rserial_size))
 	  {
 	    result = 0;
 	    break;
@@ -1206,19 +1206,6 @@ _httpTLSRead(http_t *http,		/* I - Connection to server */
   }
 
   return ((int)result);
-}
-
-
-/*
- * '_httpTLSSetCredentials()' - Set the TLS credentials.
- */
-
-int					/* O - Status of connection */
-_httpTLSSetCredentials(http_t *http)	/* I - Connection to server */
-{
-  (void)http;
-
-  return (0);
 }
 
 

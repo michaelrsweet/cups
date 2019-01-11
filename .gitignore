@@ -41,7 +41,7 @@ desktop/cups.desktop
 locale/checkpo
 locale/po2strings
 locale/strings2po
-scheduler/cupsd
+scheduler/cups.sh
 scheduler/org.cups.cupsd.path
 scheduler/org.cups.cupsd.service
 scheduler/org.cups.cupsd.socket
@@ -68,5 +68,9 @@ tools/ippserver-static
 tools/ipptool
 tools/ipptool-static
 test/pwg-raster-samples-*
+vcnet/.vs
+vcnet/packages
+vcnet/Win32
+vcnet/x64
 xcode/CUPS.xcodeproj/project.xcworkspace/
 xcode/CUPS.xcodeproj/xcuserdata/

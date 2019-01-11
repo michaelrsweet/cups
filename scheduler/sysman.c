@@ -1,7 +1,7 @@
 /*
  * System management functions for the CUPS scheduler.
  *
- * Copyright 2007-2017 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 2006 by Easy Software Products.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
@@ -14,7 +14,6 @@
 
 #include "cupsd.h"
 #ifdef __APPLE__
-#  include <xpc/xpc.h>
 #  include <IOKit/pwr_mgt/IOPMLib.h>
 #endif /* __APPLE__ */
 
@@ -125,7 +124,6 @@ cupsdSetBusyState(int working)          /* I - Doing significant work? */
     "Active clients, printing jobs, and dirty files"
   };
 #ifdef __APPLE__
-  static int tran = 0;	/* Current busy transaction */
   static IOPMAssertionID keep_awake = 0;/* Keep the system awake while printing */
 #endif /* __APPLE__ */
 
@@ -164,22 +162,7 @@ cupsdSetBusyState(int working)          /* I - Doing significant work? */
   */
 
   if (newbusy != busy)
-  {
     busy = newbusy;
-
-#ifdef __APPLE__
-    if (busy && !tran)
-    {
-      xpc_transaction_begin();
-      tran = 1;
-    }
-    else if (!busy && tran)
-    {
-      xpc_transaction_end();
-      tran = 0;
-    }
-#endif /* __APPLE__ */
-  }
 
 #ifdef __APPLE__
   if (cupsArrayCount(PrintingJobs) > 0 && !keep_awake)
@@ -453,9 +436,6 @@ sysEventThreadEntry(void)
     powerRLS = IONotificationPortGetRunLoopSource(powerNotifierPort);
     CFRunLoopAddSource(CFRunLoopGetCurrent(), powerRLS, kCFRunLoopDefaultMode);
   }
-  else
-    DEBUG_puts("sysEventThreadEntry: error registering for system power "
-               "notifications");
 
  /*
   * Register for system configuration change notifications
@@ -540,17 +520,8 @@ sysEventThreadEntry(void)
 	CFRunLoopAddSource(CFRunLoopGetCurrent(), storeRLS,
 	                   kCFRunLoopDefaultMode);
       }
-      else
-	DEBUG_printf(("sysEventThreadEntry: SCDynamicStoreCreateRunLoopSource "
-	              "failed: %s\n", SCErrorString(SCError())));
     }
-    else
-      DEBUG_printf(("sysEventThreadEntry: SCDynamicStoreSetNotificationKeys "
-                    "failed: %s\n", SCErrorString(SCError())));
   }
-  else
-    DEBUG_printf(("sysEventThreadEntry: SCDynamicStoreCreate failed: %s\n",
-                  SCErrorString(SCError())));
 
   if (keys)
     CFRelease(keys);

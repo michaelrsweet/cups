@@ -12,6 +12,7 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #include <sys/stat.h>
 #ifdef HAVE_RESOLV_H
 #  include <resolv.h>
@@ -63,11 +64,11 @@ int						/* O - 0 on success, -1 on failure */
 httpAddrClose(http_addr_t *addr,		/* I - Listen address or @code NULL@ */
               int         fd)			/* I - Socket file descriptor */
 {
-#ifdef WIN32
+#ifdef _WIN32
   if (closesocket(fd))
 #else
   if (close(fd))
-#endif /* WIN32 */
+#endif /* _WIN32 */
     return (-1);
 
 #ifdef AF_LOCAL
@@ -252,9 +253,9 @@ httpAddrListen(http_addr_t *addr,	/* I - Address to bind to */
   * Close on exec...
   */
 
-#ifndef WIN32
+#ifndef _WIN32
   fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 #ifdef SO_NOSIGPIPE
  /*

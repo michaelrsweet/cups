@@ -1,7 +1,7 @@
 #
 # Top-level Makefile for CUPS.
 #
-# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 2007-2019 by Apple Inc.
 # Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -15,7 +15,7 @@ include Makedefs
 # Directories to make...
 #
 
-DIRS	=	cups tools $(BUILDDIRS)
+DIRS	=	cups $(BUILDDIRS)
 
 
 #
@@ -204,7 +204,7 @@ debugcheck:	all unittests
 
 
 #
-# Create HTML documentation using Mini-XML's mxmldoc (http://www.msweet.org/)...
+# Create HTML documentation using codedoc (http://www.msweet.org/codedoc)...
 #
 
 apihelp:

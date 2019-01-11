@@ -15,12 +15,12 @@
 
 #define _CUPS_NO_DEPRECATED
 #include <cups/cups-private.h>
-#ifdef WIN32
+#ifdef _WIN32
 #  include <process.h>
 #  include <sys/timeb.h>
 #else
 #  include <sys/wait.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 #include <regex.h>
 #ifdef HAVE_DNSSD
 #  include <dns_sd.h>
@@ -34,9 +34,9 @@
 #  define kDNSServiceMaxDomainName AVAHI_DOMAIN_NAME_MAX
 #endif /* HAVE_DNSSD */
 
-#ifndef WIN32
+#ifndef _WIN32
 extern char **environ;			/* Process environment variables */
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 
 /*
@@ -144,23 +144,8 @@ static int	ipp_version = 20;	/* IPP version for LIST */
  */
 
 #ifdef HAVE_DNSSD
-static void DNSSD_API	browse_callback(DNSServiceRef sdRef,
-			                DNSServiceFlags flags,
-				        uint32_t interfaceIndex,
-				        DNSServiceErrorType errorCode,
-				        const char *serviceName,
-				        const char *regtype,
-				        const char *replyDomain, void *context)
-					__attribute__((nonnull(1,5,6,7,8)));
-static void DNSSD_API	browse_local_callback(DNSServiceRef sdRef,
-					      DNSServiceFlags flags,
-					      uint32_t interfaceIndex,
-					      DNSServiceErrorType errorCode,
-					      const char *serviceName,
-					      const char *regtype,
-					      const char *replyDomain,
-					      void *context)
-					      __attribute__((nonnull(1,5,6,7,8)));
+static void DNSSD_API	browse_callback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, DNSServiceErrorType errorCode, const char *serviceName, const char *regtype, const char *replyDomain, void *context) _CUPS_NONNULL(1,5,6,7,8);
+static void DNSSD_API	browse_local_callback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, DNSServiceErrorType errorCode, const char *serviceName, const char *regtype, const char *replyDomain, void *context) _CUPS_NONNULL(1,5,6,7,8);
 #elif defined(HAVE_AVAHI)
 static void		browse_callback(AvahiServiceBrowser *browser,
 					AvahiIfIndex interface,
@@ -182,27 +167,14 @@ static int		eval_expr(ippfind_srv_t *service,
 			          ippfind_expr_t *expressions);
 static int		exec_program(ippfind_srv_t *service, int num_args,
 			             char **args);
-static ippfind_srv_t	*get_service(cups_array_t *services,
-				     const char *serviceName,
-				     const char *regtype,
-				     const char *replyDomain)
-				     __attribute__((nonnull(1,2,3,4)));
+static ippfind_srv_t	*get_service(cups_array_t *services, const char *serviceName, const char *regtype, const char *replyDomain) _CUPS_NONNULL(1,2,3,4);
 static double		get_time(void);
 static int		list_service(ippfind_srv_t *service);
 static ippfind_expr_t	*new_expr(ippfind_op_t op, int invert,
 			          const char *value, const char *regex,
 			          char **args);
 #ifdef HAVE_DNSSD
-static void DNSSD_API	resolve_callback(DNSServiceRef sdRef,
-			                 DNSServiceFlags flags,
-				         uint32_t interfaceIndex,
-				         DNSServiceErrorType errorCode,
-				         const char *fullName,
-				         const char *hostTarget, uint16_t port,
-				         uint16_t txtLen,
-				         const unsigned char *txtRecord,
-				         void *context)
-				         __attribute__((nonnull(1,5,6,9, 10)));
+static void DNSSD_API	resolve_callback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, DNSServiceErrorType errorCode, const char *fullName, const char *hostTarget, uint16_t port, uint16_t txtLen, const unsigned char *txtRecord, void *context) _CUPS_NONNULL(1,5,6,9, 10);
 #elif defined(HAVE_AVAHI)
 static int		poll_callback(struct pollfd *pollfds,
 			              unsigned int num_pollfds, int timeout,
@@ -222,8 +194,8 @@ static void		resolve_callback(AvahiServiceResolver *res,
 					 void *context);
 #endif /* HAVE_DNSSD */
 static void		set_service_uri(ippfind_srv_t *service);
-static void		show_usage(void) __attribute__((noreturn));
-static void		show_version(void) __attribute__((noreturn));
+static void		show_usage(void) _CUPS_NORETURN;
+static void		show_version(void) _CUPS_NORETURN;
 
 
 /*
@@ -1761,10 +1733,10 @@ dnssd_error_string(int error)		/* I - Error number */
     case kDNSServiceErr_PollingMode :
         return ("Service polling mode error.");
 
-#ifndef WIN32
+#ifndef _WIN32
     case kDNSServiceErr_Timeout :
         return ("Service timeout.");
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
   }
 
 #  elif defined(HAVE_AVAHI)
@@ -1915,10 +1887,10 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
   int		i,			/* Looping var */
 		myenvc,			/* Number of environment variables */
 		status;			/* Exit status of program */
-#ifndef WIN32
+#ifndef _WIN32
   char		program[1024];		/* Program to execute */
   int		pid;			/* Process ID */
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 
  /*
@@ -2053,7 +2025,7 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
       myargv[i] = strdup(args[i]);
   }
 
-#ifdef WIN32
+#ifdef _WIN32
   if (getenv("IPPFIND_DEBUG"))
   {
     printf("\nProgram:\n    %s\n", args[0]);
@@ -2116,7 +2088,7 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
     while (wait(&status) != pid)
       ;
   }
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
  /*
   * Free memory...
@@ -2134,14 +2106,14 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
 
   if (getenv("IPPFIND_DEBUG"))
   {
-#ifdef WIN32
+#ifdef _WIN32
     printf("Exit Status: %d\n", status);
 #else
     if (WIFEXITED(status))
       printf("Exit Status: %d\n", WEXITSTATUS(status));
     else
       printf("Terminating Signal: %d\n", WTERMSIG(status));
-#endif /* WIN32 */
+#endif /* _WIN32 */
   }
 
   return (status == 0);
@@ -2215,7 +2187,7 @@ get_service(cups_array_t *services,	/* I - Service array */
 static double
 get_time(void)
 {
-#ifdef WIN32
+#ifdef _WIN32
   struct _timeb curtime;		/* Current Windows time */
 
   _ftime(&curtime);
@@ -2229,7 +2201,7 @@ get_time(void)
     return (0.0);
   else
     return (curtime.tv_sec + 0.000001 * curtime.tv_usec);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 }
 
 
@@ -2793,81 +2765,73 @@ show_usage(void)
                           "... [expression]\n"
                           "       ippfind --help\n"
                           "       ippfind --version"));
-  _cupsLangPuts(stderr, "");
   _cupsLangPuts(stderr, _("Options:"));
-  _cupsLangPuts(stderr, _("  -4                      Connect using IPv4."));
-  _cupsLangPuts(stderr, _("  -6                      Connect using IPv6."));
-  _cupsLangPuts(stderr, _("  -T seconds              Set the browse timeout in "
-                          "seconds."));
-  _cupsLangPuts(stderr, _("  -V version              Set default IPP "
-                          "version."));
-  _cupsLangPuts(stderr, _("  --help                  Show this help."));
-  _cupsLangPuts(stderr, _("  --version               Show program version."));
-  _cupsLangPuts(stderr, "");
+  _cupsLangPuts(stderr, _("-4                      Connect using IPv4"));
+  _cupsLangPuts(stderr, _("-6                      Connect using IPv6"));
+  _cupsLangPuts(stderr, _("-T seconds              Set the browse timeout in seconds"));
+  _cupsLangPuts(stderr, _("-V version              Set default IPP version"));
+  _cupsLangPuts(stderr, _("--version               Show program version"));
   _cupsLangPuts(stderr, _("Expressions:"));
-  _cupsLangPuts(stderr, _("  -P number[-number]      Match port to number or range."));
-  _cupsLangPuts(stderr, _("  -d regex                Match domain to regular expression."));
-  _cupsLangPuts(stderr, _("  -h regex                Match hostname to regular expression."));
-  _cupsLangPuts(stderr, _("  -l                      List attributes."));
-  _cupsLangPuts(stderr, _("  -n regex                Match service name to regular expression."));
-  _cupsLangPuts(stderr, _("  -p                      Print URI if true."));
-  _cupsLangPuts(stderr, _("  -q                      Quietly report match via exit code."));
-  _cupsLangPuts(stderr, _("  -r                      True if service is remote."));
-  _cupsLangPuts(stderr, _("  -s                      Print service name if true."));
-  _cupsLangPuts(stderr, _("  -t key                  True if the TXT record contains the key."));
-  _cupsLangPuts(stderr, _("  -u regex                Match URI to regular expression."));
-  _cupsLangPuts(stderr, _("  -x utility [argument ...] ;\n"
-                          "                          Execute program if true."));
-  _cupsLangPuts(stderr, _("  --domain regex          Match domain to regular expression."));
-  _cupsLangPuts(stderr, _("  --exec utility [argument ...] ;\n"
-                          "                          Execute program if true."));
-  _cupsLangPuts(stderr, _("  --host regex            Match hostname to regular expression."));
-  _cupsLangPuts(stderr, _("  --ls                    List attributes."));
-  _cupsLangPuts(stderr, _("  --local                 True if service is local."));
-  _cupsLangPuts(stderr, _("  --name regex            Match service name to regular expression."));
-  _cupsLangPuts(stderr, _("  --path regex            Match resource path to regular expression."));
-  _cupsLangPuts(stderr, _("  --port number[-number]  Match port to number or range."));
-  _cupsLangPuts(stderr, _("  --print                 Print URI if true."));
-  _cupsLangPuts(stderr, _("  --print-name            Print service name if true."));
-  _cupsLangPuts(stderr, _("  --quiet                 Quietly report match via exit code."));
-  _cupsLangPuts(stderr, _("  --remote                True if service is remote."));
-  _cupsLangPuts(stderr, _("  --txt key               True if the TXT record contains the key."));
-  _cupsLangPuts(stderr, _("  --txt-* regex           Match TXT record key to regular expression."));
-  _cupsLangPuts(stderr, _("  --uri regex             Match URI to regular expression."));
-  _cupsLangPuts(stderr, "");
+  _cupsLangPuts(stderr, _("-P number[-number]      Match port to number or range"));
+  _cupsLangPuts(stderr, _("-d regex                Match domain to regular expression"));
+  _cupsLangPuts(stderr, _("-h regex                Match hostname to regular expression"));
+  _cupsLangPuts(stderr, _("-l                      List attributes"));
+  _cupsLangPuts(stderr, _("-n regex                Match service name to regular expression"));
+  _cupsLangPuts(stderr, _("-p                      Print URI if true"));
+  _cupsLangPuts(stderr, _("-q                      Quietly report match via exit code"));
+  _cupsLangPuts(stderr, _("-r                      True if service is remote"));
+  _cupsLangPuts(stderr, _("-s                      Print service name if true"));
+  _cupsLangPuts(stderr, _("-t key                  True if the TXT record contains the key"));
+  _cupsLangPuts(stderr, _("-u regex                Match URI to regular expression"));
+  _cupsLangPuts(stderr, _("-x utility [argument ...] ;\n"
+                          "                        Execute program if true"));
+  _cupsLangPuts(stderr, _("--domain regex          Match domain to regular expression"));
+  _cupsLangPuts(stderr, _("--exec utility [argument ...] ;\n"
+                          "                        Execute program if true"));
+  _cupsLangPuts(stderr, _("--host regex            Match hostname to regular expression"));
+  _cupsLangPuts(stderr, _("--ls                    List attributes"));
+  _cupsLangPuts(stderr, _("--local                 True if service is local"));
+  _cupsLangPuts(stderr, _("--name regex            Match service name to regular expression"));
+  _cupsLangPuts(stderr, _("--path regex            Match resource path to regular expression"));
+  _cupsLangPuts(stderr, _("--port number[-number]  Match port to number or range"));
+  _cupsLangPuts(stderr, _("--print                 Print URI if true"));
+  _cupsLangPuts(stderr, _("--print-name            Print service name if true"));
+  _cupsLangPuts(stderr, _("--quiet                 Quietly report match via exit code"));
+  _cupsLangPuts(stderr, _("--remote                True if service is remote"));
+  _cupsLangPuts(stderr, _("--txt key               True if the TXT record contains the key"));
+  _cupsLangPuts(stderr, _("--txt-* regex           Match TXT record key to regular expression"));
+  _cupsLangPuts(stderr, _("--uri regex             Match URI to regular expression"));
   _cupsLangPuts(stderr, _("Modifiers:"));
-  _cupsLangPuts(stderr, _("  ( expressions )         Group expressions."));
-  _cupsLangPuts(stderr, _("  ! expression            Unary NOT of expression."));
-  _cupsLangPuts(stderr, _("  --not expression        Unary NOT of expression."));
-  _cupsLangPuts(stderr, _("  --false                 Always false."));
-  _cupsLangPuts(stderr, _("  --true                  Always true."));
-  _cupsLangPuts(stderr, _("  expression expression   Logical AND."));
-  _cupsLangPuts(stderr, _("  expression --and expression\n"
-                          "                          Logical AND."));
-  _cupsLangPuts(stderr, _("  expression --or expression\n"
-                          "                          Logical OR."));
-  _cupsLangPuts(stderr, "");
+  _cupsLangPuts(stderr, _("( expressions )         Group expressions"));
+  _cupsLangPuts(stderr, _("! expression            Unary NOT of expression"));
+  _cupsLangPuts(stderr, _("--not expression        Unary NOT of expression"));
+  _cupsLangPuts(stderr, _("--false                 Always false"));
+  _cupsLangPuts(stderr, _("--true                  Always true"));
+  _cupsLangPuts(stderr, _("expression expression   Logical AND"));
+  _cupsLangPuts(stderr, _("expression --and expression\n"
+                          "                        Logical AND"));
+  _cupsLangPuts(stderr, _("expression --or expression\n"
+                          "                        Logical OR"));
   _cupsLangPuts(stderr, _("Substitutions:"));
-  _cupsLangPuts(stderr, _("  {}                      URI"));
-  _cupsLangPuts(stderr, _("  {service_domain}        Domain name"));
-  _cupsLangPuts(stderr, _("  {service_hostname}      Fully-qualified domain name"));
-  _cupsLangPuts(stderr, _("  {service_name}          Service instance name"));
-  _cupsLangPuts(stderr, _("  {service_port}          Port number"));
-  _cupsLangPuts(stderr, _("  {service_regtype}       DNS-SD registration type"));
-  _cupsLangPuts(stderr, _("  {service_scheme}        URI scheme"));
-  _cupsLangPuts(stderr, _("  {service_uri}           URI"));
-  _cupsLangPuts(stderr, _("  {txt_*}                 Value of TXT record key"));
-  _cupsLangPuts(stderr, "");
+  _cupsLangPuts(stderr, _("{}                      URI"));
+  _cupsLangPuts(stderr, _("{service_domain}        Domain name"));
+  _cupsLangPuts(stderr, _("{service_hostname}      Fully-qualified domain name"));
+  _cupsLangPuts(stderr, _("{service_name}          Service instance name"));
+  _cupsLangPuts(stderr, _("{service_port}          Port number"));
+  _cupsLangPuts(stderr, _("{service_regtype}       DNS-SD registration type"));
+  _cupsLangPuts(stderr, _("{service_scheme}        URI scheme"));
+  _cupsLangPuts(stderr, _("{service_uri}           URI"));
+  _cupsLangPuts(stderr, _("{txt_*}                 Value of TXT record key"));
   _cupsLangPuts(stderr, _("Environment Variables:"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_DOMAIN  Domain name"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_HOSTNAME\n"
-                          "                          Fully-qualified domain name"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_NAME    Service instance name"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_PORT    Port number"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_REGTYPE DNS-SD registration type"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_SCHEME  URI scheme"));
-  _cupsLangPuts(stderr, _("  IPPFIND_SERVICE_URI     URI"));
-  _cupsLangPuts(stderr, _("  IPPFIND_TXT_*           Value of TXT record key"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_DOMAIN  Domain name"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_HOSTNAME\n"
+                          "                        Fully-qualified domain name"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_NAME    Service instance name"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_PORT    Port number"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_REGTYPE DNS-SD registration type"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_SCHEME  URI scheme"));
+  _cupsLangPuts(stderr, _("IPPFIND_SERVICE_URI     URI"));
+  _cupsLangPuts(stderr, _("IPPFIND_TXT_*           Value of TXT record key"));
 
   exit(IPPFIND_EXIT_TRUE);
 }

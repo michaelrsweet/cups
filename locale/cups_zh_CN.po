@@ -7,20 +7,20 @@
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more
 # information.
 #
-# Jeff Bai <jeffbai@aosc.xyz>, 2016.
+# Mingcong Bai <jeffbai@aosc.xyz>, 2016, 2017, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 2.3\n"
 "Report-Msgid-Bugs-To: https://github.com/apple/cups/issues\n"
-"POT-Creation-Date: 2018-03-19 18:43-0400\n"
-"PO-Revision-Date: 2017-06-11 12:38+0800\n"
-"Last-Translator: Mingcong Bai <jeffbai@aosc.xyz>\n"
+"POT-Creation-Date: 2018-12-06 14:58-0500\n"
+"PO-Revision-Date: 2018-10-09 00:21-0500\n"
+"Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.9\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "\t\t(all)"
@@ -141,12 +141,6 @@ msgid ""
 msgstr ""
 "\n"
 "    详细兼容性测试结果"
-
-msgid "                          Ignore specific warnings."
-msgstr "                          忽略特定类型的警告。"
-
-msgid "                          Issue warnings instead of errors."
-msgstr "                          发出警告而不是错误。"
 
 msgid "                REF: Page 15, section 3.1."
 msgstr "                引用：第 15 页，章节 3.1。"
@@ -323,15 +317,6 @@ msgid ""
 msgstr ""
 "        警告    PPD 4.3 规范需要 ShortNickName。\n"
 "                引用：第 64-65 页，章节 5.3。"
-
-msgid "       cupsaddsmb [options] -a"
-msgstr "       cupsaddsmb [选项] -a"
-
-msgid "       cupstestdsc [options] -"
-msgstr "       cupstestdsc [选项] -"
-
-msgid "       program | cupstestppd [options] -"
-msgstr "       程序 | cupstestppd [选项] -"
 
 #, c-format
 msgid ""
@@ -789,123 +774,8 @@ msgstr "      **失败**  无法打开 PPD 文件 — 行 %2$d 上的 %1$s。"
 msgid "    %d ERRORS FOUND"
 msgstr "    发现 %d 个错误"
 
-msgid "    -h       Show program usage"
-msgstr "    -h       显示程序使用方法"
-
-#, c-format
-msgid ""
-"    Bad %%%%BoundingBox: on line %d.\n"
-"        REF: Page 39, %%%%BoundingBox:"
-msgstr ""
-"    无效的 %%%%BoundingBox：位于行 %d。\n"
-"        引用：第 39 页，%%%%BoundingBox："
-
-#, c-format
-msgid ""
-"    Bad %%%%Page: on line %d.\n"
-"        REF: Page 53, %%%%Page:"
-msgstr ""
-"    无效的 %%%%Page：位于行 %d。\n"
-"        引用：第 53 页，%%%%Page："
-
-#, c-format
-msgid ""
-"    Bad %%%%Pages: on line %d.\n"
-"        REF: Page 43, %%%%Pages:"
-msgstr ""
-"    无效的 %%%%Pages：位于行 %d。\n"
-"        引用：第 43 页，%%%%Pages："
-
-#, c-format
-msgid ""
-"    Line %d is longer than 255 characters (%d).\n"
-"        REF: Page 25, Line Length"
-msgstr ""
-"    行 %d 长度超过 255 个字符 (%d)。\n"
-"        引用：第 25 页，行长度"
-
-# Should chapter titles be translated?
-msgid ""
-"    Missing %!PS-Adobe-3.0 on first line.\n"
-"        REF: Page 17, 3.1 Conforming Documents"
-msgstr ""
-"    首行缺少 %!PS-Adobe-3.0。\n"
-"        引用：第 17 页，3.1 符合规范的文档"
-
-#, c-format
-msgid "    Missing %%EndComments comment.        REF: Page 41, %%EndComments"
-msgstr "    缺少 %%EndComments 注释。        引用：第 41 页，%%EndComments"
-
-#, c-format
-msgid ""
-"    Missing or bad %%BoundingBox: comment.\n"
-"        REF: Page 39, %%BoundingBox:"
-msgstr ""
-"    %%BoundingBox 缺失或无效：注释。\n"
-"        引用：第 39 页，%%BoundingBox："
-
-#, c-format
-msgid ""
-"    Missing or bad %%Page: comments.\n"
-"        REF: Page 53, %%Page:"
-msgstr ""
-"    %%Page 缺失或无效：注释。\n"
-"        引用：第 53 页，%%Page："
-
-#, c-format
-msgid ""
-"    Missing or bad %%Pages: comment.\n"
-"        REF: Page 43, %%Pages:"
-msgstr ""
-"    %%Pages 缺失或无效：注释。\n"
-"        引用：第 43 页，%%Pages："
-
 msgid "    NO ERRORS FOUND"
 msgstr "    未发现错误"
-
-#, c-format
-msgid "    Saw %d lines that exceeded 255 characters."
-msgstr "    共发现 %d 个超过 255 字符的行。"
-
-#, c-format
-msgid "    Too many %%BeginDocument comments."
-msgstr "    %%BeginDocument 注释过多。"
-
-#, c-format
-msgid "    Too many %%EndDocument comments."
-msgstr "    %%EndDocument 注释过多。"
-
-msgid "    Warning: file contains binary data."
-msgstr "    警告：文件包含二进制数据。"
-
-#, c-format
-msgid "    Warning: no %%EndComments comment in file."
-msgstr "    警告：文件中无 %%EndComments 注释。"
-
-#, c-format
-msgid "    Warning: obsolete DSC version %.1f in file."
-msgstr "    警告：文件中包含已遗弃的 DSC 版本 %.1f。"
-
-msgid "  ! expression            Unary NOT of expression."
-msgstr "  ! 表达式                一元否定表达式。"
-
-msgid "  ( expressions )         Group expressions."
-msgstr "  ( 表达式 )              表达式组。"
-
-msgid "  --[no-]debug-logging    Turn debug logging on/off."
-msgstr "  --[no-]debug-logging    打开/关闭查错日志。"
-
-msgid "  --[no-]remote-admin     Turn remote administration on/off."
-msgstr "  --[no-]remote-admin     打开/关闭远程管理。"
-
-msgid "  --[no-]remote-any       Allow/prevent access from the Internet."
-msgstr "  --[no-]remote-any       允许/禁止互联网访问。"
-
-msgid "  --[no-]share-printers   Turn printer sharing on/off."
-msgstr "  --[no-]share-printers   打开/关闭打印机共享。"
-
-msgid "  --[no-]user-cancel-any  Allow/prevent users to cancel any job."
-msgstr "  --[no-]user-cancel-any  允许/禁止用户取消任意任务。"
 
 msgid "  --cr                    End lines with CR (Mac OS 9)."
 msgstr "  --cr                    使用 CR 行末 (Mac OS 9)。"
@@ -913,100 +783,11 @@ msgstr "  --cr                    使用 CR 行末 (Mac OS 9)。"
 msgid "  --crlf                  End lines with CR + LF (Windows)."
 msgstr "  --crlf                  使用 CR + LF 行末 (Windows)。"
 
-msgid "  --domain regex          Match domain to regular expression."
-msgstr "  --domain 正则表达式    使用正则表达式匹配域。"
-
-msgid ""
-"  --exec utility [argument ...] ;\n"
-"                          Execute program if true."
-msgstr ""
-"  --exec 程序 [参数 ...] ;\n"
-"                          如返回 true 则执行程序。"
-
-msgid "  --false                 Always false."
-msgstr "  --false                 总是返回 false。"
-
-msgid "  --help                  Show help."
-msgstr "  --help                  显示帮助。"
-
-msgid "  --help                  Show this help."
-msgstr "  --help                  显示此帮助信息。"
-
-msgid "  --host regex            Match hostname to regular expression."
-msgstr "  --host 正则表达式      使用正则表达式匹配主机名。"
-
-msgid "  --ippserver filename    Produce ippserver attribute file."
-msgstr ""
-
 msgid "  --lf                    End lines with LF (UNIX/Linux/macOS)."
 msgstr "  --lf                    使用 LF 行末（UNIX/Linux/macOS）。"
 
 msgid "  --list-filters          List filters that will be used."
 msgstr "  --list-filters          列出要使用的滤镜。"
-
-msgid "  --local                 True if service is local."
-msgstr "  --local                 如为本地服务则返回 true。"
-
-msgid "  --ls                    List attributes."
-msgstr "  --ls                    列出属性。"
-
-msgid "  --name regex            Match service name to regular expression."
-msgstr "  --name 正则表达式      使用正则表达式匹配服务名称。"
-
-msgid "  --not expression        Unary NOT of expression."
-msgstr "  --not 表达式            一元否定表达式。"
-
-msgid "  --path regex            Match resource path to regular expression."
-msgstr "  --path 正则表达式      使用正则表达式匹配资源路径。"
-
-msgid "  --port number[-number]  Match port to number or range."
-msgstr "  --port 数字[-数字]     匹配端口号或返回。"
-
-msgid "  --print                 Print URI if true."
-msgstr "  --print                 如果为 true 则回显 URI。"
-
-msgid "  --print-name            Print service name if true."
-msgstr "  --print-name            如果为 true 则回显服务名称。"
-
-msgid "  --quiet                 Quietly report match via exit code."
-msgstr "  --quiet                 静默使用退出代码返回匹配。"
-
-msgid "  --remote                True if service is remote."
-msgstr "  --remote                如为远程服务则返回 true。"
-
-msgid ""
-"  --stop-after-include-error\n"
-"                          Stop tests after a failed INCLUDE."
-msgstr ""
-"  --stop-after-include-error\n"
-"                          遇到失败的 INCLUDE 时停止测试。"
-
-msgid "  --true                  Always true."
-msgstr "  --true                  总是返回 true。"
-
-msgid "  --txt key               True if the TXT record contains the key."
-msgstr "  --txt 键值              如 TXT 记录包含键值则返回 true。"
-
-msgid "  --txt-* regex           Match TXT record key to regular expression."
-msgstr "  --txt-* 正则表达式     使用正则表达式匹配 TXT 记录键值。"
-
-msgid "  --uri regex             Match URI to regular expression."
-msgstr "  --uri 正则表达式       使用正则表达式匹配 URI。"
-
-msgid "  --version               Show program version."
-msgstr "  --version               显示程序版本。"
-
-msgid "  --version               Show version."
-msgstr "  --version               显示版本。"
-
-msgid "  -4                      Connect using IPv4."
-msgstr "  -4                      使用 IPv4 连接。"
-
-msgid "  -6                      Connect using IPv6."
-msgstr "  -6                      使用 IPv6 连接。"
-
-msgid "  -C                      Send requests using chunking (default)."
-msgstr "  -C                      使用分块请求发送（默认）。"
 
 msgid "  -D                      Remove the input file when finished."
 msgstr "  -D                      完成后删除输入文件。"
@@ -1014,75 +795,14 @@ msgstr "  -D                      完成后删除输入文件。"
 msgid "  -D name=value           Set named variable to value."
 msgstr "  -D 名称=赋值           为指定变量赋值。"
 
-msgid "  -E                      Encrypt the connection."
-msgstr "  -E                      加密连接。"
-
-msgid ""
-"  -E                      Test with encryption using HTTP Upgrade to TLS."
-msgstr ""
-
-msgid ""
-"  -F                      Run in the foreground but detach from console."
-msgstr "  -F                      在前台运行但从终端分离。"
-
-msgid "  -H samba-server         Use the named SAMBA server."
-msgstr "  -H samba-server         使用指定的 Samba 服务器。"
-
-msgid "  -I                      Ignore errors."
-msgstr "  -I                      忽略错误。"
-
 msgid "  -I include-dir          Add include directory to search path."
 msgstr "  -I include-dir          将引用目录加入到搜索路径。"
-
-msgid "  -I {filename,filters,none,profiles}"
-msgstr "  -I {文件名,滤镜,无,配置档案}"
-
-msgid "  -L                      Send requests using content-length."
-msgstr "  -L                      使用 content-length 发送请求。"
-
-msgid ""
-"  -P filename.plist       Produce XML plist to a file and test report to "
-"standard output."
-msgstr ""
-"  -P filename.plist       生成 XML plist 文件并将测试报告发送到标准输出。"
 
 msgid "  -P filename.ppd         Set PPD file."
 msgstr "  -P filename.ppd         设置 PPD 文件。"
 
-msgid "  -P number[-number]      Match port to number or range."
-msgstr "  -P 数字[-数字]         匹配端口号或范围。"
-
-msgid "  -R root-directory       Set alternate root."
-msgstr "  -R root-directory       设置备用根目录。"
-
-msgid "  -S                      Test with encryption using HTTPS."
-msgstr ""
-
-msgid "  -T seconds              Set the browse timeout in seconds."
-msgstr "  -T 秒数                设置浏览超时（按秒计）。"
-
-msgid "  -T seconds              Set the receive/send timeout in seconds."
-msgstr "  -T 秒数                设置发送/接收超时（按秒计）。"
-
 msgid "  -U username             Specify username."
 msgstr "  -U 用户名              指定用户名。"
-
-msgid "  -V version              Set default IPP version."
-msgstr "  -V 版本                设置默认 IPP 版本。"
-
-msgid ""
-"  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
-"translations}"
-msgstr "  -W {所有,无,限制,默认,复式,滤镜,配置档案,尺寸,翻译}"
-
-msgid "  -X                      Produce XML plist instead of plain text."
-msgstr "  -X                      生成 XML plist 而不是纯文本。"
-
-msgid "  -a                      Export all printers."
-msgstr "  -a                      导出所有打印机。"
-
-msgid "  -c                      Produce CSV output."
-msgstr "  -c                      生成 CSV 输出。"
 
 msgid "  -c catalog.po           Load the specified message catalog."
 msgstr "  -c catalog.po           载入指定的消息索引。"
@@ -1090,62 +810,22 @@ msgstr "  -c catalog.po           载入指定的消息索引。"
 msgid "  -c cups-files.conf      Set cups-files.conf file to use."
 msgstr "  -c cups-files.conf      设置要使用的 cups-files.conf 文件。"
 
-msgid "  -c cupsd.conf           Set cupsd.conf file to use."
-msgstr "  -c cupsd.conf           设置要使用的 cupsd.conf 文件。"
-
-msgid "  -d name=value           Set named variable to value."
-msgstr "  -d 名称=赋值           为指定变量赋值。"
-
 msgid "  -d output-dir           Specify the output directory."
 msgstr "  -d output-dir           指定输出目录。"
 
 msgid "  -d printer              Use the named printer."
 msgstr "  -d 打印机               使用指定的打印机。"
 
-msgid "  -d regex                Match domain to regular expression."
-msgstr "  -d 正则表达式           使用正则表达式匹配域名。"
-
 msgid "  -e                      Use every filter from the PPD file."
 msgstr "  -e                      使用来自 PPD 文件的所有滤镜。"
-
-msgid "  -f                      Run in the foreground."
-msgstr "  -f                      前台运行。"
-
-msgid "  -f filename             Set default request filename."
-msgstr "  -f 文件名               设置默认请求文件名。"
-
-msgid "  -h                      Show this usage message."
-msgstr "  -h                      显示此使用方法信息。"
-
-msgid "  -h                      Validate HTTP response headers."
-msgstr ""
-
-msgid "  -h regex                Match hostname to regular expression."
-msgstr "  -h 正则表达式           使用正则表达式匹配主机名。"
-
-msgid "  -h server[:port]        Specify server address."
-msgstr "  -h 服务器[:端口]        指定服务器地址。"
 
 msgid "  -i mime/type            Set input MIME type (otherwise auto-typed)."
 msgstr "  -i mime/type            设置输入的 MIME 类型（否则自动探测类型）。"
 
 msgid ""
-"  -i seconds              Repeat the last file with the given time interval."
-msgstr "  -i 秒数                 指定重复上一文件的间隔（按秒计）。"
-
-msgid ""
 "  -j job-id[,N]           Filter file N from the specified job (default is "
 "file 1)."
 msgstr "  -j job-id[,N]           从指定任务中过滤文件 N（默认为文件 1）。"
-
-msgid "  -l                      List attributes."
-msgstr "  -l                      列出属性。"
-
-msgid "  -l                      Produce plain text output."
-msgstr "  -l                      生成纯文本输出。"
-
-msgid "  -l                      Run cupsd on demand."
-msgstr "  -l                      按需启动 cupsd。"
 
 msgid "  -l lang[,lang,...]      Specify the output language(s) (locale)."
 msgstr "  -l lang[,lang,...]      指定输出语言（地域配置）。"
@@ -1162,13 +842,6 @@ msgid "  -n copies               Set number of copies."
 msgstr "  -n 副本数               设置副本数量。"
 
 msgid ""
-"  -n count                Repeat the last file the given number of times."
-msgstr "  -n 数量                 按指定数量重复上一文件。"
-
-msgid "  -n regex                Match service name to regular expression."
-msgstr "  -n 正则表达式           使用正则表达式匹配服务名称。"
-
-msgid ""
 "  -o filename.drv         Set driver information file (otherwise ppdi.drv)."
 msgstr "  -o filename.drv         指定驱动信息文件（缺省为 ppdi.drv）。"
 
@@ -1178,41 +851,11 @@ msgstr "  -o filename.ppd[.gz]    设置输出文件（缺省为标准输出）�
 msgid "  -o name=value           Set option(s)."
 msgstr "  -o 名称=赋值            设置选项。"
 
-msgid "  -p                      Print URI if true."
-msgstr "  -p                      如果为 true 则回显 URI。"
-
 msgid "  -p filename.ppd         Set PPD file."
 msgstr "  -p filename.ppd         指定 PPD 文件。"
 
-msgid "  -q                      Quietly report match via exit code."
-msgstr "  -q                      静默使用退出代码报告匹配。"
-
-msgid "  -q                      Run silently."
-msgstr "  -q                      静默运行。"
-
-msgid "  -r                      True if service is remote."
-msgstr "  -r                      如为远程服务则返回 true。"
-
-msgid "  -r                      Use 'relaxed' open mode."
-msgstr "  -r                      使用“relaxed”打开模式。"
-
-msgid "  -s                      Print service name if true."
-msgstr "  -s                      如果为 true 则回显服务名称。"
-
-msgid "  -s cups-files.conf      Set cups-files.conf file to use."
-msgstr "  -s cups-files.conf      设置要使用的 cups-files.conf 文件。"
-
-msgid "  -t                      Produce a test report."
-msgstr "  -t                      生成测试报告。"
-
 msgid "  -t                      Test PPDs instead of generating them."
 msgstr "  -t                      测试而非生成 PPD 文件。"
-
-msgid "  -t                      Test the configuration file."
-msgstr "  -t                      测试配置文件。"
-
-msgid "  -t key                  True if the TXT record contains the key."
-msgstr "  -t 键值                 如 TXT 记录包含键值则返回 true。"
 
 msgid "  -t title                Set title."
 msgstr "  -t 标题                 设置标题。"
@@ -1220,96 +863,11 @@ msgstr "  -t 标题                 设置标题。"
 msgid "  -u                      Remove the PPD file when finished."
 msgstr "  -u                      完成后删除 PPD 文件。"
 
-msgid "  -u regex                Match URI to regular expression."
-msgstr "  -u 正则表达式           使用正则表达式匹配 URI。"
-
 msgid "  -v                      Be verbose."
 msgstr "  -v                      开启详细输出。"
 
-msgid "  -vv                     Be very verbose."
-msgstr "  -vv                     进一步提高输出详尽度。"
-
-msgid ""
-"  -x utility [argument ...] ;\n"
-"                          Execute program if true."
-msgstr ""
-"  -x 程序 [参数 ...] ;\n"
-"                          如果为 true 则执行程序。"
-
 msgid "  -z                      Compress PPD files using GNU zip."
 msgstr "  -z                      使用 GNU zip 压缩 PPD 文件。"
-
-msgid "  IPPFIND_SERVICE_DOMAIN  Domain name"
-msgstr "  IPPFIND_SERVICE_DOMAIN  域名"
-
-msgid ""
-"  IPPFIND_SERVICE_HOSTNAME\n"
-"                          Fully-qualified domain name"
-msgstr ""
-"  IPPFIND_SERVICE_HOSTNAME\n"
-"                          完全限定域名"
-
-msgid "  IPPFIND_SERVICE_NAME    Service instance name"
-msgstr "  IPPFIND_SERVICE_NAME    服务实例名称"
-
-msgid "  IPPFIND_SERVICE_PORT    Port number"
-msgstr "  IPPFIND_SERVICE_PORT    端口号"
-
-msgid "  IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
-msgstr "  IPPFIND_SERVICE_REGTYPE DNS-SD 注册类型"
-
-msgid "  IPPFIND_SERVICE_SCHEME  URI scheme"
-msgstr "  IPPFIND_SERVICE_SCHEME  URI 方案"
-
-msgid "  IPPFIND_SERVICE_URI     URI"
-msgstr "  IPPFIND_SERVICE_URI     URI"
-
-msgid "  IPPFIND_TXT_*           Value of TXT record key"
-msgstr "  IPPFIND_TXT_*           TXT 记录键值"
-
-msgid ""
-"  expression --and expression\n"
-"                          Logical AND."
-msgstr ""
-"  表达式 --and 表达式\n"
-"                          AND 逻辑。"
-
-msgid ""
-"  expression --or expression\n"
-"                          Logical OR."
-msgstr ""
-"  表达式 --or 表达式\n"
-"                          OR 逻辑。"
-
-msgid "  expression expression   Logical AND."
-msgstr "  表达式 表达式          AND 逻辑。"
-
-msgid "  {service_domain}        Domain name"
-msgstr "  {service_domain}        域名"
-
-msgid "  {service_hostname}      Fully-qualified domain name"
-msgstr "  {service_hostname}      完全限定域名"
-
-msgid "  {service_name}          Service instance name"
-msgstr "  {service_name}          服务实例名称"
-
-msgid "  {service_port}          Port number"
-msgstr "  {service_port}          端口号"
-
-msgid "  {service_regtype}       DNS-SD registration type"
-msgstr "  {service_regtype}       DNS-SD 注册名称"
-
-msgid "  {service_scheme}        URI scheme"
-msgstr "  {service_scheme}        URI 方案"
-
-msgid "  {service_uri}           URI"
-msgstr "  {service_uri}           URI"
-
-msgid "  {txt_*}                 Value of TXT record key"
-msgstr "  {txt_*}                 TXT 记录键值"
-
-msgid "  {}                      URI"
-msgstr "  {}                      URI"
 
 msgid " FAIL"
 msgstr " 失败"
@@ -1317,174 +875,195 @@ msgstr " 失败"
 msgid " PASS"
 msgstr " 通过"
 
+msgid "! expression            Unary NOT of expression"
+msgstr ""
+
 #, c-format
 msgid "\"%s\": Bad URI value \"%s\" - %s (RFC 8011 section 5.1.6)."
-msgstr ""
+msgstr "“%s”：无效的 URI 值“%s”— %s（RFC 8011 章节 5.1.6）。"
 
 #, c-format
 msgid "\"%s\": Bad URI value \"%s\" - bad length %d (RFC 8011 section 5.1.6)."
-msgstr ""
+msgstr "“%s”：无效的 URI 值“%s”— 无效长度 %d（RFC 8011 章节 5.1.6）。"
 
 #, c-format
 msgid "\"%s\": Bad attribute name - bad length %d (RFC 8011 section 5.1.4)."
-msgstr ""
+msgstr "“%s”：无效的属性名称 — 无效长度 %d（RFC 8011 章节 5.1.4）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad attribute name - invalid character (RFC 8011 section 5.1.4)."
-msgstr ""
+msgstr "“%s”：无效的属性名称 — 无效字符（RFC 8011 章节 5.1.4）。"
 
 #, c-format
 msgid "\"%s\": Bad boolean value %d (RFC 8011 section 5.1.21)."
-msgstr ""
+msgstr "“%s”：无效的布里值 %d（RFC 8011 章节 5.1.21）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad charset value \"%s\" - bad characters (RFC 8011 section 5.1.8)."
-msgstr ""
+msgstr "“%s”：无效的字符集值“%s”— 无效字符（RFC 8011 章节 5.1.21）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad charset value \"%s\" - bad length %d (RFC 8011 section 5.1.8)."
-msgstr ""
+msgstr "“%s”：无效的字符集值“%s”— 无效长度 %d（RFC 8011 章节 5.1.21）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime UTC hours %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime UTC 小时值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime UTC minutes %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime UTC 分钟值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime UTC sign '%c' (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime UTC 符号值“%c”（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime day %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 日期值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime deciseconds %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 十分之一秒值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime hours %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 小时值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime minutes %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 分钟值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime month %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 月份值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad dateTime seconds %u (RFC 8011 section 5.1.15)."
-msgstr ""
+msgstr "“%s”：无效的 dateTime 秒值 %u（RFC 8011 章节 5.1.15）。"
 
 #, c-format
 msgid "\"%s\": Bad enum value %d - out of range (RFC 8011 section 5.1.5)."
-msgstr ""
+msgstr "“%s”：无效的枚举值 %d - 超出范围（RFC 8011 章节 5.1.5）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad keyword value \"%s\" - bad length %d (RFC 8011 section 5.1.4)."
-msgstr ""
+msgstr "“%s”：无效的关键字值“%s”— 无效长度 %d（RFC 8011 章节 5.1.4）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad keyword value \"%s\" - invalid character (RFC 8011 section "
 "5.1.4)."
-msgstr ""
+msgstr "“%s”：无效的关键字值“%s”— 无效字符（RFC 8011 章节 5.1.4）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad mimeMediaType value \"%s\" - bad characters (RFC 8011 section "
 "5.1.10)."
-msgstr ""
+msgstr "“%s”：无效的 mimeMediaType 值“%s”— 无效字符（RFC 8011 章节 5.1.10）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad mimeMediaType value \"%s\" - bad length %d (RFC 8011 section "
 "5.1.10)."
 msgstr ""
+"“%s”：无效的 mimeMediaType 值“%s”— 无效长度 %d（RFC 8011 章节 5.1.10）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."
-msgstr ""
+msgstr "“%s”：无效的名称值“%s”— 无效 UTF-8 序列（RFC 8011 章节 5.1.3）。"
+
+#, c-format
+msgid ""
+"\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section "
+"8.1)."
+msgstr "“%s”：无效的名称值“%s”— 无效控制字符（PWG 5100.14 章节 8.1）。"
 
 #, c-format
 msgid "\"%s\": Bad name value \"%s\" - bad length %d (RFC 8011 section 5.1.3)."
-msgstr ""
+msgstr "“%s”：无效的名称值“%s”— 无效长度 %d（RFC 8011 章节 5.1.3）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad naturalLanguage value \"%s\" - bad characters (RFC 8011 section "
 "5.1.9)."
-msgstr ""
+msgstr "“%s”：无效的 naturalLanguage 值“%s”— 无效字符（RFC 8011 章节 5.1.9）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad naturalLanguage value \"%s\" - bad length %d (RFC 8011 section "
 "5.1.9)."
 msgstr ""
+"“%s”：无效的 naturalLanguage 值“%s”— 无效长度 %d（RFC 8011 章节 5.1.9）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad octetString value - bad length %d (RFC 8011 section 5.1.20)."
-msgstr ""
+msgstr "“%s”：无效的 octetString 值 — 无效长度 %d（RFC 8011 章节 5.1.20）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad rangeOfInteger value %d-%d - lower greater than upper (RFC 8011 "
 "section 5.1.14)."
 msgstr ""
+"“%s”：无效的 rangeOfInteger 值 %d-%d — 整数下限大于上限（RFC 8011 章节 "
+"5.1.14）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad resolution value %dx%d%s - bad units value (RFC 8011 section "
 "5.1.16)."
-msgstr ""
+msgstr "“%s”：无效的分辨率值 %dx%d%s — 无效单位值（RFC 8011 章节 5.1.16）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad resolution value %dx%d%s - cross feed resolution must be "
 "positive (RFC 8011 section 5.1.16)."
 msgstr ""
+"“%s”：无效的分辨率值 %dx%d%s — 横截分辨率必须为正数（RFC 8011 章节 5.1.16）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad resolution value %dx%d%s - feed resolution must be positive (RFC "
 "8011 section 5.1.16)."
 msgstr ""
+"“%s”：无效的分辨率值 %dx%d%s — 顺向分辨率必须为正数（RFC 8011 章节 5.1.16）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."
-msgstr ""
+msgstr "“%s”：无效的文本值“%s”— 无效 UTF-8 序列（RFC 8011 章节 5.1.2）。"
+
+#, c-format
+msgid ""
+"\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section "
+"8.3)."
+msgstr "“%s”：无效的文本值“%s”— 无效控制字符（PWG 5100.14 章节 8.3）。"
 
 #, c-format
 msgid "\"%s\": Bad text value \"%s\" - bad length %d (RFC 8011 section 5.1.2)."
-msgstr ""
+msgstr "“%s”：无效的文本值“%s”— 无效长度 %d（RFC 8011 章节 5.1.2）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad uriScheme value \"%s\" - bad characters (RFC 8011 section 5.1.7)."
-msgstr ""
+msgstr "“%s”：无效的 uriScheme 值“%s”— 无效字符（RFC 8011 章节 5.1.7）。"
 
 #, c-format
 msgid ""
 "\"%s\": Bad uriScheme value \"%s\" - bad length %d (RFC 8011 section 5.1.7)."
-msgstr ""
+msgstr "“%s”：无效的 uriScheme 值“%s”— 无效长度 %d（RFC 8011 章节 5.1.7）。"
 
 msgid "\"requesting-user-name\" attribute in wrong group."
-msgstr ""
+msgstr "“requesting-user-name”属性组不正确。"
 
 msgid "\"requesting-user-name\" attribute with wrong syntax."
-msgstr ""
+msgstr "“requesting-user-name”属性组包含错误的语法。"
 
 #, c-format
 msgid "%-7s %-7.7s %-7d %-31.31s %.0f bytes"
@@ -1496,7 +1075,7 @@ msgstr "%d x %d 毫米"
 
 #, c-format
 msgid "%g x %g \""
-msgstr ""
+msgstr "%g x %g \""
 
 #, c-format
 msgid "%s (%s)"
@@ -1589,7 +1168,7 @@ msgstr "%s：不知如何处理。"
 
 #, c-format
 msgid "%s: Error - %s"
-msgstr ""
+msgstr "%s：错误 — %s"
 
 #, c-format
 msgid ""
@@ -1815,6 +1394,10 @@ msgid "%s: Unable to open PPD file: %s on line %d."
 msgstr "%1$s：无法打开 PPD 文件：行 %3$d 上的 %2$s。"
 
 #, c-format
+msgid "%s: Unable to query printer: %s"
+msgstr "%s：无法查询打印机：%s"
+
+#, c-format
 msgid "%s: Unable to read MIME database from \"%s\" or \"%s\"."
 msgstr "%s：无法从“%s”或“%s”读取 MIME 数据库。"
 
@@ -1871,6 +1454,136 @@ msgstr "%s：警告 — 图标选项被忽略。"
 #, c-format
 msgid "%s: Warning - mode option ignored."
 msgstr "%s：警告 — 模式选项被忽略。"
+
+msgid "( expressions )         Group expressions"
+msgstr ""
+
+msgid "-                       Cancel all jobs"
+msgstr ""
+
+msgid "-# num-copies           Specify the number of copies to print"
+msgstr ""
+
+msgid "--[no-]debug-logging    Turn debug logging on/off"
+msgstr ""
+
+msgid "--[no-]remote-admin     Turn remote administration on/off"
+msgstr ""
+
+msgid "--[no-]remote-any       Allow/prevent access from the Internet"
+msgstr ""
+
+msgid "--[no-]share-printers   Turn printer sharing on/off"
+msgstr ""
+
+msgid "--[no-]user-cancel-any  Allow/prevent users to cancel any job"
+msgstr ""
+
+msgid ""
+"--device-id device-id   Show models matching the given IEEE 1284 device ID"
+msgstr ""
+
+msgid "--domain regex          Match domain to regular expression"
+msgstr ""
+
+msgid ""
+"--exclude-schemes scheme-list\n"
+"                        Exclude the specified URI schemes"
+msgstr ""
+
+msgid ""
+"--exec utility [argument ...] ;\n"
+"                        Execute program if true"
+msgstr ""
+
+msgid "--false                 Always false"
+msgstr ""
+
+msgid "--hold                  Hold new jobs"
+msgstr ""
+
+msgid "--host regex            Match hostname to regular expression"
+msgstr ""
+
+msgid ""
+"--include-schemes scheme-list\n"
+"                        Include only the specified URI schemes"
+msgstr ""
+
+msgid "--ippserver filename    Produce ippserver attribute file"
+msgstr ""
+
+msgid "--language locale       Show models matching the given locale"
+msgstr ""
+
+msgid "--local                 True if service is local"
+msgstr ""
+
+msgid "--ls                    List attributes"
+msgstr ""
+
+msgid ""
+"--make-and-model name   Show models matching the given make and model name"
+msgstr ""
+
+msgid "--name regex            Match service name to regular expression"
+msgstr ""
+
+msgid "--not expression        Unary NOT of expression"
+msgstr ""
+
+msgid "--path regex            Match resource path to regular expression"
+msgstr ""
+
+msgid "--port number[-number]  Match port to number or range"
+msgstr ""
+
+msgid "--print                 Print URI if true"
+msgstr ""
+
+msgid "--print-name            Print service name if true"
+msgstr ""
+
+msgid ""
+"--product name          Show models matching the given PostScript product"
+msgstr ""
+
+msgid "--quiet                 Quietly report match via exit code"
+msgstr ""
+
+msgid "--release               Release previously held jobs"
+msgstr ""
+
+msgid "--remote                True if service is remote"
+msgstr ""
+
+msgid ""
+"--stop-after-include-error\n"
+"                        Stop tests after a failed INCLUDE"
+msgstr ""
+
+msgid ""
+"--timeout seconds       Specify the maximum number of seconds to discover "
+"devices"
+msgstr ""
+
+msgid "--true                  Always true"
+msgstr ""
+
+msgid "--txt key               True if the TXT record contains the key"
+msgstr ""
+
+msgid "--txt-* regex           Match TXT record key to regular expression"
+msgstr ""
+
+msgid "--uri regex             Match URI to regular expression"
+msgstr ""
+
+msgid "--version               Show program version"
+msgstr ""
+
+msgid "--version               Show version"
+msgstr ""
 
 msgid "-1"
 msgstr "-1"
@@ -1929,6 +1642,9 @@ msgstr "-35"
 msgid "-4"
 msgstr "-4"
 
+msgid "-4                      Connect using IPv4"
+msgstr ""
+
 msgid "-40"
 msgstr "-40"
 
@@ -1946,6 +1662,9 @@ msgstr "-55"
 
 msgid "-6"
 msgstr "-6"
+
+msgid "-6                      Connect using IPv6"
+msgstr ""
 
 msgid "-60"
 msgstr "-60"
@@ -1980,8 +1699,436 @@ msgstr "-90"
 msgid "-95"
 msgstr "-95"
 
-msgid "/etc/cups/lpoptions file names default destination that does not exist."
+msgid "-C                      Send requests using chunking (default)"
 msgstr ""
+
+msgid "-D description          Specify the textual description of the printer"
+msgstr ""
+
+msgid ""
+"-E                      Enable and accept jobs on the printer (after -p)"
+msgstr ""
+
+msgid "-E                      Encrypt the connection to the server"
+msgstr ""
+
+msgid "-E                      Test with encryption using HTTP Upgrade to TLS"
+msgstr ""
+
+msgid "-F                      Run in the foreground but detach from console."
+msgstr ""
+
+msgid "-H                      Show the default server and port"
+msgstr ""
+
+msgid "-H HH:MM                Hold the job until the specified UTC time"
+msgstr ""
+
+msgid "-H hold                 Hold the job until released/resumed"
+msgstr ""
+
+msgid "-H immediate            Print the job as soon as possible"
+msgstr ""
+
+msgid "-H restart              Reprint the job"
+msgstr ""
+
+msgid "-H resume               Resume a held job"
+msgstr ""
+
+msgid "-H server[:port]        Connect to the named server and port"
+msgstr ""
+
+msgid "-I                      Ignore errors"
+msgstr ""
+
+msgid ""
+"-I {filename,filters,none,profiles}\n"
+"                          Ignore specific warnings"
+msgstr ""
+
+msgid "-L                      Send requests using content-length"
+msgstr ""
+
+msgid "-L location             Specify the textual location of the printer"
+msgstr ""
+
+msgid "-P destination          Show status for the specified destination"
+msgstr ""
+
+msgid "-P destination          Specify the destination"
+msgstr ""
+
+msgid ""
+"-P filename.plist       Produce XML plist to a file and test report to "
+"standard output"
+msgstr ""
+
+msgid "-P number[-number]      Match port to number or range"
+msgstr ""
+
+msgid "-P page-list            Specify a list of pages to print"
+msgstr ""
+
+msgid "-R                      Show the ranking of jobs"
+msgstr ""
+
+msgid "-R name-default         Remove the default value for the named option"
+msgstr ""
+
+msgid "-R root-directory       Set alternate root"
+msgstr ""
+
+msgid "-S                      Test with encryption using HTTPS"
+msgstr ""
+
+msgid "-T seconds              Set the browse timeout in seconds"
+msgstr ""
+
+msgid "-T seconds              Set the receive/send timeout in seconds"
+msgstr ""
+
+msgid "-T title                Specify the job title"
+msgstr ""
+
+msgid "-U username             Specify the username to use for authentication"
+msgstr ""
+
+msgid "-U username             Specify username to use for authentication"
+msgstr ""
+
+msgid "-V version              Set default IPP version"
+msgstr ""
+
+msgid "-W completed            Show completed jobs"
+msgstr ""
+
+msgid "-W not-completed        Show pending jobs"
+msgstr ""
+
+msgid ""
+"-W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
+"translations}\n"
+"                          Issue warnings instead of errors"
+msgstr ""
+
+msgid "-X                      Produce XML plist instead of plain text"
+msgstr ""
+
+msgid "-a                      Cancel all jobs"
+msgstr ""
+
+msgid "-a                      Show jobs on all destinations"
+msgstr ""
+
+msgid "-a [destination(s)]     Show the accepting state of destinations"
+msgstr ""
+
+msgid "-c                      Make a copy of the print file(s)"
+msgstr ""
+
+msgid "-c                      Produce CSV output"
+msgstr ""
+
+msgid "-c [class(es)]          Show classes and their member printers"
+msgstr ""
+
+msgid "-c class                Add the named destination to a class"
+msgstr ""
+
+msgid "-c cupsd.conf           Set cupsd.conf file to use."
+msgstr ""
+
+msgid "-d                      Show the default destination"
+msgstr ""
+
+msgid "-d destination          Set default destination"
+msgstr ""
+
+msgid "-d destination          Set the named destination as the server default"
+msgstr ""
+
+msgid "-d name=value           Set named variable to value"
+msgstr ""
+
+msgid "-d regex                Match domain to regular expression"
+msgstr ""
+
+msgid "-e                      Show available destinations on the network"
+msgstr ""
+
+msgid "-f                      Run in the foreground."
+msgstr ""
+
+msgid "-f filename             Set default request filename"
+msgstr ""
+
+msgid "-h                      Show this usage message."
+msgstr ""
+
+msgid "-h                      Validate HTTP response headers"
+msgstr ""
+
+msgid "-h regex                Match hostname to regular expression"
+msgstr ""
+
+msgid "-h server[:port]        Connect to the named server and port"
+msgstr ""
+
+msgid "-i id                   Specify an existing job ID to modify"
+msgstr ""
+
+msgid "-i ppd-file             Specify a PPD file for the printer"
+msgstr ""
+
+msgid ""
+"-i seconds              Repeat the last file with the given time interval"
+msgstr ""
+
+msgid "-l                      List attributes"
+msgstr ""
+
+msgid "-l                      Produce plain text output"
+msgstr ""
+
+msgid "-l                      Run cupsd on demand."
+msgstr ""
+
+msgid "-l                      Show supported options and values"
+msgstr ""
+
+msgid "-l                      Show verbose (long) output"
+msgstr ""
+
+msgid ""
+"-m                      Send an email notification when the job completes"
+msgstr ""
+
+msgid "-m                      Show models"
+msgstr ""
+
+msgid ""
+"-m everywhere           Specify the printer is compatible with IPP Everywhere"
+msgstr ""
+
+msgid ""
+"-m model                Specify a standard model/PPD file for the printer"
+msgstr ""
+
+msgid "-n count                Repeat the last file the given number of times"
+msgstr ""
+
+msgid "-n num-copies           Specify the number of copies to print"
+msgstr ""
+
+msgid "-n regex                Match service name to regular expression"
+msgstr ""
+
+msgid ""
+"-o Name=Value           Specify the default value for the named PPD option "
+msgstr ""
+
+msgid "-o [destination(s)]     Show jobs"
+msgstr ""
+
+msgid ""
+"-o cupsIPPSupplies=false\n"
+"                        Disable supply level reporting via IPP"
+msgstr ""
+
+msgid ""
+"-o cupsSNMPSupplies=false\n"
+"                        Disable supply level reporting via SNMP"
+msgstr ""
+
+msgid "-o job-k-limit=N        Specify the kilobyte limit for per-user quotas"
+msgstr ""
+
+msgid "-o job-page-limit=N     Specify the page limit for per-user quotas"
+msgstr ""
+
+msgid "-o job-quota-period=N   Specify the per-user quota period in seconds"
+msgstr ""
+
+msgid "-o job-sheets=standard  Print a banner page with the job"
+msgstr ""
+
+msgid "-o media=size           Specify the media size to use"
+msgstr ""
+
+msgid "-o name-default=value   Specify the default value for the named option"
+msgstr ""
+
+msgid "-o name[=value]         Set default option and value"
+msgstr ""
+
+msgid ""
+"-o number-up=N          Specify that input pages should be printed N-up (1, "
+"2, 4, 6, 9, and 16 are supported)"
+msgstr ""
+
+msgid "-o option[=value]       Specify a printer-specific option"
+msgstr ""
+
+msgid ""
+"-o orientation-requested=N\n"
+"                        Specify portrait (3) or landscape (4) orientation"
+msgstr ""
+
+msgid ""
+"-o print-quality=N      Specify the print quality - draft (3), normal (4), "
+"or best (5)"
+msgstr ""
+
+msgid ""
+"-o printer-error-policy=name\n"
+"                        Specify the printer error policy"
+msgstr ""
+
+msgid ""
+"-o printer-is-shared=true\n"
+"                        Share the printer"
+msgstr ""
+
+msgid ""
+"-o printer-op-policy=name\n"
+"                        Specify the printer operation policy"
+msgstr ""
+
+msgid "-o sides=one-sided      Specify 1-sided printing"
+msgstr ""
+
+msgid ""
+"-o sides=two-sided-long-edge\n"
+"                        Specify 2-sided portrait printing"
+msgstr ""
+
+msgid ""
+"-o sides=two-sided-short-edge\n"
+"                        Specify 2-sided landscape printing"
+msgstr ""
+
+msgid "-p                      Print URI if true"
+msgstr ""
+
+msgid "-p [printer(s)]         Show the processing state of destinations"
+msgstr ""
+
+msgid "-p destination          Specify a destination"
+msgstr ""
+
+msgid "-p destination          Specify/add the named destination"
+msgstr ""
+
+msgid "-q                      Quietly report match via exit code"
+msgstr ""
+
+msgid "-q                      Run silently"
+msgstr ""
+
+msgid "-q                      Specify the job should be held for printing"
+msgstr ""
+
+msgid "-q priority             Specify the priority from low (1) to high (100)"
+msgstr ""
+
+msgid "-r                      Remove the file(s) after submission"
+msgstr ""
+
+msgid "-r                      Show whether the CUPS server is running"
+msgstr ""
+
+msgid "-r                      True if service is remote"
+msgstr ""
+
+msgid "-r                      Use 'relaxed' open mode"
+msgstr ""
+
+msgid "-r class                Remove the named destination from a class"
+msgstr ""
+
+msgid "-r reason               Specify a reason message that others can see"
+msgstr ""
+
+msgid "-s                      Be silent"
+msgstr ""
+
+msgid "-s                      Print service name if true"
+msgstr ""
+
+msgid "-s                      Show a status summary"
+msgstr ""
+
+msgid "-s cups-files.conf      Set cups-files.conf file to use."
+msgstr ""
+
+msgid "-t                      Produce a test report"
+msgstr ""
+
+msgid "-t                      Show all status information"
+msgstr ""
+
+msgid "-t                      Test the configuration file."
+msgstr ""
+
+msgid "-t key                  True if the TXT record contains the key"
+msgstr ""
+
+msgid "-t title                Specify the job title"
+msgstr ""
+
+msgid ""
+"-u [user(s)]            Show jobs queued by the current or specified users"
+msgstr ""
+
+msgid "-u allow:all            Allow all users to print"
+msgstr ""
+
+msgid ""
+"-u allow:list           Allow the list of users or groups (@name) to print"
+msgstr ""
+
+msgid ""
+"-u deny:list            Prevent the list of users or groups (@name) to print"
+msgstr ""
+
+msgid "-u owner                Specify the owner to use for jobs"
+msgstr ""
+
+msgid "-u regex                Match URI to regular expression"
+msgstr ""
+
+msgid "-v                      Be verbose"
+msgstr ""
+
+msgid "-v                      Show devices"
+msgstr ""
+
+msgid "-v [printer(s)]         Show the devices for each destination"
+msgstr ""
+
+msgid "-v device-uri           Specify the device URI for the printer"
+msgstr ""
+
+msgid "-vv                     Be very verbose"
+msgstr ""
+
+msgid "-x                      Purge jobs rather than just canceling"
+msgstr ""
+
+msgid "-x destination          Remove default options for destination"
+msgstr ""
+
+msgid "-x destination          Remove the named destination"
+msgstr ""
+
+msgid ""
+"-x utility [argument ...] ;\n"
+"                        Execute program if true"
+msgstr ""
+
+msgid "/etc/cups/lpoptions file names default destination that does not exist."
+msgstr "/etc/cups/lpoptions 文件所指定的默认目标不存在。"
 
 msgid "0"
 msgstr "0"
@@ -2666,11 +2813,18 @@ msgstr "B9"
 
 #, c-format
 msgid "Bad \"printer-id\" value %d."
-msgstr ""
+msgstr "无效的“printer-id”值 %d。"
+
+#, c-format
+msgid "Bad '%s' value."
+msgstr "无效的“%s”值。"
 
 #, c-format
 msgid "Bad 'document-format' value \"%s\"."
 msgstr "无效的“document-format”值“%s”。"
+
+msgid "Bad CloseUI/JCLCloseUI"
+msgstr "无效的 CloseUI/JCLCloseUI"
 
 msgid "Bad NULL dests pointer"
 msgstr "无效的 NULL 目标指针"
@@ -2697,10 +2851,10 @@ msgid "Bad SNMP version number"
 msgstr "无效的 SNMP 版本号"
 
 msgid "Bad UIConstraints"
-msgstr "无锡噢的 UIConstraints 值"
+msgstr "无效的 UIConstraints 值"
 
 msgid "Bad URI."
-msgstr ""
+msgstr "无效的 URI。"
 
 msgid "Bad arguments to function"
 msgstr "函数的参数无效"
@@ -2767,12 +2921,12 @@ msgid "Bad notify-recipient-uri \"%s\"."
 msgstr "无效的 notify-recipient-uri 值“%s”。"
 
 #, c-format
-msgid "Bad number-up value %d."
-msgstr "无效的 number-up 值 %d。"
+msgid "Bad notify-user-data \"%s\"."
+msgstr "无效的 notify-user-data “%s”。"
 
 #, c-format
-msgid "Bad option + choice on line %d."
-msgstr "行 %d 中存在无效的选项 + 选择。"
+msgid "Bad number-up value %d."
+msgstr "无效的 number-up 值 %d。"
 
 #, c-format
 msgid "Bad page-ranges values %d-%d."
@@ -2941,7 +3095,7 @@ msgid "Deep Color"
 msgstr "深色"
 
 msgid "Deep Gray"
-msgstr ""
+msgstr "深灰"
 
 msgid "Delete Class"
 msgstr "删除类"
@@ -2957,13 +3111,13 @@ msgid "Destination \"%s\" is not accepting jobs."
 msgstr "目标“%s”不接受任务。"
 
 msgid "Device CMYK"
-msgstr ""
+msgstr "设备 CMYK"
 
 msgid "Device Gray"
-msgstr ""
+msgstr "设备灰度"
 
 msgid "Device RGB"
-msgstr ""
+msgstr "设备 RGB"
 
 #, c-format
 msgid ""
@@ -3028,9 +3182,6 @@ msgstr "EPL2 标签打印机"
 
 msgid "Edit Configuration File"
 msgstr "编辑配置文件"
-
-msgid "Empty PPD file."
-msgstr "空 PPD 文件。"
 
 msgid "Encryption is not supported."
 msgstr "不支持加密。"
@@ -3228,10 +3379,10 @@ msgid "Error: need hostname after \"-h\" option."
 msgstr "错误：“-h”选项后需要主机名。"
 
 msgid "European Fanfold"
-msgstr ""
+msgstr "欧洲折叠页"
 
 msgid "European Fanfold Legal"
-msgstr ""
+msgstr "欧洲法律用折叠页"
 
 msgid "Every 10 Labels"
 msgstr "每 10 个标签"
@@ -3275,9 +3426,6 @@ msgstr "将打印机导出到 Samba"
 msgid "Expressions:"
 msgstr "表达式："
 
-msgid "FAIL"
-msgstr "失败"
-
 msgid "Fast Grayscale"
 msgstr "快速灰度"
 
@@ -3317,7 +3465,7 @@ msgid "Finished page %d."
 msgstr "已完成第 %d 页。"
 
 msgid "Finishing Preset"
-msgstr ""
+msgstr "结尾预设"
 
 msgid "Fold"
 msgstr "折纸"
@@ -3329,7 +3477,7 @@ msgid "Forbidden"
 msgstr "已禁止"
 
 msgid "Found"
-msgstr ""
+msgstr "已发现"
 
 msgid "General"
 msgstr "常规"
@@ -3433,6 +3581,32 @@ msgstr "IPP textWithLanguage 值大小小于 4 字节的最小限制。"
 msgid "IPP value larger than 32767 bytes."
 msgstr "IPP 值大小超过 32767 字节。"
 
+msgid "IPPFIND_SERVICE_DOMAIN  Domain name"
+msgstr ""
+
+msgid ""
+"IPPFIND_SERVICE_HOSTNAME\n"
+"                        Fully-qualified domain name"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_NAME    Service instance name"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_PORT    Port number"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_SCHEME  URI scheme"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_URI     URI"
+msgstr ""
+
+msgid "IPPFIND_TXT_*           Value of TXT record key"
+msgstr ""
+
 msgid "ISOLatin1"
 msgstr "ISOLatin1"
 
@@ -3477,6 +3651,9 @@ msgstr "网邮 3 部"
 
 msgid "Internet Printing Protocol"
 msgstr "互联网打印协议"
+
+msgid "Invalid group tag."
+msgstr "无效的组标签。"
 
 msgid "Invalid media name arguments."
 msgstr "无效的媒体名称参数。"
@@ -3604,7 +3781,7 @@ msgstr "LPD/LPR 主机或打印机"
 
 msgid ""
 "LPDEST environment variable names default destination that does not exist."
-msgstr ""
+msgstr "LPDEST 环境变量所指定的默认目标不存在。"
 
 msgid "Label Printer"
 msgstr "标签打印机"
@@ -3670,6 +3847,9 @@ msgstr "内存分配错误"
 msgid "Missing CloseGroup"
 msgstr "缺少 CloseGroup"
 
+msgid "Missing CloseUI/JCLCloseUI"
+msgstr "缺少 CloseUI/JCLCloseUI"
+
 msgid "Missing PPD-Adobe-4.x header"
 msgstr "缺少 PPD-Adobe-4.x 文件头"
 
@@ -3678,10 +3858,6 @@ msgstr "列 1 中缺少星号"
 
 msgid "Missing document-number attribute."
 msgstr "缺少 document-number 属性。"
-
-#, c-format
-msgid "Missing double quote on line %d."
-msgstr "行 %d 缺少双引号。"
 
 msgid "Missing form variable"
 msgstr "缺少表单变量"
@@ -3716,10 +3892,6 @@ msgstr "URI 中缺少资源"
 
 msgid "Missing scheme in URI"
 msgstr "URI 中缺少方案"
-
-#, c-format
-msgid "Missing value on line %d."
-msgstr "行 %d 缺少值。"
 
 msgid "Missing value string"
 msgstr "缺少值字串。"
@@ -3793,9 +3965,6 @@ msgstr "无 PPD 名称"
 msgid "No VarBind SEQUENCE"
 msgstr "无 VarBind SEQUENCE"
 
-msgid "No Windows printer drivers are installed."
-msgstr "未安装 Windows 打印机驱动。"
-
 msgid "No active connection"
 msgstr "无活动连接"
 
@@ -3819,7 +3988,7 @@ msgid "No community name"
 msgstr "无社群名称"
 
 msgid "No default destination."
-msgstr ""
+msgstr "无默认目标。"
 
 msgid "No default printer."
 msgstr "无默认打印机。"
@@ -3920,11 +4089,6 @@ msgstr "不允许打印。"
 msgid "Note"
 msgstr "注释"
 
-msgid ""
-"Note: this program only validates the DSC comments, not the PostScript "
-"itself."
-msgstr "注：此程序仅用于检验 DSC 注释，而非 PostScript 本身。"
-
 msgid "OK"
 msgstr "确定"
 
@@ -3964,10 +4128,10 @@ msgid "Options:"
 msgstr "选项："
 
 msgid "Other Media"
-msgstr ""
+msgstr "其他介质"
 
 msgid "Other Tray"
-msgstr ""
+msgstr "其他托盘"
 
 msgid "Out of date PPD cache file."
 msgstr "过时的 PPD 缓存文件。"
@@ -3977,9 +4141,6 @@ msgstr "内存耗尽。"
 
 msgid "Output Mode"
 msgstr "输出模式"
-
-msgid "PASS"
-msgstr "通过"
 
 msgid "PCL Laser Printer"
 msgstr "PCL 激光打印机"
@@ -4004,7 +4165,7 @@ msgstr "超大长边缘 32 开"
 
 msgid ""
 "PRINTER environment variable names default destination that does not exist."
-msgstr ""
+msgstr "PRINTER 环境变量所指定的默认目标不存在。"
 
 msgid "Packet does not contain a Get-Response-PDU"
 msgstr "包裹中未包含 Get-Response-PDU"
@@ -4021,10 +4182,6 @@ msgstr "ParamCustominTearInterval"
 #, c-format
 msgid "Password for %s on %s? "
 msgstr "请输入 %2$s 上 %1$s 的密码 "
-
-#, c-format
-msgid "Password for %s required to access %s via SAMBA: "
-msgstr "要通过 SAMBA 访问 %2$s，必须输入 %1$s 的密码："
 
 msgid "Pause Class"
 msgstr "暂停类"
@@ -4397,6 +4554,8 @@ msgid ""
 "contain spaces, slashes (/ \\), quotes (' \"), question mark (?), or the "
 "pound sign (#)."
 msgstr ""
+"打印机名称最多能包含 127 个可打印字符，但不可包含空格，斜杠（/ 或 \\），引号"
+"（' 或 \"），问号（?）或井号（#）。"
 
 msgid "The printer or class does not exist."
 msgstr "打印机或类不存在。"
@@ -4476,7 +4635,7 @@ msgid "URI too large"
 msgstr "URI 过大"
 
 msgid "US Fanfold"
-msgstr ""
+msgstr "US 折叠页"
 
 msgid "US Ledger"
 msgstr "US Ledger"
@@ -4560,31 +4719,11 @@ msgid "Unable to contact printer, queuing on next printer in class."
 msgstr "无法联系打印机，已列队于类中的下一台打印机。"
 
 #, c-format
-msgid "Unable to copy 64-bit CUPS printer driver files (%d)."
-msgstr "无法复制 64 位 CUPS 打印机驱动文件（%d）。"
-
-#, c-format
-msgid "Unable to copy 64-bit Windows printer driver files (%d)."
-msgstr "无法复制 64 位 Windows 打印机驱动文件（%d）。"
-
-#, c-format
-msgid "Unable to copy CUPS printer driver files (%d)."
-msgstr "无法复制 CUPS 打印机驱动文件（%d）。"
-
-#, c-format
 msgid "Unable to copy PPD file - %s"
 msgstr "无法复制 PPD 文件 — %s"
 
 msgid "Unable to copy PPD file."
 msgstr "无法复制 PPD 文件。"
-
-#, c-format
-msgid "Unable to copy Windows 2000 printer driver files (%d)."
-msgstr "无法复制 Windows 2000 打印机驱动文件（%d）。"
-
-#, c-format
-msgid "Unable to copy Windows 9x printer driver files (%d)."
-msgstr "无法复制 Windows 9x 打印机驱动文件（%d）。"
 
 msgid "Unable to create credentials from array."
 msgstr "无法从打印组创建服务器凭据。"
@@ -4676,14 +4815,6 @@ msgstr "无法获取打印机状态"
 msgid "Unable to get printer status."
 msgstr "无法获取打印机状态。"
 
-#, c-format
-msgid "Unable to install Windows 2000 printer driver files (%d)."
-msgstr "无法安装 Windows 2000 打印机驱动文件（%d）。"
-
-#, c-format
-msgid "Unable to install Windows 9x printer driver files (%d)."
-msgstr "无法安装 Windows 9x 打印机驱动文件（%d）。"
-
 msgid "Unable to load help index."
 msgstr "无法载入帮助索引。"
 
@@ -4753,10 +4884,6 @@ msgstr "无法向打印机驱动发送命令"
 
 msgid "Unable to send data to printer."
 msgstr "无法向打印机发送数据。"
-
-#, c-format
-msgid "Unable to set Windows printer driver (%d)."
-msgstr "无法设置 Windows 打印机驱动（%d）。"
 
 msgid "Unable to set options"
 msgstr "无法设置选项"
@@ -4855,6 +4982,9 @@ msgstr "不支持的“compression”值“%s”。"
 msgid "Unsupported 'document-format' value \"%s\"."
 msgstr "不支持的“document-format”值“%s”。"
 
+msgid "Unsupported 'job-hold-until' value."
+msgstr "不支持的“job-hold-until”值。"
+
 msgid "Unsupported 'job-name' value."
 msgstr "不支持的“job-name”值。"
 
@@ -4925,11 +5055,18 @@ msgstr ""
 "                       [-u allow:user,user] [-u deny:user,user]"
 
 #, c-format
+msgid "Usage: %s [options] destination(s)"
+msgstr ""
+
+#, c-format
 msgid "Usage: %s job-id user title copies options [file]"
 msgstr "用法：%s job-id user title copies options [file]"
 
-msgid "Usage: cupsaddsmb [options] printer1 ... printerN"
-msgstr "用法：cupsaddsmb [options] printer1 ... printerN"
+msgid ""
+"Usage: cancel [options] [id]\n"
+"       cancel [options] [destination]\n"
+"       cancel [options] [destination-id]"
+msgstr ""
 
 msgid "Usage: cupsctl [options] [param=value ... paramN=valueN]"
 msgstr "用法：cupsctl [options] [param=value ... paramN=valueN]"
@@ -4940,13 +5077,10 @@ msgstr "用法：cupsd [options]"
 msgid "Usage: cupsfilter [ options ] [ -- ] filename"
 msgstr "用法：cupsfilter [ options ] [ -- ] filename"
 
-msgid "Usage: cupstestdsc [options] filename.ps [... filename.ps]"
-msgstr "用法：cupstestdsc [options] filename.ps [... filename.ps]"
-
 msgid ""
-"Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]"
+"Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]\n"
+"       program | cupstestppd [options] -"
 msgstr ""
-"用法：cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]"
 
 msgid ""
 "Usage: ippfind [options] regtype[,subtype][.domain.] ... [expression]\n"
@@ -4962,24 +5096,49 @@ msgstr ""
 msgid "Usage: ipptool [options] URI filename [ ... filenameN ]"
 msgstr "用法：ipptool [options] URI filename [ ... filenameN ]"
 
-msgid "Usage: lpmove job/src dest"
-msgstr "用法：lpmove job/src dest"
+msgid ""
+"Usage: lp [options] [--] [file(s)]\n"
+"       lp [options] -i id"
+msgstr ""
 
 msgid ""
-"Usage: lpoptions [-h server] [-E] -d printer\n"
-"       lpoptions [-h server] [-E] [-p printer] -l\n"
-"       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
-"       lpoptions [-h server] [-E] -x printer"
+"Usage: lpadmin [options] -d destination\n"
+"       lpadmin [options] -p destination\n"
+"       lpadmin [options] -p destination -c class\n"
+"       lpadmin [options] -p destination -r class\n"
+"       lpadmin [options] -x destination"
 msgstr ""
-"用法：\tlpoptions [-h server] [-E] -d printer\n"
-"       \tlpoptions [-h server] [-E] [-p printer] -l\n"
-"       \tlpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
-"       \tlpoptions [-h server] [-E] -x printer"
 
 msgid ""
-"Usage: lpq [-P dest] [-U username] [-h hostname[:port]] [-l] [+interval]"
+"Usage: lpinfo [options] -m\n"
+"       lpinfo [options] -v"
 msgstr ""
-"用法：lpq [-P dest] [-U username] [-h hostname[:port]] [-l] [+interval]"
+
+msgid ""
+"Usage: lpmove [options] job destination\n"
+"       lpmove [options] source-destination destination"
+msgstr ""
+
+msgid ""
+"Usage: lpoptions [options] -d destination\n"
+"       lpoptions [options] [-p destination] [-l]\n"
+"       lpoptions [options] [-p destination] -o option[=value]\n"
+"       lpoptions [options] -x destination"
+msgstr ""
+
+msgid "Usage: lpq [options] [+interval]"
+msgstr ""
+
+msgid "Usage: lpr [options] [file(s)]"
+msgstr ""
+
+msgid ""
+"Usage: lprm [options] [id]\n"
+"       lprm [options] -"
+msgstr ""
+
+msgid "Usage: lpstat [options]"
+msgstr ""
 
 msgid "Usage: ppdc [options] filename.drv [ ... filenameN.drv ]"
 msgstr "用法：ppdc [options] filename.drv [ ... filenameN.drv ]"
@@ -5019,8 +5178,8 @@ msgstr "正在等待打印机变得可用。"
 msgid "Waiting for printer to finish."
 msgstr "正在等待打印机完成任务。"
 
-msgid "Warning, no Windows 2000 printer drivers are installed."
-msgstr "警告，未安装 Windows 2000 打印机驱动。"
+msgid "Warning: This program will be removed in a future version of CUPS."
+msgstr ""
 
 msgid "Web Interface is Disabled"
 msgstr "网页界面被禁用"
@@ -5257,10 +5416,6 @@ msgstr "无法执行 cups-deviced。"
 msgid "cups-driverd failed to execute."
 msgstr "无法执行 cups-driverd。"
 
-#, c-format
-msgid "cupsaddsmb: No PPD file for printer \"%s\" - %s"
-msgstr "cupsaddsmb：打印机“%s”无 PPD 文件 — %s"
-
 msgid "cupsctl: Cannot set Listen or Port directly."
 msgstr "cupsctl：无法直接设置 Listen 或 Port 值。"
 
@@ -5474,6 +5629,19 @@ msgstr "error-index 使用不定长度"
 
 msgid "error-status uses indefinite length"
 msgstr "error-status 使用不定长度"
+
+msgid ""
+"expression --and expression\n"
+"                        Logical AND"
+msgstr ""
+
+msgid ""
+"expression --or expression\n"
+"                        Logical OR"
+msgstr ""
+
+msgid "expression expression   Logical AND"
+msgstr ""
 
 msgid "feed-orientation"
 msgstr "Feed Orientation"
@@ -6431,7 +6599,7 @@ msgstr "ippfind：在 %s 后缺少键名。"
 
 #, c-format
 msgid "ippfind: Missing name after %s."
-msgstr ""
+msgstr "ippfind：%s 后缺少名称。"
 
 msgid "ippfind: Missing open parenthesis."
 msgstr "ippfind：缺少左括号。"
@@ -6473,14 +6641,14 @@ msgstr "ippfind：未知变量“{%s}”。"
 msgid ""
 "ipptool: \"-i\" and \"-n\" are incompatible with \"--ippserver\", \"-P\", "
 "and \"-X\"."
-msgstr ""
+msgstr "ipptool：“-i”和“-n”不能与“--ippserver”，“-P”和“-X”混用。"
 
 msgid "ipptool: \"-i\" and \"-n\" are incompatible with \"-P\" and \"-X\"."
 msgstr "ipptool：“-i”和“-n”不能与“-P”和“-X”混用。"
 
 #, c-format
 msgid "ipptool: Bad URI \"%s\"."
-msgstr ""
+msgstr "ipptool：无效的 URI “%s”。"
 
 msgid "ipptool: Invalid seconds for \"-i\"."
 msgstr "ipptool：“-i”选项后指定的秒数无效。"
@@ -6492,7 +6660,7 @@ msgid "ipptool: Missing count for \"-n\"."
 msgstr "ipptool：“-n”选项后缺少数量。"
 
 msgid "ipptool: Missing filename for \"--ippserver\"."
-msgstr ""
+msgstr "ipptool：“--ippserver”选项后缺少文件名。"
 
 msgid "ipptool: Missing filename for \"-f\"."
 msgstr "ipptool：“-f”选项后缺少文件名。"
@@ -7052,7 +7220,7 @@ msgstr "lpadmin：打印机 %s 不是类 %s 中的成员。"
 msgid ""
 "lpadmin: Printer drivers are deprecated and will stop working in a future "
 "version of CUPS."
-msgstr ""
+msgstr "lpadmin：打印机驱动已被弃用，未来的 CUPS 版本可能破坏其功能性。"
 
 msgid "lpadmin: Printer name can only contain printable characters."
 msgstr "lpadmin：打印机名称中只能包含可打印字符。"
@@ -7060,12 +7228,15 @@ msgstr "lpadmin：打印机名称中只能包含可打印字符。"
 msgid ""
 "lpadmin: Raw queues are deprecated and will stop working in a future version "
 "of CUPS."
-msgstr ""
+msgstr "lpadmin：原始序列已被弃用，未来的 CUPS 版本可能破坏其功能性。"
+
+msgid "lpadmin: Raw queues are no longer supported on macOS."
+msgstr "lpadmin：macOS 已不再支持原始序列。"
 
 msgid ""
 "lpadmin: System V interface scripts are no longer supported for security "
 "reasons."
-msgstr ""
+msgstr "lpadmin：由于安全原因，已不再支持 System V 接口脚本。"
 
 msgid ""
 "lpadmin: Unable to add a printer to the class:\n"
@@ -7123,7 +7294,7 @@ msgid "lpadmin: Unknown option \"%c\"."
 msgstr "lpadmin：未知选项“%c”。"
 
 msgid "lpadmin: Use the 'everywhere' model for shared printers."
-msgstr ""
+msgstr "lpadmin：为共享的打印机使用“everywhere”模型。"
 
 msgid "lpadmin: Warning - content type list ignored."
 msgstr "lpadmin：警告 — 内容类型列表已被忽略。"
@@ -9791,7 +9962,7 @@ msgstr "打印机 %s 从 %s 开始被禁用 -"
 
 #, c-format
 msgid "printer %s is holding new jobs.  enabled since %s"
-msgstr ""
+msgstr "打印机 %s 正在保留新任务。从 %s 开始启用"
 
 #, c-format
 msgid "printer %s is idle.  enabled since %s"
@@ -12388,5 +12559,553 @@ msgstr "Z Dimension"
 msgid "z-offset"
 msgstr "Z Offset"
 
-msgid "~/.cups/lpoptions file names default destination that does not exist."
+msgid "{service_domain}        Domain name"
 msgstr ""
+
+msgid "{service_hostname}      Fully-qualified domain name"
+msgstr ""
+
+msgid "{service_name}          Service instance name"
+msgstr ""
+
+msgid "{service_port}          Port number"
+msgstr ""
+
+msgid "{service_regtype}       DNS-SD registration type"
+msgstr ""
+
+msgid "{service_scheme}        URI scheme"
+msgstr ""
+
+msgid "{service_uri}           URI"
+msgstr ""
+
+msgid "{txt_*}                 Value of TXT record key"
+msgstr ""
+
+msgid "{}                      URI"
+msgstr ""
+
+msgid "~/.cups/lpoptions file names default destination that does not exist."
+msgstr "~/.cups/lpoptions 文件所指定的默认目标不存在。"
+
+#~ msgid "                          Ignore specific warnings."
+#~ msgstr "                          忽略特定类型的警告。"
+
+#~ msgid "                          Issue warnings instead of errors."
+#~ msgstr "                          发出警告而不是错误。"
+
+#~ msgid "       cupsaddsmb [options] -a"
+#~ msgstr "       cupsaddsmb [选项] -a"
+
+#~ msgid "       cupstestdsc [options] -"
+#~ msgstr "       cupstestdsc [选项] -"
+
+#~ msgid "       program | cupstestppd [options] -"
+#~ msgstr "       程序 | cupstestppd [选项] -"
+
+#~ msgid "    -h       Show program usage"
+#~ msgstr "    -h       显示程序使用方法"
+
+#~ msgid ""
+#~ "    Bad %%%%BoundingBox: on line %d.\n"
+#~ "        REF: Page 39, %%%%BoundingBox:"
+#~ msgstr ""
+#~ "    无效的 %%%%BoundingBox：位于行 %d。\n"
+#~ "        引用：第 39 页，%%%%BoundingBox："
+
+#~ msgid ""
+#~ "    Bad %%%%Page: on line %d.\n"
+#~ "        REF: Page 53, %%%%Page:"
+#~ msgstr ""
+#~ "    无效的 %%%%Page：位于行 %d。\n"
+#~ "        引用：第 53 页，%%%%Page："
+
+#~ msgid ""
+#~ "    Bad %%%%Pages: on line %d.\n"
+#~ "        REF: Page 43, %%%%Pages:"
+#~ msgstr ""
+#~ "    无效的 %%%%Pages：位于行 %d。\n"
+#~ "        引用：第 43 页，%%%%Pages："
+
+#~ msgid ""
+#~ "    Line %d is longer than 255 characters (%d).\n"
+#~ "        REF: Page 25, Line Length"
+#~ msgstr ""
+#~ "    行 %d 长度超过 255 个字符 (%d)。\n"
+#~ "        引用：第 25 页，行长度"
+
+# Should chapter titles be translated?
+#~ msgid ""
+#~ "    Missing %!PS-Adobe-3.0 on first line.\n"
+#~ "        REF: Page 17, 3.1 Conforming Documents"
+#~ msgstr ""
+#~ "    首行缺少 %!PS-Adobe-3.0。\n"
+#~ "        引用：第 17 页，3.1 符合规范的文档"
+
+#~ msgid ""
+#~ "    Missing %%EndComments comment.        REF: Page 41, %%EndComments"
+#~ msgstr "    缺少 %%EndComments 注释。        引用：第 41 页，%%EndComments"
+
+#~ msgid ""
+#~ "    Missing or bad %%BoundingBox: comment.\n"
+#~ "        REF: Page 39, %%BoundingBox:"
+#~ msgstr ""
+#~ "    %%BoundingBox 缺失或无效：注释。\n"
+#~ "        引用：第 39 页，%%BoundingBox："
+
+#~ msgid ""
+#~ "    Missing or bad %%Page: comments.\n"
+#~ "        REF: Page 53, %%Page:"
+#~ msgstr ""
+#~ "    %%Page 缺失或无效：注释。\n"
+#~ "        引用：第 53 页，%%Page："
+
+#~ msgid ""
+#~ "    Missing or bad %%Pages: comment.\n"
+#~ "        REF: Page 43, %%Pages:"
+#~ msgstr ""
+#~ "    %%Pages 缺失或无效：注释。\n"
+#~ "        引用：第 43 页，%%Pages："
+
+#~ msgid "    Saw %d lines that exceeded 255 characters."
+#~ msgstr "    共发现 %d 个超过 255 字符的行。"
+
+#~ msgid "    Too many %%BeginDocument comments."
+#~ msgstr "    %%BeginDocument 注释过多。"
+
+#~ msgid "    Too many %%EndDocument comments."
+#~ msgstr "    %%EndDocument 注释过多。"
+
+#~ msgid "    Warning: file contains binary data."
+#~ msgstr "    警告：文件包含二进制数据。"
+
+#~ msgid "    Warning: no %%EndComments comment in file."
+#~ msgstr "    警告：文件中无 %%EndComments 注释。"
+
+#~ msgid "    Warning: obsolete DSC version %.1f in file."
+#~ msgstr "    警告：文件中包含已遗弃的 DSC 版本 %.1f。"
+
+#~ msgid "  ! expression            Unary NOT of expression."
+#~ msgstr "  ! 表达式                一元否定表达式。"
+
+#~ msgid "  ( expressions )         Group expressions."
+#~ msgstr "  ( 表达式 )              表达式组。"
+
+#~ msgid "  --[no-]debug-logging    Turn debug logging on/off."
+#~ msgstr "  --[no-]debug-logging    打开/关闭查错日志。"
+
+#~ msgid "  --[no-]remote-admin     Turn remote administration on/off."
+#~ msgstr "  --[no-]remote-admin     打开/关闭远程管理。"
+
+#~ msgid "  --[no-]remote-any       Allow/prevent access from the Internet."
+#~ msgstr "  --[no-]remote-any       允许/禁止互联网访问。"
+
+#~ msgid "  --[no-]share-printers   Turn printer sharing on/off."
+#~ msgstr "  --[no-]share-printers   打开/关闭打印机共享。"
+
+#~ msgid "  --[no-]user-cancel-any  Allow/prevent users to cancel any job."
+#~ msgstr "  --[no-]user-cancel-any  允许/禁止用户取消任意任务。"
+
+#~ msgid "  --domain regex          Match domain to regular expression."
+#~ msgstr "  --domain 正则表达式    使用正则表达式匹配域。"
+
+#~ msgid ""
+#~ "  --exec utility [argument ...] ;\n"
+#~ "                          Execute program if true."
+#~ msgstr ""
+#~ "  --exec 程序 [参数 ...] ;\n"
+#~ "                          如返回 true 则执行程序。"
+
+#~ msgid "  --false                 Always false."
+#~ msgstr "  --false                 总是返回 false。"
+
+#~ msgid "  --help                  Show help."
+#~ msgstr "  --help                  显示帮助。"
+
+#~ msgid "  --help                  Show this help."
+#~ msgstr "  --help                  显示此帮助信息。"
+
+#~ msgid "  --host regex            Match hostname to regular expression."
+#~ msgstr "  --host 正则表达式      使用正则表达式匹配主机名。"
+
+#~ msgid "  --ippserver filename    Produce ippserver attribute file."
+#~ msgstr "  --ippserver filename    提供 ippserver 属性文件。"
+
+#~ msgid "  --local                 True if service is local."
+#~ msgstr "  --local                 如为本地服务则返回 true。"
+
+#~ msgid "  --ls                    List attributes."
+#~ msgstr "  --ls                    列出属性。"
+
+#~ msgid "  --name regex            Match service name to regular expression."
+#~ msgstr "  --name 正则表达式      使用正则表达式匹配服务名称。"
+
+#~ msgid "  --not expression        Unary NOT of expression."
+#~ msgstr "  --not 表达式            一元否定表达式。"
+
+#~ msgid "  --path regex            Match resource path to regular expression."
+#~ msgstr "  --path 正则表达式      使用正则表达式匹配资源路径。"
+
+#~ msgid "  --port number[-number]  Match port to number or range."
+#~ msgstr "  --port 数字[-数字]     匹配端口号或返回。"
+
+#~ msgid "  --print                 Print URI if true."
+#~ msgstr "  --print                 如果为 true 则回显 URI。"
+
+#~ msgid "  --print-name            Print service name if true."
+#~ msgstr "  --print-name            如果为 true 则回显服务名称。"
+
+#~ msgid "  --quiet                 Quietly report match via exit code."
+#~ msgstr "  --quiet                 静默使用退出代码返回匹配。"
+
+#~ msgid "  --remote                True if service is remote."
+#~ msgstr "  --remote                如为远程服务则返回 true。"
+
+#~ msgid ""
+#~ "  --stop-after-include-error\n"
+#~ "                          Stop tests after a failed INCLUDE."
+#~ msgstr ""
+#~ "  --stop-after-include-error\n"
+#~ "                          遇到失败的 INCLUDE 时停止测试。"
+
+#~ msgid "  --true                  Always true."
+#~ msgstr "  --true                  总是返回 true。"
+
+#~ msgid "  --txt key               True if the TXT record contains the key."
+#~ msgstr "  --txt 键值              如 TXT 记录包含键值则返回 true。"
+
+#~ msgid ""
+#~ "  --txt-* regex           Match TXT record key to regular expression."
+#~ msgstr "  --txt-* 正则表达式     使用正则表达式匹配 TXT 记录键值。"
+
+#~ msgid "  --uri regex             Match URI to regular expression."
+#~ msgstr "  --uri 正则表达式       使用正则表达式匹配 URI。"
+
+#~ msgid "  --version               Show program version."
+#~ msgstr "  --version               显示程序版本。"
+
+#~ msgid "  --version               Show version."
+#~ msgstr "  --version               显示版本。"
+
+#~ msgid "  -4                      Connect using IPv4."
+#~ msgstr "  -4                      使用 IPv4 连接。"
+
+#~ msgid "  -6                      Connect using IPv6."
+#~ msgstr "  -6                      使用 IPv6 连接。"
+
+#~ msgid "  -C                      Send requests using chunking (default)."
+#~ msgstr "  -C                      使用分块请求发送（默认）。"
+
+#~ msgid "  -E                      Encrypt the connection."
+#~ msgstr "  -E                      加密连接。"
+
+#~ msgid ""
+#~ "  -E                      Test with encryption using HTTP Upgrade to TLS."
+#~ msgstr "  -E                      带有使用 HTTP 升级到 TLS 加密的测试。"
+
+#~ msgid ""
+#~ "  -F                      Run in the foreground but detach from console."
+#~ msgstr "  -F                      在前台运行但从终端分离。"
+
+#~ msgid "  -H samba-server         Use the named SAMBA server."
+#~ msgstr "  -H samba-server         使用指定的 Samba 服务器。"
+
+#~ msgid "  -I                      Ignore errors."
+#~ msgstr "  -I                      忽略错误。"
+
+#~ msgid "  -I {filename,filters,none,profiles}"
+#~ msgstr "  -I {文件名,滤镜,无,配置档案}"
+
+#~ msgid "  -L                      Send requests using content-length."
+#~ msgstr "  -L                      使用 content-length 发送请求。"
+
+#~ msgid ""
+#~ "  -P filename.plist       Produce XML plist to a file and test report to "
+#~ "standard output."
+#~ msgstr ""
+#~ "  -P filename.plist       生成 XML plist 文件并将测试报告发送到标准输出。"
+
+#~ msgid "  -P number[-number]      Match port to number or range."
+#~ msgstr "  -P 数字[-数字]         匹配端口号或范围。"
+
+#~ msgid "  -R root-directory       Set alternate root."
+#~ msgstr "  -R root-directory       设置备用根目录。"
+
+#~ msgid "  -S                      Test with encryption using HTTPS."
+#~ msgstr "  -S                      使用 HTTPS 加密的测试。"
+
+#~ msgid "  -T seconds              Set the browse timeout in seconds."
+#~ msgstr "  -T 秒数                设置浏览超时（按秒计）。"
+
+#~ msgid "  -T seconds              Set the receive/send timeout in seconds."
+#~ msgstr "  -T 秒数                设置发送/接收超时（按秒计）。"
+
+#~ msgid "  -V version              Set default IPP version."
+#~ msgstr "  -V 版本                设置默认 IPP 版本。"
+
+#~ msgid ""
+#~ "  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
+#~ "translations}"
+#~ msgstr "  -W {所有,无,限制,默认,复式,滤镜,配置档案,尺寸,翻译}"
+
+#~ msgid "  -X                      Produce XML plist instead of plain text."
+#~ msgstr "  -X                      生成 XML plist 而不是纯文本。"
+
+#~ msgid "  -a                      Export all printers."
+#~ msgstr "  -a                      导出所有打印机。"
+
+#~ msgid "  -c                      Produce CSV output."
+#~ msgstr "  -c                      生成 CSV 输出。"
+
+#~ msgid "  -c cupsd.conf           Set cupsd.conf file to use."
+#~ msgstr "  -c cupsd.conf           设置要使用的 cupsd.conf 文件。"
+
+#~ msgid "  -d name=value           Set named variable to value."
+#~ msgstr "  -d 名称=赋值           为指定变量赋值。"
+
+#~ msgid "  -d regex                Match domain to regular expression."
+#~ msgstr "  -d 正则表达式           使用正则表达式匹配域名。"
+
+#~ msgid "  -f                      Run in the foreground."
+#~ msgstr "  -f                      前台运行。"
+
+#~ msgid "  -f filename             Set default request filename."
+#~ msgstr "  -f 文件名               设置默认请求文件名。"
+
+#~ msgid "  -h                      Show this usage message."
+#~ msgstr "  -h                      显示此使用方法信息。"
+
+#~ msgid "  -h                      Validate HTTP response headers."
+#~ msgstr "  -h                      验证 HTTP 响应头。"
+
+#~ msgid "  -h regex                Match hostname to regular expression."
+#~ msgstr "  -h 正则表达式           使用正则表达式匹配主机名。"
+
+#~ msgid "  -h server[:port]        Specify server address."
+#~ msgstr "  -h 服务器[:端口]        指定服务器地址。"
+
+#~ msgid ""
+#~ "  -i seconds              Repeat the last file with the given time "
+#~ "interval."
+#~ msgstr "  -i 秒数                 指定重复上一文件的间隔（按秒计）。"
+
+#~ msgid "  -l                      List attributes."
+#~ msgstr "  -l                      列出属性。"
+
+#~ msgid "  -l                      Produce plain text output."
+#~ msgstr "  -l                      生成纯文本输出。"
+
+#~ msgid "  -l                      Run cupsd on demand."
+#~ msgstr "  -l                      按需启动 cupsd。"
+
+#~ msgid ""
+#~ "  -n count                Repeat the last file the given number of times."
+#~ msgstr "  -n 数量                 按指定数量重复上一文件。"
+
+#~ msgid "  -n regex                Match service name to regular expression."
+#~ msgstr "  -n 正则表达式           使用正则表达式匹配服务名称。"
+
+#~ msgid "  -p                      Print URI if true."
+#~ msgstr "  -p                      如果为 true 则回显 URI。"
+
+#~ msgid "  -q                      Quietly report match via exit code."
+#~ msgstr "  -q                      静默使用退出代码报告匹配。"
+
+#~ msgid "  -q                      Run silently."
+#~ msgstr "  -q                      静默运行。"
+
+#~ msgid "  -r                      True if service is remote."
+#~ msgstr "  -r                      如为远程服务则返回 true。"
+
+#~ msgid "  -r                      Use 'relaxed' open mode."
+#~ msgstr "  -r                      使用“relaxed”打开模式。"
+
+#~ msgid "  -s                      Print service name if true."
+#~ msgstr "  -s                      如果为 true 则回显服务名称。"
+
+#~ msgid "  -s cups-files.conf      Set cups-files.conf file to use."
+#~ msgstr "  -s cups-files.conf      设置要使用的 cups-files.conf 文件。"
+
+#~ msgid "  -t                      Produce a test report."
+#~ msgstr "  -t                      生成测试报告。"
+
+#~ msgid "  -t                      Test the configuration file."
+#~ msgstr "  -t                      测试配置文件。"
+
+#~ msgid "  -t key                  True if the TXT record contains the key."
+#~ msgstr "  -t 键值                 如 TXT 记录包含键值则返回 true。"
+
+#~ msgid "  -u regex                Match URI to regular expression."
+#~ msgstr "  -u 正则表达式           使用正则表达式匹配 URI。"
+
+#~ msgid "  -vv                     Be very verbose."
+#~ msgstr "  -vv                     进一步提高输出详尽度。"
+
+#~ msgid ""
+#~ "  -x utility [argument ...] ;\n"
+#~ "                          Execute program if true."
+#~ msgstr ""
+#~ "  -x 程序 [参数 ...] ;\n"
+#~ "                          如果为 true 则执行程序。"
+
+#~ msgid "  IPPFIND_SERVICE_DOMAIN  Domain name"
+#~ msgstr "  IPPFIND_SERVICE_DOMAIN  域名"
+
+#~ msgid ""
+#~ "  IPPFIND_SERVICE_HOSTNAME\n"
+#~ "                          Fully-qualified domain name"
+#~ msgstr ""
+#~ "  IPPFIND_SERVICE_HOSTNAME\n"
+#~ "                          完全限定域名"
+
+#~ msgid "  IPPFIND_SERVICE_NAME    Service instance name"
+#~ msgstr "  IPPFIND_SERVICE_NAME    服务实例名称"
+
+#~ msgid "  IPPFIND_SERVICE_PORT    Port number"
+#~ msgstr "  IPPFIND_SERVICE_PORT    端口号"
+
+#~ msgid "  IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
+#~ msgstr "  IPPFIND_SERVICE_REGTYPE DNS-SD 注册类型"
+
+#~ msgid "  IPPFIND_SERVICE_SCHEME  URI scheme"
+#~ msgstr "  IPPFIND_SERVICE_SCHEME  URI 方案"
+
+#~ msgid "  IPPFIND_SERVICE_URI     URI"
+#~ msgstr "  IPPFIND_SERVICE_URI     URI"
+
+#~ msgid "  IPPFIND_TXT_*           Value of TXT record key"
+#~ msgstr "  IPPFIND_TXT_*           TXT 记录键值"
+
+#~ msgid ""
+#~ "  expression --and expression\n"
+#~ "                          Logical AND."
+#~ msgstr ""
+#~ "  表达式 --and 表达式\n"
+#~ "                          AND 逻辑。"
+
+#~ msgid ""
+#~ "  expression --or expression\n"
+#~ "                          Logical OR."
+#~ msgstr ""
+#~ "  表达式 --or 表达式\n"
+#~ "                          OR 逻辑。"
+
+#~ msgid "  expression expression   Logical AND."
+#~ msgstr "  表达式 表达式          AND 逻辑。"
+
+#~ msgid "  {service_domain}        Domain name"
+#~ msgstr "  {service_domain}        域名"
+
+#~ msgid "  {service_hostname}      Fully-qualified domain name"
+#~ msgstr "  {service_hostname}      完全限定域名"
+
+#~ msgid "  {service_name}          Service instance name"
+#~ msgstr "  {service_name}          服务实例名称"
+
+#~ msgid "  {service_port}          Port number"
+#~ msgstr "  {service_port}          端口号"
+
+#~ msgid "  {service_regtype}       DNS-SD registration type"
+#~ msgstr "  {service_regtype}       DNS-SD 注册名称"
+
+#~ msgid "  {service_scheme}        URI scheme"
+#~ msgstr "  {service_scheme}        URI 方案"
+
+#~ msgid "  {service_uri}           URI"
+#~ msgstr "  {service_uri}           URI"
+
+#~ msgid "  {txt_*}                 Value of TXT record key"
+#~ msgstr "  {txt_*}                 TXT 记录键值"
+
+#~ msgid "  {}                      URI"
+#~ msgstr "  {}                      URI"
+
+#~ msgid "Bad option + choice on line %d."
+#~ msgstr "行 %d 中存在无效的选项 + 选择。"
+
+#~ msgid "Empty PPD file."
+#~ msgstr "空 PPD 文件。"
+
+#~ msgid "FAIL"
+#~ msgstr "失败"
+
+#~ msgid "Missing double quote on line %d."
+#~ msgstr "行 %d 缺少双引号。"
+
+#~ msgid "Missing value on line %d."
+#~ msgstr "行 %d 缺少值。"
+
+#~ msgid "No Windows printer drivers are installed."
+#~ msgstr "未安装 Windows 打印机驱动。"
+
+#~ msgid ""
+#~ "Note: this program only validates the DSC comments, not the PostScript "
+#~ "itself."
+#~ msgstr "注：此程序仅用于检验 DSC 注释，而非 PostScript 本身。"
+
+#~ msgid "PASS"
+#~ msgstr "通过"
+
+#~ msgid "Password for %s required to access %s via SAMBA: "
+#~ msgstr "要通过 SAMBA 访问 %2$s，必须输入 %1$s 的密码："
+
+#~ msgid "Unable to copy 64-bit CUPS printer driver files (%d)."
+#~ msgstr "无法复制 64 位 CUPS 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to copy 64-bit Windows printer driver files (%d)."
+#~ msgstr "无法复制 64 位 Windows 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to copy CUPS printer driver files (%d)."
+#~ msgstr "无法复制 CUPS 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to copy Windows 2000 printer driver files (%d)."
+#~ msgstr "无法复制 Windows 2000 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to copy Windows 9x printer driver files (%d)."
+#~ msgstr "无法复制 Windows 9x 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to install Windows 2000 printer driver files (%d)."
+#~ msgstr "无法安装 Windows 2000 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to install Windows 9x printer driver files (%d)."
+#~ msgstr "无法安装 Windows 9x 打印机驱动文件（%d）。"
+
+#~ msgid "Unable to set Windows printer driver (%d)."
+#~ msgstr "无法设置 Windows 打印机驱动（%d）。"
+
+#~ msgid "Usage: cupsaddsmb [options] printer1 ... printerN"
+#~ msgstr "用法：cupsaddsmb [options] printer1 ... printerN"
+
+#~ msgid "Usage: cupstestdsc [options] filename.ps [... filename.ps]"
+#~ msgstr "用法：cupstestdsc [options] filename.ps [... filename.ps]"
+
+#~ msgid ""
+#~ "Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]"
+#~ msgstr ""
+#~ "用法：cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]"
+
+#~ msgid "Usage: lpmove job/src dest"
+#~ msgstr "用法：lpmove job/src dest"
+
+#~ msgid ""
+#~ "Usage: lpoptions [-h server] [-E] -d printer\n"
+#~ "       lpoptions [-h server] [-E] [-p printer] -l\n"
+#~ "       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
+#~ "       lpoptions [-h server] [-E] -x printer"
+#~ msgstr ""
+#~ "用法：\tlpoptions [-h server] [-E] -d printer\n"
+#~ "       \tlpoptions [-h server] [-E] [-p printer] -l\n"
+#~ "       \tlpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
+#~ "       \tlpoptions [-h server] [-E] -x printer"
+
+#~ msgid ""
+#~ "Usage: lpq [-P dest] [-U username] [-h hostname[:port]] [-l] [+interval]"
+#~ msgstr ""
+#~ "用法：lpq [-P dest] [-U username] [-h hostname[:port]] [-l] [+interval]"
+
+#~ msgid "Warning, no Windows 2000 printer drivers are installed."
+#~ msgstr "警告，未安装 Windows 2000 打印机驱动。"
+
+#~ msgid "cupsaddsmb: No PPD file for printer \"%s\" - %s"
+#~ msgstr "cupsaddsmb：打印机“%s”无 PPD 文件 — %s"

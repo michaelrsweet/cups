@@ -11,6 +11,7 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #include "adminutil.h"
 
 
@@ -23,7 +24,10 @@
  * parameters provide comma-delimited lists of backends to include or omit from
  * the request respectively.
  *
- * @since CUPS 1.4/macOS 10.6@
+ * This function is deprecated with the IPP printer discovery functionality
+ * being provided by the @link cupsEnumDests@ and @cupsGetDests@ functions.
+ *
+ * @deprecated@
  */
 
 ipp_status_t				/* O - Request status - @code IPP_OK@ on success. */

@@ -650,6 +650,7 @@ CUPS_LOG_FILE_PERM
 CUPS_CUPSD_FILE_PERM
 CUPS_CONFIG_FILE_PERM
 CUPS_EXE_FILE_PERM
+CUPS_RESOURCEDIR
 CUPS_BUNDLEDIR
 LANGUAGES
 XINETD
@@ -681,6 +682,7 @@ LIBGNUTLSCONFIG
 PTHREAD_FLAGS
 CUPS_LISTEN_DOMAINSOCKET
 CUPS_DEFAULT_DOMAINSOCKET
+WARNING_OPTIONS
 RELROFLAGS
 PIEFLAGS
 CXXLIBS
@@ -704,6 +706,7 @@ EXTLINKCUPSIMAGE
 EXTLINKCUPS
 LIBCUPSSTATIC
 LIBCUPSIMAGE
+LIBCUPSBASE
 LIBCUPS
 DSOFLAGS
 DSOXX
@@ -723,6 +726,7 @@ CUPS_DATADIR
 CUPS_CACHEDIR
 PRIVATEINCLUDE
 privateinclude
+LIBCUPSOBJS
 BUILDDIRS
 SERVERLIBS
 ARFLAGS
@@ -761,6 +765,7 @@ AWK
 CUPS_BUILD
 CUPS_REVISION
 CUPS_VERSION
+CODE_SIGN
 LOCALTARGET
 host_os
 host_vendor
@@ -834,6 +839,7 @@ enable_unit_tests
 with_archflags
 with_ldarchflags
 enable_relro
+enable_sanitizer
 with_domainsocket
 enable_threads
 enable_tls
@@ -858,6 +864,7 @@ with_rcstop
 with_xinetd
 with_languages
 with_bundledir
+with_bundlelang
 with_exe_file_perm
 with_config_file_perm
 with_cupsd_file_perm
@@ -1516,6 +1523,7 @@ Optional Features:
   --enable-debug-printfs  build with CUPS_DEBUG_LOG support
   --enable-unit-tests     build and run unit tests
   --enable-relro          build with the GCC relro option
+  --enable-sanitizer      build with AddressSanitizer
   --disable-threads       disable multi-threading support
   --disable-tls           disable SSL/TLS support
   --enable-cdsa           use CDSA for SSL/TLS support, default=first
@@ -1541,6 +1549,8 @@ Optional Packages:
   --with-components       set components to build:
 			    - "all" (default) builds everything
 			    - "core" builds libcups and IPP tools
+			    - "libcups" builds just libcups
+			    - "libcupslite" builds just libcups without driver support
   --with-privateinclude   set path for private include files, default=none
   --with-lpdconfig        set URI for LPD config file
   --with-smbconfig        set URI for Samba config file
@@ -1566,7 +1576,8 @@ Optional Packages:
   --with-rcstop           set stop number for rc scripts
   --with-xinetd           set path for xinetd config files
   --with-languages        set installed languages, default=all
-  --with-bundledir        set macOS localization bundle directory
+  --with-bundledir        set localization bundle directory
+  --with-bundlelang       set localization bundle base language (English or en)
   --with-exe-file-perm    set default executable permissions value, default=0555
   --with-config-file-perm set default ConfigFilePerm value, default=0640
   --with-cupsd-file-perm  set default cupsd permissions, default=0500
@@ -2591,6 +2602,8 @@ if test "$host_os_name" = darwin -a $host_os_version -lt 120; then
         as_fn_error $? "Sorry, this version of CUPS requires macOS 10.8 or higher." "$LINENO" 5
 fi
 
+echo host_os_version=$host_os_version
+
 if test "$build" = "$host"; then
         # No, build local targets
 	LOCALTARGET="local"
@@ -2598,6 +2611,52 @@ else
         # Yes, don't build local targets
 	LOCALTARGET=""
 fi
+
+
+for ac_prog in codesign true
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_CODE_SIGN+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CODE_SIGN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CODE_SIGN="$CODE_SIGN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_CODE_SIGN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+CODE_SIGN=$ac_cv_path_CODE_SIGN
+if test -n "$CODE_SIGN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CODE_SIGN" >&5
+$as_echo "$CODE_SIGN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$CODE_SIGN" && break
+done
 
 
 
@@ -5276,19 +5335,33 @@ if test "${with_components+set}" = set; then :
 fi
 
 
+cupsimagebase="cupsimage"
+LIBCUPSOBJS="\$(COREOBJS) \$(DRIVEROBJS)"
 case "$COMPONENTS" in
 	all)
-		BUILDDIRS="berkeley scheduler systemv conf data locale man"
+		BUILDDIRS="test berkeley scheduler systemv conf data locale man"
 		;;
 
 	core)
-		BUILDDIRS="data locale"
+		BUILDDIRS="test locale"
+		;;
+
+	libcups)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		;;
+
+	libcupslite)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		LIBCUPSOBJS="\$(COREOBJS)"
 		;;
 
 	*)
 		as_fn_error $? "Bad build component \"$COMPONENT\" specified!" "$LINENO" 5
 		;;
 esac
+
 
 
 
@@ -5720,45 +5793,57 @@ fi
 
 
 cupsbase="cups"
+LIBCUPSBASE="lib$cupsbase"
+LIBCUPSIMAGE=""
 LIBCUPSSTATIC="lib$cupsbase.a"
 
 if test x$enable_shared != xno; then
 	case "$host_os_name" in
 		sunos*)
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSIMAGE="libcupsimage.so.2"
+			if test "x$cupsimagebase" != x; then
+				LIBCUPSIMAGE="lib$cupsimagebase.so.2"
+			fi
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
-			DSOFLAGS="$DSOFLAGS -Wl,-h\`basename \$@\` -G \$(OPTIM)"
+			DSOFLAGS="$DSOFLAGS -Wl,-h\`basename \$@\` -G"
 			;;
 		linux* | gnu* | *bsd*)
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSIMAGE="libcupsimage.so.2"
+			if test "x$cupsimagebase" != x; then
+				LIBCUPSIMAGE="lib$cupsimagebase.so.2"
+			fi
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
-			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared \$(OPTIM)"
+			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared"
 			;;
 		darwin*)
 			LIBCUPS="lib$cupsbase.2.dylib"
-			LIBCUPSIMAGE="libcupsimage.2.dylib"
+			if test "x$cupsimagebase" != x; then
+				LIBCUPSIMAGE="lib$cupsimagebase.2.dylib"
+			fi
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
-			DSOFLAGS="$DSOFLAGS -dynamiclib -single_module -lc"
+			DSOFLAGS="$DSOFLAGS -Wl,-no_warn_inits -dynamiclib -single_module -lc"
 			;;
 		*)
 			echo "Warning: shared libraries may not be supported.  Trying -shared"
 			echo "         option with compiler."
 			LIBCUPS="lib$cupsbase.so.2"
-			LIBCUPSIMAGE="libcupsimage.so.2"
+			if test "x$cupsimagebase" != x; then
+				LIBCUPSIMAGE="lib$cupsimagebase.so.2"
+			fi
 			DSO="\$(CC)"
 			DSOXX="\$(CXX)"
-			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared \$(OPTIM)"
+			DSOFLAGS="$DSOFLAGS -Wl,-soname,\`basename \$@\` -shared"
 			;;
 	esac
 else
 	PICFLAG=0
 	LIBCUPS="lib$cupsbase.a"
-	LIBCUPSIMAGE="libcupsimage.a"
+	if test "x$cupsimagebase" != x; then
+		LIBCUPSIMAGE="lib$cupsimagebase.a"
+	fi
 	DSO=":"
 	DSOXX=":"
 fi
@@ -5770,18 +5855,29 @@ fi
 
 
 
+
 if test x$enable_shared = xno; then
 	LINKCUPS="../cups/lib$cupsbase.a"
-	LINKCUPSIMAGE="../cups/libcupsimage.a"
-
 	EXTLINKCUPS="-lcups"
-	EXTLINKCUPSIMAGE="-lcupsimage"
+
+	if test "x$cupsimagebase" != x; then
+		LINKCUPSIMAGE="../cups/lib$cupsimagebase.a"
+		EXTLINKCUPSIMAGE="-l$cupsimagebase"
+	else
+		LINKCUPSIMAGE=""
+		EXTLINKCUPSIMAGE=""
+	fi
 else
 	LINKCUPS="-l${cupsbase}"
-	LINKCUPSIMAGE="-lcupsimage"
-
 	EXTLINKCUPS="-lcups"
-	EXTLINKCUPSIMAGE="-lcupsimage"
+
+	if test "x$cupsimagebase" != x; then
+		LINKCUPSIMAGE="-l$cupsimagebase"
+		EXTLINKCUPSIMAGE="-l$cupsimagebase"
+	else
+		LINKCUPSIMAGE=""
+		EXTLINKCUPSIMAGE=""
+	fi
 fi
 
 
@@ -5894,15 +5990,17 @@ fi
 
 
 INSTALL_STRIP=""
-OPTIM=""
-
 
 
 
 # Check whether --with-optim was given.
 if test "${with_optim+set}" = set; then :
-  withval=$with_optim;
+  withval=$with_optim; OPTIM="$withval"
+else
+  OPTIM=""
 fi
+
+
 
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
@@ -5925,7 +6023,7 @@ if test "${enable_unit_tests+set}" = set; then :
 fi
 
 
-if test x$enable_debug = xyes; then
+if test x$enable_debug = xyes -a "x$OPTIM" = x; then
 	OPTIM="-g"
 else
 	INSTALL_STRIP="-s"
@@ -5991,6 +6089,12 @@ if test "${enable_relro+set}" = set; then :
 fi
 
 
+# Check whether --enable-sanitizer was given.
+if test "${enable_sanitizer+set}" = set; then :
+  enableval=$enable_sanitizer;
+fi
+
+
 CXXLIBS="${CXXLIBS:=}"
 
 
@@ -6000,15 +6104,28 @@ PIEFLAGS=""
 RELROFLAGS=""
 
 
+WARNING_OPTIONS=""
+
+
 if test -n "$GCC"; then
 	# Add GCC-specific compiler options...
+
+        # Address sanitizer is a useful tool to use when developing/debugging
+        # code but adds about 2x overhead...
+	if test x$enable_sanitizer = xyes; then
+		# Use -fsanitize=address with debugging...
+		OPTIM="$OPTIM -g -fsanitize=address"
+	else
+		# Otherwise use the Fortify enhancements to catch any unbounded
+		# string operations...
+		CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2"
+		CXXFLAGS="$CXXFLAGS -D_FORTIFY_SOURCE=2"
+	fi
+
+	# Default optimization options...
 	if test -z "$OPTIM"; then
-		if test "x$with_optim" = x; then
-			# Default to optimize-for-size and debug
-       			OPTIM="-Os -g"
-		else
-			OPTIM="$with_optim $OPTIM"
-		fi
+		# Default to optimize-for-size and debug
+		OPTIM="-Os -g"
 	fi
 
 	# Generate position-independent code as needed...
@@ -6114,149 +6231,29 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 		CFLAGS="$OLDCFLAGS"
 	fi
 
-	if test "x$with_optim" = x; then
-		# Add useful warning options for tracking down problems...
-		OPTIM="-Wall -Wno-format-y2k -Wunused $OPTIM"
+	# Add useful warning options for tracking down problems...
+	WARNING_OPTIONS="-Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion"
 
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether compiler supports -Wno-unused-result" >&5
-$as_echo_n "checking whether compiler supports -Wno-unused-result... " >&6; }
-		OLDCFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS -Werror -Wno-unused-result"
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  OPTIM="$OPTIM -Wno-unused-result"
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-		CFLAGS="$OLDCFLAGS"
-
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether compiler supports -Wsign-conversion" >&5
-$as_echo_n "checking whether compiler supports -Wsign-conversion... " >&6; }
-		OLDCFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS -Werror -Wsign-conversion"
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  OPTIM="$OPTIM -Wsign-conversion"
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-		CFLAGS="$OLDCFLAGS"
-
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether compiler supports -Wno-tautological-compare" >&5
-$as_echo_n "checking whether compiler supports -Wno-tautological-compare... " >&6; }
-		OLDCFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS -Werror -Wno-tautological-compare"
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  OPTIM="$OPTIM -Wno-tautological-compare"
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-		CFLAGS="$OLDCFLAGS"
-
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether compiler supports -Wno-format-truncation" >&5
-$as_echo_n "checking whether compiler supports -Wno-format-truncation... " >&6; }
-		OLDCFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS -Werror -Wno-format-truncation"
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  OPTIM="$OPTIM -Wno-format-truncation"
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-		CFLAGS="$OLDCFLAGS"
-
-		# Additional warning options for development testing...
-		if test -d .svn; then
-			OPTIM="-Werror $OPTIM"
-		fi
-	fi
-
-	case "$host_os_name" in
-		darwin*)
-			# -D_FORTIFY_SOURCE=2 adds additional object size
-			# checking, basically wrapping all string functions
-			# with buffer-limited ones.  Not strictly needed for
-			# CUPS since we already use buffer-limited calls, but
-			# this will catch any additions that are broken.
-			CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2"
-			;;
-
-		linux*)
-			# The -z relro option is provided by the Linux linker command to
-			# make relocatable data read-only.
-			if test x$enable_relro = xyes; then
-				RELROFLAGS="-Wl,-z,relro,-z,now"
-			fi
+	# Test GCC version for certain warning flags since -Werror
+	# doesn't trigger...
+	gccversion=`$CC --version | head -1 | awk '{print $NF}'`
+	case "$gccversion" in
+		7.* | 8.*)
+			WARNING_OPTIONS="$WARNING_OPTIONS -Wno-format-truncation -Wno-tautological-compare"
 			;;
 	esac
+
+	# Additional warning options for development testing...
+	if test -d .git; then
+		WARNING_OPTIONS="-Werror -Wno-error=deprecated-declarations $WARNING_OPTIONS"
+	fi
 else
 	# Add vendor-specific compiler options...
 	case $host_os_name in
 		sunos*)
 			# Solaris
 			if test -z "$OPTIM"; then
-				if test "x$with_optim" = x; then
-					OPTIM="-xO2"
-				else
-					OPTIM="$with_optim $OPTIM"
-				fi
+				OPTIM="-xO2"
 			fi
 
 			if test $PICFLAG = 1; then
@@ -6264,13 +6261,13 @@ else
 			fi
 			;;
 		*)
-			# Running some other operating system; inform the user they
-			# should contribute the necessary options to
-			# cups-support@cups.org...
-			echo "Building CUPS with default compiler optimizations; contact"
-			echo "cups-devel@cups.org with uname and compiler options needed"
-			echo "for your platform, or set the CFLAGS and LDFLAGS environment"
-			echo "variables before running configure."
+			# Running some other operating system; inform the user
+			# they should contribute the necessary options via
+			# Github...
+			echo "Building CUPS with default compiler optimizations; contact the CUPS developers on Github"
+			echo "(https://github.com/apple/cups/issues) with the uname and compiler options needed for"
+			echo "your platform, or set the CFLAGS and LDFLAGS environment variables before running"
+			echo "configure."
 			;;
 	esac
 fi
@@ -6281,6 +6278,12 @@ case $host_os_name in
 		# glibc 2.8 and higher breaks peer credentials unless you
 		# define _GNU_SOURCE...
 		OPTIM="$OPTIM -D_GNU_SOURCE"
+
+		# The -z relro option is provided by the Linux linker command to
+		# make relocatable data read-only.
+		if test x$enable_relro = xyes; then
+			RELROFLAGS="-Wl,-z,relro,-z,now"
+		fi
 		;;
 esac
 
@@ -8199,7 +8202,8 @@ fi
 if test "${with_bundledir+set}" = set; then :
   withval=$with_bundledir; CUPS_BUNDLEDIR="$withval"
 else
-  if test "x$host_os_name" = xdarwin -a $host_os_version -ge 100; then
+
+	if test "x$host_os_name" = xdarwin -a $host_os_version -ge 100; then
 		CUPS_BUNDLEDIR="/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A"
 		LANGUAGES=""
 	else
@@ -8215,6 +8219,27 @@ if test "x$CUPS_BUNDLEDIR" != x; then
 _ACEOF
 
 fi
+
+
+# Check whether --with-bundlelang was given.
+if test "${with_bundlelang+set}" = set; then :
+  withval=$with_bundlelang; cups_bundlelang="$withval"
+else
+
+	if test $host_os_version -ge 190; then
+		cups_bundlelang="en"
+	else
+		cups_bundlelang="English"
+	fi
+fi
+
+
+if test "x$cups_bundlelang" != x -a "x$CUPS_BUNDLEDIR" != x; then
+	CUPS_RESOURCEDIR="$CUPS_BUNDLEDIR/Resources/$cups_bundlelang.lproj"
+else
+	CUPS_RESOURCEDIR=""
+fi
+
 
 
 # Check whether --with-exe_file_perm was given.

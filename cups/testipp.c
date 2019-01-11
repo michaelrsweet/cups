@@ -14,12 +14,12 @@
 #include "file.h"
 #include "string-private.h"
 #include "ipp-private.h"
-#ifdef WIN32
+#ifdef _WIN32
 #  include <io.h>
 #else
 #  include <unistd.h>
 #  include <fcntl.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 
 /*
@@ -738,7 +738,7 @@ main(int  argc,			/* I - Number of command-line arguments */
 
 	if (state != IPP_STATE_DATA)
 	{
-	  printf("Error reading IPP message from \"%s\".\n", argv[i]);
+	  printf("Error reading IPP message from \"%s\": %s\n", argv[i], cupsLastErrorString());
 	  status = 1;
 
 	  ippDelete(request);

@@ -1,7 +1,7 @@
 /*
  * Internet Printing Protocol functions for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -13,10 +13,11 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #include <regex.h>
-#ifdef WIN32
+#ifdef _WIN32
 #  include <io.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
 
 /*
@@ -28,12 +29,8 @@ static ipp_attribute_t	*ipp_add_attr(ipp_t *ipp, const char *name,
 			              int num_values);
 static void		ipp_free_values(ipp_attribute_t *attr, int element,
 			                int count);
-static char		*ipp_get_code(const char *locale, char *buffer,
-			              size_t bufsize)
-			              __attribute__((nonnull(1,2)));
-static char		*ipp_lang_code(const char *locale, char *buffer,
-			               size_t bufsize)
-			               __attribute__((nonnull(1,2)));
+static char		*ipp_get_code(const char *locale, char *buffer, size_t bufsize) _CUPS_NONNULL(1,2);
+static char		*ipp_lang_code(const char *locale, char *buffer, size_t bufsize) _CUPS_NONNULL(1,2);
 static size_t		ipp_length(ipp_t *ipp, int collection);
 static ssize_t		ipp_read_http(http_t *http, ipp_uchar_t *buffer,
 			              size_t length);
@@ -1478,6 +1475,7 @@ ippCopyAttribute(
     int             quickcopy)		/* I - 1 for a referenced copy, 0 for normal */
 {
   int			i;		/* Looping var */
+  ipp_tag_t		srctag;		/* Source value tag */
   ipp_attribute_t	*dstattr;	/* Destination attribute */
   _ipp_value_t		*srcval,	/* Source value */
 			*dstval;	/* Destination value */
@@ -1496,9 +1494,10 @@ ippCopyAttribute(
   * Copy it...
   */
 
-  quickcopy = quickcopy ? IPP_TAG_CUPS_CONST : 0;
+  quickcopy = (quickcopy && (srcattr->value_tag & IPP_TAG_CUPS_CONST)) ? IPP_TAG_CUPS_CONST : 0;
+  srctag    = srcattr->value_tag & IPP_TAG_CUPS_MASK;
 
-  switch (srcattr->value_tag & ~IPP_TAG_CUPS_CONST)
+  switch (srctag)
   {
     case IPP_TAG_ZERO :
         dstattr = ippAddSeparator(dst);
@@ -1511,139 +1510,70 @@ ippCopyAttribute(
     case IPP_TAG_NOTSETTABLE :
     case IPP_TAG_DELETEATTR :
     case IPP_TAG_ADMINDEFINE :
-        dstattr = ippAddOutOfBand(dst, srcattr->group_tag, srcattr->value_tag & ~IPP_TAG_CUPS_CONST, srcattr->name);
+        dstattr = ippAddOutOfBand(dst, srcattr->group_tag, srctag, srcattr->name);
         break;
 
     case IPP_TAG_INTEGER :
     case IPP_TAG_ENUM :
-        dstattr = ippAddIntegers(dst, srcattr->group_tag, srcattr->value_tag,
-	                         srcattr->name, srcattr->num_values, NULL);
-        if (!dstattr)
-          break;
-
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
-	  dstval->integer = srcval->integer;
-        break;
-
     case IPP_TAG_BOOLEAN :
-        dstattr = ippAddBooleans(dst, srcattr->group_tag, srcattr->name,
-	                        srcattr->num_values, NULL);
-        if (!dstattr)
-          break;
-
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
-	  dstval->boolean = srcval->boolean;
+    case IPP_TAG_DATE :
+    case IPP_TAG_RESOLUTION :
+    case IPP_TAG_RANGE :
+        if ((dstattr = ipp_add_attr(dst, srcattr->name, srcattr->group_tag, srctag, srcattr->num_values)) != NULL)
+	  memcpy(dstattr->values, srcattr->values, (size_t)srcattr->num_values * sizeof(_ipp_value_t));
         break;
 
     case IPP_TAG_TEXT :
     case IPP_TAG_NAME :
+    case IPP_TAG_RESERVED_STRING :
     case IPP_TAG_KEYWORD :
     case IPP_TAG_URI :
     case IPP_TAG_URISCHEME :
     case IPP_TAG_CHARSET :
     case IPP_TAG_LANGUAGE :
     case IPP_TAG_MIMETYPE :
-        dstattr = ippAddStrings(dst, srcattr->group_tag,
-	                        (ipp_tag_t)(srcattr->value_tag | quickcopy),
-	                        srcattr->name, srcattr->num_values, NULL, NULL);
-        if (!dstattr)
+        if ((dstattr = ippAddStrings(dst, srcattr->group_tag, (ipp_tag_t)(srctag | quickcopy), srcattr->name, srcattr->num_values, NULL, NULL)) == NULL)
           break;
 
         if (quickcopy)
 	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
-	    dstval->string.text = srcval->string.text;
+	 /*
+	  * Can safely quick-copy these string values...
+	  */
+
+	  memcpy(dstattr->values, srcattr->values, (size_t)srcattr->num_values * sizeof(_ipp_value_t));
         }
-	else if (srcattr->value_tag & IPP_TAG_CUPS_CONST)
-	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
-	    dstval->string.text = _cupsStrAlloc(srcval->string.text);
-	}
 	else
 	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
-	    dstval->string.text = _cupsStrRetain(srcval->string.text);
-	}
-        break;
+	 /*
+	  * Otherwise do a normal reference counted copy...
+	  */
 
-    case IPP_TAG_DATE :
-        if (srcattr->num_values != 1)
-          return (NULL);
-
-        dstattr = ippAddDate(dst, srcattr->group_tag, srcattr->name,
-	                     srcattr->values[0].date);
-        break;
-
-    case IPP_TAG_RESOLUTION :
-        dstattr = ippAddResolutions(dst, srcattr->group_tag, srcattr->name,
-	                            srcattr->num_values, IPP_RES_PER_INCH,
-				    NULL, NULL);
-        if (!dstattr)
-          break;
-
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
-	{
-	  dstval->resolution.xres  = srcval->resolution.xres;
-	  dstval->resolution.yres  = srcval->resolution.yres;
-	  dstval->resolution.units = srcval->resolution.units;
-	}
-        break;
-
-    case IPP_TAG_RANGE :
-        dstattr = ippAddRanges(dst, srcattr->group_tag, srcattr->name,
-	                       srcattr->num_values, NULL, NULL);
-        if (!dstattr)
-          break;
-
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
-	{
-	  dstval->range.lower = srcval->range.lower;
-	  dstval->range.upper = srcval->range.upper;
+	  for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values; i > 0; i --, srcval ++, dstval ++)
+	    dstval->string.text = _cupsStrAlloc(srcval->string.text);
 	}
         break;
 
     case IPP_TAG_TEXTLANG :
     case IPP_TAG_NAMELANG :
-        dstattr = ippAddStrings(dst, srcattr->group_tag,
-	                        (ipp_tag_t)(srcattr->value_tag | quickcopy),
-	                        srcattr->name, srcattr->num_values, NULL, NULL);
-        if (!dstattr)
+        if ((dstattr = ippAddStrings(dst, srcattr->group_tag, (ipp_tag_t)(srctag | quickcopy), srcattr->name, srcattr->num_values, NULL, NULL)) == NULL)
           break;
 
         if (quickcopy)
 	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
-	  {
-            dstval->string.language = srcval->string.language;
-	    dstval->string.text     = srcval->string.text;
-          }
+	 /*
+	  * Can safely quick-copy these string values...
+	  */
+
+	  memcpy(dstattr->values, srcattr->values, (size_t)srcattr->num_values * sizeof(_ipp_value_t));
         }
 	else if (srcattr->value_tag & IPP_TAG_CUPS_CONST)
 	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
+	 /*
+	  * Otherwise do a normal reference counted copy...
+	  */
+
+	  for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values; i > 0; i --, srcval ++, dstval ++)
 	  {
 	    if (srcval == srcattr->values)
               dstval->string.language = _cupsStrAlloc(srcval->string.language);
@@ -1653,32 +1583,13 @@ ippCopyAttribute(
 	    dstval->string.text = _cupsStrAlloc(srcval->string.text);
           }
         }
-	else
-	{
-	  for (i = srcattr->num_values, srcval = srcattr->values,
-	           dstval = dstattr->values;
-	       i > 0;
-	       i --, srcval ++, dstval ++)
-	  {
-	    if (srcval == srcattr->values)
-              dstval->string.language = _cupsStrRetain(srcval->string.language);
-	    else
-              dstval->string.language = dstattr->values[0].string.language;
-
-	    dstval->string.text = _cupsStrRetain(srcval->string.text);
-          }
-        }
         break;
 
     case IPP_TAG_BEGIN_COLLECTION :
-        dstattr = ippAddCollections(dst, srcattr->group_tag, srcattr->name,
-	                            srcattr->num_values, NULL);
-        if (!dstattr)
+        if ((dstattr = ippAddCollections(dst, srcattr->group_tag, srcattr->name, srcattr->num_values, NULL)) == NULL)
           break;
 
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
+        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values; i > 0; i --, srcval ++, dstval ++)
 	{
 	  dstval->collection = srcval->collection;
 	  srcval->collection->use ++;
@@ -1687,15 +1598,10 @@ ippCopyAttribute(
 
     case IPP_TAG_STRING :
     default :
-        /* TODO: Implement quick copy for unknown/octetString values */
-        dstattr = ippAddIntegers(dst, srcattr->group_tag, srcattr->value_tag,
-	                         srcattr->name, srcattr->num_values, NULL);
-        if (!dstattr)
+        if ((dstattr = ipp_add_attr(dst, srcattr->name, srcattr->group_tag, srctag, srcattr->num_values)) == NULL)
           break;
 
-        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values;
-             i > 0;
-             i --, srcval ++, dstval ++)
+        for (i = srcattr->num_values, srcval = srcattr->values, dstval = dstattr->values; i > 0; i --, srcval ++, dstval ++)
 	{
 	  dstval->unknown.length = srcval->unknown.length;
 
@@ -3084,6 +2990,13 @@ ippReadIO(void       *src,		/* I - Data source */
 	    ipp->state = IPP_STATE_DATA;
 	    break;
 	  }
+	  else if (tag == IPP_TAG_ZERO || (tag == IPP_TAG_OPERATION && ipp->curtag != IPP_TAG_ZERO))
+	  {
+	    _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("Invalid group tag."), 1);
+	    DEBUG_printf(("1ippReadIO: bad tag 0x%02x.", tag));
+	    _cupsBufferRelease((char *)buffer);
+	    return (IPP_STATE_ERROR);
+	  }
           else if (tag < IPP_TAG_UNSUPPORTED_VALUE)
 	  {
 	   /*
@@ -3381,7 +3294,10 @@ ippReadIO(void       *src,		/* I - Data source */
                 value->boolean = (char)buffer[0];
 	        break;
 
-            case IPP_TAG_NOVALUE :
+	    case IPP_TAG_UNSUPPORTED_VALUE :
+	    case IPP_TAG_DEFAULT :
+	    case IPP_TAG_UNKNOWN :
+	    case IPP_TAG_NOVALUE :
 	    case IPP_TAG_NOTSETTABLE :
 	    case IPP_TAG_DELETEATTR :
 	    case IPP_TAG_ADMINDEFINE :
@@ -3401,6 +3317,7 @@ ippReadIO(void       *src,		/* I - Data source */
 
 	    case IPP_TAG_TEXT :
 	    case IPP_TAG_NAME :
+	    case IPP_TAG_RESERVED_STRING :
 	    case IPP_TAG_KEYWORD :
 	    case IPP_TAG_URI :
 	    case IPP_TAG_URISCHEME :
@@ -3655,6 +3572,7 @@ ippReadIO(void       *src,		/* I - Data source */
 		DEBUG_printf(("2ippReadIO: member name=\"%s\"", attr->name));
 		break;
 
+            case IPP_TAG_STRING :
             default : /* Other unsupported values */
                 if (tag == IPP_TAG_STRING && n > IPP_MAX_LENGTH)
 		{
@@ -3831,8 +3749,7 @@ ippSetDate(ipp_t             *ipp,	/* I  - IPP message */
   * Range check input...
   */
 
-  if (!ipp || !attr || !*attr || (*attr)->value_tag != IPP_TAG_DATE ||
-      element < 0 || element > (*attr)->num_values || !datevalue)
+  if (!ipp || !attr || !*attr || ((*attr)->value_tag != IPP_TAG_DATE && (*attr)->value_tag != IPP_TAG_NOVALUE && (*attr)->value_tag != IPP_TAG_UNKNOWN) || element < 0 || element > (*attr)->num_values || !datevalue)
     return (0);
 
  /*
@@ -3915,9 +3832,7 @@ ippSetInteger(ipp_t           *ipp,	/* I  - IPP message */
   * Range check input...
   */
 
-  if (!ipp || !attr || !*attr ||
-      ((*attr)->value_tag != IPP_TAG_INTEGER && (*attr)->value_tag != IPP_TAG_ENUM) ||
-      element < 0 || element > (*attr)->num_values)
+  if (!ipp || !attr || !*attr || ((*attr)->value_tag != IPP_TAG_INTEGER && (*attr)->value_tag != IPP_TAG_ENUM && (*attr)->value_tag != IPP_TAG_NOVALUE && (*attr)->value_tag != IPP_TAG_UNKNOWN) || element < 0 || element > (*attr)->num_values)
     return (0);
 
  /*
@@ -3925,7 +3840,12 @@ ippSetInteger(ipp_t           *ipp,	/* I  - IPP message */
   */
 
   if ((value = ipp_set_value(ipp, attr, element)) != NULL)
+  {
+    if ((*attr)->value_tag != IPP_TAG_ENUM)
+      (*attr)->value_tag = IPP_TAG_INTEGER;
+
     value->integer = intvalue;
+  }
 
   return (value != NULL);
 }
@@ -4002,9 +3922,7 @@ ippSetOctetString(
   * Range check input...
   */
 
-  if (!ipp || !attr || !*attr || (*attr)->value_tag != IPP_TAG_STRING ||
-      element < 0 || element > (*attr)->num_values ||
-      datalen < 0 || datalen > IPP_MAX_LENGTH)
+  if (!ipp || !attr || !*attr || ((*attr)->value_tag != IPP_TAG_STRING && (*attr)->value_tag != IPP_TAG_NOVALUE && (*attr)->value_tag != IPP_TAG_UNKNOWN) || element < 0 || element > (*attr)->num_values || datalen < 0 || datalen > IPP_MAX_LENGTH)
     return (0);
 
  /*
@@ -4027,6 +3945,8 @@ ippSetOctetString(
      /*
       * Copy the data...
       */
+
+      (*attr)->value_tag = IPP_TAG_STRING;
 
       if (value->unknown.data)
       {
@@ -4119,8 +4039,7 @@ ippSetRange(ipp_t           *ipp,	/* I  - IPP message */
   * Range check input...
   */
 
-  if (!ipp || !attr || !*attr || (*attr)->value_tag != IPP_TAG_RANGE ||
-      element < 0 || element > (*attr)->num_values || lowervalue > uppervalue)
+  if (!ipp || !attr || !*attr || ((*attr)->value_tag != IPP_TAG_RANGE && (*attr)->value_tag != IPP_TAG_NOVALUE && (*attr)->value_tag != IPP_TAG_UNKNOWN) || element < 0 || element > (*attr)->num_values || lowervalue > uppervalue)
     return (0);
 
  /*
@@ -4129,6 +4048,7 @@ ippSetRange(ipp_t           *ipp,	/* I  - IPP message */
 
   if ((value = ipp_set_value(ipp, attr, element)) != NULL)
   {
+    (*attr)->value_tag = IPP_TAG_RANGE;
     value->range.lower = lowervalue;
     value->range.upper = uppervalue;
   }
@@ -4201,9 +4121,7 @@ ippSetResolution(
   * Range check input...
   */
 
-  if (!ipp || !attr || !*attr || (*attr)->value_tag != IPP_TAG_RESOLUTION ||
-      element < 0 || element > (*attr)->num_values || xresvalue <= 0 || yresvalue <= 0 ||
-      unitsvalue < IPP_RES_PER_INCH || unitsvalue > IPP_RES_PER_CM)
+  if (!ipp || !attr || !*attr || ((*attr)->value_tag != IPP_TAG_RESOLUTION && (*attr)->value_tag != IPP_TAG_NOVALUE && (*attr)->value_tag != IPP_TAG_UNKNOWN) || element < 0 || element > (*attr)->num_values || xresvalue <= 0 || yresvalue <= 0 || unitsvalue < IPP_RES_PER_INCH || unitsvalue > IPP_RES_PER_CM)
     return (0);
 
  /*
@@ -4212,6 +4130,7 @@ ippSetResolution(
 
   if ((value = ipp_set_value(ipp, attr, element)) != NULL)
   {
+    (*attr)->value_tag      = IPP_TAG_RESOLUTION;
     value->resolution.units = unitsvalue;
     value->resolution.xres  = xresvalue;
     value->resolution.yres  = yresvalue;
@@ -4313,10 +4232,7 @@ ippSetString(ipp_t           *ipp,	/* I  - IPP message */
   else
     value_tag = IPP_TAG_ZERO;
 
-  if (!ipp || !attr || !*attr ||
-      (value_tag < IPP_TAG_TEXT && value_tag != IPP_TAG_TEXTLANG &&
-       value_tag != IPP_TAG_NAMELANG) || value_tag > IPP_TAG_MIMETYPE ||
-      !strvalue)
+  if (!ipp || !attr || !*attr || (value_tag < IPP_TAG_TEXT && value_tag != IPP_TAG_TEXTLANG && value_tag != IPP_TAG_NAMELANG && value_tag != IPP_TAG_NOVALUE && value_tag != IPP_TAG_UNKNOWN) || value_tag > IPP_TAG_MIMETYPE || element < 0 || element > (*attr)->num_values || !strvalue)
     return (0);
 
  /*
@@ -4325,6 +4241,9 @@ ippSetString(ipp_t           *ipp,	/* I  - IPP message */
 
   if ((value = ipp_set_value(ipp, attr, element)) != NULL)
   {
+    if (value_tag == IPP_TAG_NOVALUE || value_tag == IPP_TAG_UNKNOWN)
+      (*attr)->value_tag = IPP_TAG_KEYWORD;
+
     if (element > 0)
       value->string.language = (*attr)->values[0].string.language;
 
@@ -4425,10 +4344,7 @@ ippSetStringfv(ipp_t           *ipp,	/* I  - IPP message */
   else
     value_tag = IPP_TAG_ZERO;
 
-  if (!ipp || !attr || !*attr ||
-      (value_tag < IPP_TAG_TEXT && value_tag != IPP_TAG_TEXTLANG &&
-       value_tag != IPP_TAG_NAMELANG) || value_tag > IPP_TAG_MIMETYPE ||
-      !format)
+  if (!ipp || !attr || !*attr || (value_tag < IPP_TAG_TEXT && value_tag != IPP_TAG_TEXTLANG && value_tag != IPP_TAG_NAMELANG && value_tag != IPP_TAG_NOVALUE && value_tag != IPP_TAG_UNKNOWN) || value_tag > IPP_TAG_MIMETYPE || !format)
     return (0);
 
  /*
@@ -4480,6 +4396,8 @@ ippSetStringfv(ipp_t           *ipp,	/* I  - IPP message */
         max_bytes = IPP_MAX_CHARSET;
         break;
 
+    case IPP_TAG_NOVALUE :
+    case IPP_TAG_UNKNOWN :
     case IPP_TAG_KEYWORD :
         max_bytes = IPP_MAX_KEYWORD;
         break;
@@ -5022,16 +4940,19 @@ ippValidateAttribute(
 	      break;
 	  }
 
-	  if (*ptr < ' ' || *ptr == 0x7f)
-	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
-	  else if (*ptr)
-	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
+          if (*ptr)
+          {
+	    if (*ptr < ' ' || *ptr == 0x7f)
+	    {
+	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
+	      return (0);
+	    }
+	    else
+	    {
+	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
+	      return (0);
+	    }
+          }
 
 	  if ((ptr - attr->values[i].string.text) > (IPP_MAX_TEXT - 1))
 	  {
@@ -5080,16 +5001,19 @@ ippValidateAttribute(
 	      break;
 	  }
 
-	  if (*ptr < ' ' || *ptr == 0x7f)
+	  if (*ptr)
 	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
-	  else if (*ptr)
-	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
+	    if (*ptr < ' ' || *ptr == 0x7f)
+	    {
+	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
+	      return (0);
+	    }
+	    else
+	    {
+	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
+	      return (0);
+	    }
+          }
 
 	  if ((ptr - attr->values[i].string.text) > (IPP_MAX_NAME - 1))
 	  {
@@ -6376,6 +6300,7 @@ ipp_free_values(ipp_attribute_t *attr,	/* I - Attribute to free values from */
 	  }
 	  break;
 
+      case IPP_TAG_UNSUPPORTED_VALUE :
       case IPP_TAG_DEFAULT :
       case IPP_TAG_UNKNOWN :
       case IPP_TAG_NOVALUE :
@@ -6717,14 +6642,14 @@ ipp_read_http(http_t      *http,	/* I - Client connection */
 
     if ((bytes = httpRead2(http, (char *)buffer, length - (size_t)tbytes)) < 0)
     {
-#ifdef WIN32
+#ifdef _WIN32
       break;
 #else
       if (errno != EAGAIN && errno != EINTR)
 	break;
 
       bytes = 0;
-#endif /* WIN32 */
+#endif /* _WIN32 */
     }
     else if (bytes == 0)
       break;
@@ -6752,11 +6677,11 @@ ipp_read_file(int         *fd,		/* I - File descriptor */
               ipp_uchar_t *buffer,	/* O - Read buffer */
 	      size_t      length)	/* I - Number of bytes to read */
 {
-#ifdef WIN32
+#ifdef _WIN32
   return ((ssize_t)read(*fd, buffer, (unsigned)length));
 #else
   return (read(*fd, buffer, length));
-#endif /* WIN32 */
+#endif /* _WIN32 */
 }
 
 
@@ -6855,7 +6780,9 @@ ipp_set_value(ipp_t           *ipp,	/* IO - IPP message */
     * Reset pointers in the list...
     */
 
+#ifndef __clang_analyzer__
     DEBUG_printf(("4debug_free: %p %s", (void *)*attr, temp->name));
+#endif /* !__clang_analyzer__ */
     DEBUG_printf(("4debug_alloc: %p %s %s%s (%d)", (void *)temp, temp->name, temp->num_values > 1 ? "1setOf " : "", ippTagString(temp->value_tag), temp->num_values));
 
     if (ipp->current == *attr && ipp->prev)
@@ -6924,9 +6851,9 @@ ipp_write_file(int         *fd,		/* I - File descriptor */
                ipp_uchar_t *buffer,	/* I - Data to write */
                size_t      length)	/* I - Number of bytes to write */
 {
-#ifdef WIN32
+#ifdef _WIN32
   return ((ssize_t)write(*fd, buffer, (unsigned)length));
 #else
   return (write(*fd, buffer, length));
-#endif /* WIN32 */
+#endif /* _WIN32 */
 }

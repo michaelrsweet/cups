@@ -1,10 +1,11 @@
 /*
  * Printer option program for CUPS.
  *
- * Copyright 2007-2016 by Apple Inc.
- * Copyright 1997-2006 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -21,7 +22,7 @@
 
 static void	list_group(ppd_file_t *ppd, ppd_group_t *group);
 static void	list_options(cups_dest_t *dest);
-static void	usage(void) __attribute__((noreturn));
+static void	usage(void) _CUPS_NORETURN;
 
 
 /*
@@ -60,7 +61,9 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   for (i = 1; i < argc; i ++)
   {
-    if (argv[i][0] == '-')
+    if (!strcmp(argv[i], "--help"))
+      usage();
+    else if (argv[i][0] == '-')
     {
       for (opt = argv[i] + 1; *opt; opt ++)
       {
@@ -476,18 +479,31 @@ list_group(ppd_file_t  *ppd,		/* I - PPD file */
 static void
 list_options(cups_dest_t *dest)		/* I - Destination to list */
 {
+  http_t	*http;			/* Connection to destination */
+  char		resource[1024];		/* Resource path */
   int		i;			/* Looping var */
   const char	*filename;		/* PPD filename */
   ppd_file_t	*ppd;			/* PPD data */
   ppd_group_t	*group;			/* Current group */
 
 
-  if ((filename = cupsGetPPD(dest->name)) == NULL)
+  if ((http = cupsConnectDest(dest, CUPS_DEST_FLAGS_NONE, 30000, NULL, resource, sizeof(resource), NULL, NULL)) == NULL)
   {
     _cupsLangPrintf(stderr, _("lpoptions: Unable to get PPD file for %s: %s"),
 		    dest->name, cupsLastErrorString());
     return;
   }
+
+  if ((filename = cupsGetPPD2(http, dest->name)) == NULL)
+  {
+    httpClose(http);
+
+    _cupsLangPrintf(stderr, _("lpoptions: Unable to get PPD file for %s: %s"),
+		    dest->name, cupsLastErrorString());
+    return;
+  }
+
+  httpClose(http);
 
   if ((ppd = ppdOpenFile(filename)) == NULL)
   {
@@ -515,12 +531,19 @@ list_options(cups_dest_t *dest)		/* I - Destination to list */
 static void
 usage(void)
 {
-  _cupsLangPuts(stdout,
-                _("Usage: lpoptions [-h server] [-E] -d printer\n"
-		  "       lpoptions [-h server] [-E] [-p printer] -l\n"
-		  "       lpoptions [-h server] [-E] -p printer -o "
-		  "option[=value] ...\n"
-		  "       lpoptions [-h server] [-E] -x printer"));
+  _cupsLangPuts(stdout, _("Usage: lpoptions [options] -d destination\n"
+                          "       lpoptions [options] [-p destination] [-l]\n"
+                          "       lpoptions [options] [-p destination] -o option[=value]\n"
+                          "       lpoptions [options] -x destination"));
+  _cupsLangPuts(stdout, _("Options:"));
+  _cupsLangPuts(stdout, _("-d destination          Set default destination"));
+  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
+  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
+  _cupsLangPuts(stdout, _("-l                      Show supported options and values"));
+  _cupsLangPuts(stdout, _("-o name[=value]         Set default option and value"));
+  _cupsLangPuts(stdout, _("-p destination          Specify a destination"));
+  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
+  _cupsLangPuts(stdout, _("-x destination          Remove default options for destination"));
 
   exit(1);
 }

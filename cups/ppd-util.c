@@ -14,13 +14,14 @@
 
 #include "cups-private.h"
 #include "ppd-private.h"
+#include "debug-internal.h"
 #include <fcntl.h>
 #include <sys/stat.h>
-#if defined(WIN32) || defined(__EMX__)
+#if defined(_WIN32) || defined(__EMX__)
 #  include <io.h>
 #else
 #  include <unistd.h>
-#endif /* WIN32 || __EMX__ */
+#endif /* _WIN32 || __EMX__ */
 
 
 /*
@@ -169,7 +170,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
 
-#ifndef WIN32
+#ifndef _WIN32
  /*
   * See if the PPD file is available locally...
   */
@@ -309,7 +310,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
       }
     }
   }
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
  /*
   * Try finding a printer URI for this printer...

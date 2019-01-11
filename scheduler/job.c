@@ -1,10 +1,11 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -2782,8 +2783,6 @@ cupsdStopAllJobs(
   cupsd_job_t	*job;			/* Current job */
 
 
-  DEBUG_puts("cupsdStopAllJobs()");
-
   for (job = (cupsd_job_t *)cupsArrayFirst(PrintingJobs);
        job;
        job = (cupsd_job_t *)cupsArrayNext(PrintingJobs))
@@ -3335,8 +3334,14 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	           job_state == IPP_JOB_COMPLETED)
 	  {
 	    job_state = IPP_JOB_ABORTED;
-	    message   = "Job aborted due to backend errors; please consult "
-	                "the error_log file for details.";
+
+	    if (ErrorLog)
+	    {
+	      snprintf(buffer, sizeof(buffer), "Job aborted due to backend errors; please consult the %s file for details.", ErrorLog);
+	      message = buffer;
+            }
+            else
+	      message = "Job aborted due to backend errors.";
 
 	    ippSetString(job->attrs, &job->reasons, 0, "aborted-by-system");
 	  }
@@ -3344,8 +3349,14 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
           {
             job_state     = IPP_JOB_PENDING;
 	    printer_state = IPP_PRINTER_STOPPED;
-	    message       = "Printer stopped due to backend errors; please "
-			    "consult the error_log file for details.";
+
+	    if (ErrorLog)
+	    {
+	      snprintf(buffer, sizeof(buffer), "Printer stopped due to backend errors; please consult the %s file for details.", ErrorLog);
+	      message = buffer;
+            }
+            else
+	      message = "Printer stopped due to backend errors.";
 
 	    ippSetString(job->attrs, &job->reasons, 0, "none");
 	  }
@@ -3383,15 +3394,20 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 
 	      ippSetString(job->attrs, &job->reasons, 0,
 			   "job-hold-until-specified");
-	      message = "Job held indefinitely due to backend errors; please "
-			"consult the error_log file for details.";
+
+	      if (ErrorLog)
+	      {
+		snprintf(buffer, sizeof(buffer), "Job held indefinitely due to backend errors; please consult the %s file for details.", ErrorLog);
+		message = buffer;
+	      }
+	      else
+		message = "Job held indefinitely due to backend errors.";
             }
             else if (!strcmp(reason, "account-info-needed"))
             {
 	      cupsdSetJobHoldUntil(job, "indefinite", 0);
 
-	      message = "Job held indefinitely - account information is "
-	                "required.";
+	      message = "Job held indefinitely - account information is required.";
             }
             else if (!strcmp(reason, "account-closed"))
             {
@@ -3403,8 +3419,7 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
             {
 	      cupsdSetJobHoldUntil(job, "indefinite", 0);
 
-	      message = "Job held indefinitely - account limit has been "
-	                "reached.";
+	      message = "Job held indefinitely - account limit has been reached.";
 	    }
             else
             {
@@ -3423,8 +3438,14 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	  */
 
 	  printer_state = IPP_PRINTER_STOPPED;
-	  message       = "Printer stopped due to backend errors; please "
-			  "consult the error_log file for details.";
+
+	  if (ErrorLog)
+	  {
+	    snprintf(buffer, sizeof(buffer), "Printer stopped due to backend errors; please consult the %s file for details.", ErrorLog);
+	    message = buffer;
+	  }
+	  else
+	    message = "Printer stopped due to backend errors.";
 
 	  if (job_state == IPP_JOB_COMPLETED)
 	  {
@@ -3521,8 +3542,14 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
     if (job_state == IPP_JOB_COMPLETED)
     {
       job_state = IPP_JOB_STOPPED;
-      message   = "Job stopped due to filter errors; please consult the "
-		  "error_log file for details.";
+
+      if (ErrorLog)
+      {
+	snprintf(buffer, sizeof(buffer), "Job stopped due to filter errors; please consult the %s file for details.", ErrorLog);
+	message = buffer;
+      }
+      else
+	message = "Job stopped due to filter errors.";
 
       if (WIFSIGNALED(job->status))
 	ippSetString(job->attrs, &job->reasons, 0, "cups-filter-crashed");
@@ -3813,6 +3840,20 @@ get_options(cupsd_job_t *job,		/* I - Job */
 
     for (i = num_pwgppds, pwgppd = pwgppds; i > 0; i --, pwgppd ++)
       cupsdLogJob(job, CUPSD_LOG_DEBUG2, "After mapping finishings %s=%s", pwgppd->name, pwgppd->value);
+  }
+
+ /*
+  * Map page-delivery values...
+  */
+
+  if ((attr = ippFindAttribute(job->attrs, "page-delivery", IPP_TAG_KEYWORD)) != NULL && !ippFindAttribute(job->attrs, "outputorder", IPP_TAG_ZERO))
+  {
+    const char *page_delivery = ippGetString(attr, 0, NULL);
+
+    if (!strncmp(page_delivery, "same-order", 10))
+      num_pwgppds = cupsAddOption("OutputOrder", "Normal", num_pwgppds, &pwgppds);
+    else if (!strncmp(page_delivery, "reverse-order", 13))
+      num_pwgppds = cupsAddOption("OutputOrder", "Reverse", num_pwgppds, &pwgppds);
   }
 
  /*
@@ -4779,6 +4820,18 @@ start_job(cupsd_job_t     *job,		/* I - Job ID */
   job->profile  = cupsdCreateProfile(job->id, 0);
   job->bprofile = cupsdCreateProfile(job->id, 1);
 
+#ifdef HAVE_SANDBOX_H
+  if ((!job->profile || !job->bprofile) && UseSandboxing && Sandboxing != CUPSD_SANDBOXING_OFF)
+  {
+   /*
+    * Failure to create the sandbox profile means something really bad has
+    * happened and we need to shutdown immediately.
+    */
+
+    return;
+  }
+#endif /* HAVE_SANDBOX_H */
+
  /*
   * Create the status pipes and buffer...
   */
@@ -5104,8 +5157,10 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 
             if (cancel_after)
 	      job->cancel_time = time(NULL) + ippGetInteger(cancel_after, 0);
-	    else
+	    else if (MaxJobTime > 0)
 	      job->cancel_time = time(NULL) + MaxJobTime;
+	    else
+	      job->cancel_time = 0;
 	  }
         }
       }

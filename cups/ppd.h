@@ -56,6 +56,20 @@ extern "C" {
  * Types and structures...
  */
 
+typedef int (*cups_interpret_cb_t)(cups_page_header2_t *header, int preferred_bits);
+					/**** cupsRasterInterpretPPD callback function
+					 *
+					 * This function is called by
+					 * @link cupsRasterInterpretPPD@ to
+					 * validate (and update, as needed)
+					 * the page header attributes. The
+					 * "preferred_bits" argument provides
+					 * the value of the
+					 * @code cupsPreferredBitsPerColor@
+					 * key from the PostScript page device
+					 * dictionary and is 0 if undefined.
+					 ****/
+
 typedef enum ppd_ui_e			/**** UI Types @deprecated@ ****/
 {
   PPD_UI_BOOLEAN,			/* True or False option */
@@ -109,6 +123,8 @@ typedef enum ppd_status_e		/**** Status Codes @deprecated@ ****/
   PPD_MISSING_OPTION_KEYWORD,		/* Missing option keyword */
   PPD_BAD_VALUE,			/* Bad value string */
   PPD_MISSING_CLOSE_GROUP,		/* Missing CloseGroup */
+  PPD_BAD_CLOSE_UI,			/* Bad CloseUI/JCLCloseUI */
+  PPD_MISSING_CLOSE_UI,			/* Missing CloseUI/JCLCloseUI */
   PPD_MAX_STATUS			/* @private@ */
 } ppd_status_t;
 

@@ -5,11 +5,9 @@
 	<key>Label</key>
 	<string>org.cups.cupsd</string>
 	<key>ProcessType</key>
-	<string>Adaptive</string>
+	<string>Standard</string>
 	<key>EnableTransactions</key>
 	<true/>
-	<key>EnablePressuredExit</key>
-	<false/>
 	<key>ExitTimeOut</key>
 	<integer>60</integer>
 	<key>KeepAlive</key>

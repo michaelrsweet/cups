@@ -1,7 +1,7 @@
 /*
  * Administration utility API definitions for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 2001-2007 by Easy Software Products.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -12,7 +12,16 @@
  * Include necessary headers...
  */
 
+#include "cups-private.h"
+#include "debug-internal.h"
+#include "ppd.h"
 #include "adminutil.h"
+#include <fcntl.h>
+#include <sys/stat.h>
+#ifndef _WIN32
+#  include <unistd.h>
+#  include <sys/wait.h>
+#endif /* !_WIN32 */
 
 
 /*
@@ -30,10 +39,6 @@ cupsAdminCreateWindowsPPD(
     char       *buffer,			/* I - Filename buffer */
     int        bufsize)			/* I - Size of filename buffer */
 {
- /*
-  * Range check the input...
-  */
-
   (void)http;
   (void)dest;
   (void)bufsize;

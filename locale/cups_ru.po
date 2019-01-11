@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/apple/cups/issues\n"
-"POT-Creation-Date: 2018-03-19 18:43-0400\n"
+"POT-Creation-Date: 2018-12-06 14:58-0500\n"
 "PO-Revision-Date: 2015-01-28 12:00-0800\n"
 "Last-Translator: Aleksandr Proklov\n"
 "Language-Team: PuppyRus Linux Team\n"
@@ -129,12 +129,6 @@ msgid ""
 msgstr ""
 "\n"
 "    ПОДРОБНЫЕ РЕЗУЛЬТАТЫ ТЕСТА СООТВЕТСТВИЯ"
-
-msgid "                          Ignore specific warnings."
-msgstr "                Игнорировать конкретные предупреждения"
-
-msgid "                          Issue warnings instead of errors."
-msgstr "                     Выдавать предупреждения вместо ошибки"
 
 msgid "                REF: Page 15, section 3.1."
 msgstr "                REF: Стр. 15, раздел 3.1."
@@ -314,15 +308,6 @@ msgid ""
 msgstr ""
 "\tWARN\tShortNickName требуется спецификацией PPD 4.3.\n"
 "                REF: Стр. 64-65, раздел 5.3."
-
-msgid "       cupsaddsmb [options] -a"
-msgstr "\tcupsaddsmb [options] -a"
-
-msgid "       cupstestdsc [options] -"
-msgstr "\tcupstestdsc [options] -"
-
-msgid "       program | cupstestppd [options] -"
-msgstr "\tprogram | cupstestppd [options] -"
 
 #, c-format
 msgid ""
@@ -785,156 +770,14 @@ msgstr "\t**FAIL**  Не удается открыть PPD-файл – %s в с
 msgid "    %d ERRORS FOUND"
 msgstr "    ОБНАРУЖЕНО ОШИБОК: %d"
 
-msgid "    -h       Show program usage"
-msgstr "    -h       Показать справку по использованию программы"
-
-#, c-format
-msgid ""
-"    Bad %%%%BoundingBox: on line %d.\n"
-"        REF: Page 39, %%%%BoundingBox:"
-msgstr ""
-"    Неверный %%%%BoundingBox: в строке %d\n"
-"        REF: Стр. 39, %%%%BoundingBox:"
-
-#, c-format
-msgid ""
-"    Bad %%%%Page: on line %d.\n"
-"        REF: Page 53, %%%%Page:"
-msgstr ""
-"    Неверная %%%%Page: в строке %d\n"
-"        REF: Стр. 53, %%%%Page:"
-
-#, c-format
-msgid ""
-"    Bad %%%%Pages: on line %d.\n"
-"        REF: Page 43, %%%%Pages:"
-msgstr ""
-"    Неверная %%%%Pages: в строке %d\n"
-"        REF: Стр. 43, %%%%Pages:"
-
-#, c-format
-msgid ""
-"    Line %d is longer than 255 characters (%d).\n"
-"        REF: Page 25, Line Length"
-msgstr ""
-"    Длина строки %d больше 255 символов (%d)\n"
-"        REF: Стр. 25, Длина строки "
-
-msgid ""
-"    Missing %!PS-Adobe-3.0 on first line.\n"
-"        REF: Page 17, 3.1 Conforming Documents"
-msgstr ""
-"    %!PS-Adobe-3.0 отсутствует в первой строке.\n"
-"        REF: Стр. 17, 3.1 Соответствующие документы"
-
-#, c-format
-msgid "    Missing %%EndComments comment.        REF: Page 41, %%EndComments"
-msgstr ""
-
-#, c-format
-msgid ""
-"    Missing or bad %%BoundingBox: comment.\n"
-"        REF: Page 39, %%BoundingBox:"
-msgstr ""
-"    Отсутствует или неверный %%BoundingBox: комментарий.\n"
-"        REF: Стр. 39, %%BoundingBox:"
-
-#, c-format
-msgid ""
-"    Missing or bad %%Page: comments.\n"
-"        REF: Page 53, %%Page:"
-msgstr ""
-"    Отсутствует или неверная %%Page: комментарий.\n"
-"        REF: Стр. 53, %%Page:"
-
-#, c-format
-msgid ""
-"    Missing or bad %%Pages: comment.\n"
-"        REF: Page 43, %%Pages:"
-msgstr ""
-"    Отсутствуют или неверные %%Pages:  комментарий.\n"
-"        REF: Стр. 43, %%Pages:"
-
 msgid "    NO ERRORS FOUND"
 msgstr "    ОШИБОК НЕ ОБНАРУЖЕНО"
-
-#, c-format
-msgid "    Saw %d lines that exceeded 255 characters."
-msgstr "\tНайдено %d строк, длина которых превышает 255 символов."
-
-#, c-format
-msgid "    Too many %%BeginDocument comments."
-msgstr "\tСлишком много комментариев %%BeginDocument"
-
-#, c-format
-msgid "    Too many %%EndDocument comments."
-msgstr "\tСлишком много комментариев %%EndDocument"
-
-msgid "    Warning: file contains binary data."
-msgstr "\tWARNING: файл содержит бинарные данные."
-
-#, c-format
-msgid "    Warning: no %%EndComments comment in file."
-msgstr "    WARNING: нет комментария %%EndComments в файле."
-
-#, c-format
-msgid "    Warning: obsolete DSC version %.1f in file."
-msgstr "    WARNING: устаревшая версия DSC %.1f в файле."
-
-msgid "  ! expression            Unary NOT of expression."
-msgstr "  ! expression            Логическое NOT для выражения."
-
-msgid "  ( expressions )         Group expressions."
-msgstr "  ( expressions )         Группа выражений."
-
-msgid "  --[no-]debug-logging    Turn debug logging on/off."
-msgstr "  --[no-]debug-logging    Вкл./откл. ведение журнала."
-
-msgid "  --[no-]remote-admin     Turn remote administration on/off."
-msgstr "  --[no-]remote-admin     Вкл./откл. удаленное администрирование."
-
-msgid "  --[no-]remote-any       Allow/prevent access from the Internet."
-msgstr "  --[no-]remote-any       Разрешается/запрещается доступ из Интернет."
-
-msgid "  --[no-]share-printers   Turn printer sharing on/off."
-msgstr ""
-"  --[no-]share-printers   Вкл./откл. совместное использование принтеров."
-
-msgid "  --[no-]user-cancel-any  Allow/prevent users to cancel any job."
-msgstr ""
-"  --[no-]user-cancel-any  Пользователям разрешается/запрещается отменять "
-"задания."
 
 msgid "  --cr                    End lines with CR (Mac OS 9)."
 msgstr "  --cr                    Строки заканчиваются на CR (Mac OS 9)."
 
 msgid "  --crlf                  End lines with CR + LF (Windows)."
 msgstr "  --crlf                  Строки заканчиваются на CR + LF (Windows)."
-
-msgid "  --domain regex          Match domain to regular expression."
-msgstr "  --domain regex          Искать домен по регулярному выражению."
-
-msgid ""
-"  --exec utility [argument ...] ;\n"
-"                          Execute program if true."
-msgstr ""
-"  --exec utility [argument ...] ;\n"
-"                          Выполнить программу."
-
-msgid "  --false                 Always false."
-msgstr "  --false                 Всегда Ложь."
-
-msgid "  --help                  Show help."
-msgstr "  --help                  Показать справку."
-
-msgid "  --help                  Show this help."
-msgstr "  --help                  Показать эту справку."
-
-msgid "  --host regex            Match hostname to regular expression."
-msgstr "  --host regex            Найти hostname по регулярному выражению."
-
-msgid "  --ippserver filename    Produce ippserver attribute file."
-msgstr ""
 
 msgid "  --lf                    End lines with LF (UNIX/Linux/macOS)."
 msgstr ""
@@ -943,158 +786,20 @@ msgid "  --list-filters          List filters that will be used."
 msgstr ""
 "  --list-filters          Список фильтров которые должны использоваться."
 
-msgid "  --local                 True if service is local."
-msgstr "  --local                 \"Истина\" если сервис локальный."
-
-msgid "  --ls                    List attributes."
-msgstr "  --ls                    Список атрибутов."
-
-msgid "  --name regex            Match service name to regular expression."
-msgstr "  --name regex            Найти имя по регулярному выражению."
-
-msgid "  --not expression        Unary NOT of expression."
-msgstr "  --not expression        Логическое NOT для выражения."
-
-msgid "  --path regex            Match resource path to regular expression."
-msgstr ""
-"  --path regex            Найти путь к ресурсу по регулярному выражению."
-
-msgid "  --port number[-number]  Match port to number or range."
-msgstr ""
-"  --port number[-number]  Найти номер порта по номеру или диапазону портов."
-
-msgid "  --print                 Print URI if true."
-msgstr "  --print                 Печать URI при соответствии."
-
-msgid "  --print-name            Print service name if true."
-msgstr "  --print-name            Печать имени сервиса если соответствует."
-
-msgid "  --quiet                 Quietly report match via exit code."
-msgstr ""
-"  --quiet                 Кратко уведомлять о совпадении через код выхода."
-
-msgid "  --remote                True if service is remote."
-msgstr "  --remote                \"Истина\" если сервис удаленный."
-
-msgid ""
-"  --stop-after-include-error\n"
-"                          Stop tests after a failed INCLUDE."
-msgstr ""
-"  --stop-after-include-error\n"
-"                          Останавливать проверку после ошибки INCLUDE."
-
-msgid "  --true                  Always true."
-msgstr "  --true                  Всегда Истина."
-
-msgid "  --txt key               True if the TXT record contains the key."
-msgstr "  --txt key               \"Истина\" если TXT запись содержит key."
-
-msgid "  --txt-* regex           Match TXT record key to regular expression."
-msgstr "  --txt-* regex           Найти запись TXT по регулярному выражению."
-
-msgid "  --uri regex             Match URI to regular expression."
-msgstr "  --uri regex             Найти URI по регулярному выражению."
-
-msgid "  --version               Show program version."
-msgstr "  --version               Показать версию программы."
-
-msgid "  --version               Show version."
-msgstr "  --version               Показать версию."
-
-msgid "  -4                      Connect using IPv4."
-msgstr "  -4                      Соединение используя IPv4."
-
-msgid "  -6                      Connect using IPv6."
-msgstr "  -6                      Соединение используя IPv6."
-
-msgid "  -C                      Send requests using chunking (default)."
-msgstr ""
-"  -C                      Передача запроса с использованием chunking (по "
-"умолчанию)"
-
 msgid "  -D                      Remove the input file when finished."
 msgstr "  -D                      Удалить входной файл после завершения."
 
 msgid "  -D name=value           Set named variable to value."
 msgstr "  -D name=value           Определение переменной."
 
-msgid "  -E                      Encrypt the connection."
-msgstr "  -E                      Подключение к серверу шифруется."
-
-msgid ""
-"  -E                      Test with encryption using HTTP Upgrade to TLS."
-msgstr ""
-
-msgid ""
-"  -F                      Run in the foreground but detach from console."
-msgstr ""
-"  -F                      Запускать с высоким приоритетом и отдельно от "
-"консоли."
-
-msgid "  -H samba-server         Use the named SAMBA server."
-msgstr "  -H samba-server         Использовать заданный сервер SAMBA."
-
-msgid "  -I                      Ignore errors."
-msgstr "  -I                      Игнорировать ошибки."
-
 msgid "  -I include-dir          Add include directory to search path."
 msgstr "  -I include-dir          Добавить каталог include в путь поиска."
-
-msgid "  -I {filename,filters,none,profiles}"
-msgstr "  -I {filename,filters,none,profiles}"
-
-msgid "  -L                      Send requests using content-length."
-msgstr ""
-"  -L                      Передача запроса с использованием content-length."
-
-msgid ""
-"  -P filename.plist       Produce XML plist to a file and test report to "
-"standard output."
-msgstr ""
-"  -P filename.plist       Вывести XML plist в файл и проверить результат на "
-"стандартном выводе."
 
 msgid "  -P filename.ppd         Set PPD file."
 msgstr "  -P filename.ppd         Задать PPD-файл."
 
-msgid "  -P number[-number]      Match port to number or range."
-msgstr ""
-"  -P number[-number]      Найти номер порта по номеру или диапазону портов."
-
-msgid "  -R root-directory       Set alternate root."
-msgstr "  -R root-directory       Задать корневой каталог."
-
-msgid "  -S                      Test with encryption using HTTPS."
-msgstr ""
-
-msgid "  -T seconds              Set the browse timeout in seconds."
-msgstr "  -T seconds              Задать время ожидания в секундах."
-
-msgid "  -T seconds              Set the receive/send timeout in seconds."
-msgstr ""
-"  -T seconds              Задать время ожидания приема/передачи в секундах."
-
 msgid "  -U username             Specify username."
 msgstr "  -U username             Указание имени пользователя."
-
-msgid "  -V version              Set default IPP version."
-msgstr "  -V version              Задать версию IPP по умолчанию."
-
-msgid ""
-"  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
-"translations}"
-msgstr ""
-"  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
-"translations}"
-
-msgid "  -X                      Produce XML plist instead of plain text."
-msgstr "  -X                      Выводить XML plist вместо обычного текста."
-
-msgid "  -a                      Export all printers."
-msgstr "  -a                      Экспорт всех принтеров."
-
-msgid "  -c                      Produce CSV output."
-msgstr "  -c                      Вывод в формате CSV."
 
 msgid "  -c catalog.po           Load the specified message catalog."
 msgstr "  -c catalog.po           Загружается указанный каталог сообщений."
@@ -1102,41 +807,14 @@ msgstr "  -c catalog.po           Загружается указанный ка
 msgid "  -c cups-files.conf      Set cups-files.conf file to use."
 msgstr "  -c cups-files.conf      Использовать заданный cups-files.conf"
 
-msgid "  -c cupsd.conf           Set cupsd.conf file to use."
-msgstr "  -c cupsd.conf           Использовать заданный cupsd.conf"
-
-msgid "  -d name=value           Set named variable to value."
-msgstr "  -d name=value           Указанной переменной присваивается значение."
-
 msgid "  -d output-dir           Specify the output directory."
 msgstr "  -d output-dir           Задать выходной каталог."
 
 msgid "  -d printer              Use the named printer."
 msgstr "  -d printer              Использовать заданный принтер."
 
-msgid "  -d regex                Match domain to regular expression."
-msgstr "  -d regex                Искать домен по регулярному выражению."
-
 msgid "  -e                      Use every filter from the PPD file."
 msgstr "  -e                      Использовать каждый фильтр из PPD-файла."
-
-msgid "  -f                      Run in the foreground."
-msgstr "  -f                      Запускать с высоким приоритетом."
-
-msgid "  -f filename             Set default request filename."
-msgstr "  -f filename             Задать имя файла по умолчанию."
-
-msgid "  -h                      Show this usage message."
-msgstr "  -h                      Show this usage message."
-
-msgid "  -h                      Validate HTTP response headers."
-msgstr ""
-
-msgid "  -h regex                Match hostname to regular expression."
-msgstr "  -h regex                Найти hostname по регулярному выражению."
-
-msgid "  -h server[:port]        Specify server address."
-msgstr "  -h server[:port]        Задать адрес и порт сервера."
 
 msgid "  -i mime/type            Set input MIME type (otherwise auto-typed)."
 msgstr ""
@@ -1144,26 +822,11 @@ msgstr ""
 "автоопред.)."
 
 msgid ""
-"  -i seconds              Repeat the last file with the given time interval."
-msgstr ""
-"  -i seconds              Повтор последнего файла через заданный интервал в "
-"сек."
-
-msgid ""
 "  -j job-id[,N]           Filter file N from the specified job (default is "
 "file 1)."
 msgstr ""
 "  -j job-id[,N]           Из указанного задания выбирается файл N (по "
 "умолчанию файл 1)."
-
-msgid "  -l                      List attributes."
-msgstr "  -l                      Список атрибутов."
-
-msgid "  -l                      Produce plain text output."
-msgstr "  -l                      Вывод в формате простого текста."
-
-msgid "  -l                      Run cupsd on demand."
-msgstr "  -l                      Запускать cupsd по запросу."
 
 msgid "  -l lang[,lang,...]      Specify the output language(s) (locale)."
 msgstr "  -l lang[,lang,...]      Задать выходной язык(и) (locale)."
@@ -1182,13 +845,6 @@ msgid "  -n copies               Set number of copies."
 msgstr "  -n copies               Указать количество копий."
 
 msgid ""
-"  -n count                Repeat the last file the given number of times."
-msgstr "  -n count                Повтор последнего файла заданное число раз."
-
-msgid "  -n regex                Match service name to regular expression."
-msgstr "  -n regex                Найти имя по регулярному выражению."
-
-msgid ""
 "  -o filename.drv         Set driver information file (otherwise ppdi.drv)."
 msgstr ""
 "  -o filename.drv         Указать файл с информацией о драйвере (иначе ppdi."
@@ -1200,42 +856,11 @@ msgstr "  -o filename.ppd[.gz]    Задать выходной файл (ина
 msgid "  -o name=value           Set option(s)."
 msgstr "  -o name=value           Задать параметры."
 
-msgid "  -p                      Print URI if true."
-msgstr "  -p                      Печать URI при соответствии."
-
 msgid "  -p filename.ppd         Set PPD file."
 msgstr "  -p filename.ppd         Задать PPD-файл."
 
-msgid "  -q                      Quietly report match via exit code."
-msgstr ""
-"  -q                      Кратко уведомлять о совпадении через код выхода."
-
-msgid "  -q                      Run silently."
-msgstr "  -q                      Команда выполняется в «тихом» режиме."
-
-msgid "  -r                      True if service is remote."
-msgstr "  -r                      \"Истина\" если сервис удаленный."
-
-msgid "  -r                      Use 'relaxed' open mode."
-msgstr "  -r                      Используется открытый режим."
-
-msgid "  -s                      Print service name if true."
-msgstr "  -s                      Печать имени сервиса если соответствует."
-
-msgid "  -s cups-files.conf      Set cups-files.conf file to use."
-msgstr ""
-
-msgid "  -t                      Produce a test report."
-msgstr "  -t                      Создать тестовый отчет."
-
 msgid "  -t                      Test PPDs instead of generating them."
 msgstr "  -t                      Тест PPDs вместо его создания."
-
-msgid "  -t                      Test the configuration file."
-msgstr "  -t                      Проверка файла конфигурации."
-
-msgid "  -t key                  True if the TXT record contains the key."
-msgstr "  -t key                  \"Истина\" если TXT запись содержит key."
 
 msgid "  -t title                Set title."
 msgstr "  -t title                Задать заголовок."
@@ -1243,102 +868,20 @@ msgstr "  -t title                Задать заголовок."
 msgid "  -u                      Remove the PPD file when finished."
 msgstr "  -u                      Удалить PPD-файл после завершения."
 
-msgid "  -u regex                Match URI to regular expression."
-msgstr "  -u regex                Найти URI по регулярному выражению."
-
 msgid "  -v                      Be verbose."
 msgstr "  -v                      Подробный вывод лога."
 
-msgid "  -vv                     Be very verbose."
-msgstr "  -vv                     Очень подробный вывод лога."
-
-msgid ""
-"  -x utility [argument ...] ;\n"
-"                          Execute program if true."
-msgstr ""
-"  -x utility [argument ...] ;\n"
-"                          Выполнить программу."
-
 msgid "  -z                      Compress PPD files using GNU zip."
 msgstr "  -z                      Сжимать PPD-файл используя GNU zip."
-
-msgid "  IPPFIND_SERVICE_DOMAIN  Domain name"
-msgstr "  IPPFIND_SERVICE_DOMAIN  Имя домена"
-
-msgid ""
-"  IPPFIND_SERVICE_HOSTNAME\n"
-"                          Fully-qualified domain name"
-msgstr ""
-"  IPPFIND_SERVICE_HOSTNAME\n"
-"                          Полный путь с учетом домена"
-
-msgid "  IPPFIND_SERVICE_NAME    Service instance name"
-msgstr "  IPPFIND_SERVICE_NAME    Имя сервиса"
-
-msgid "  IPPFIND_SERVICE_PORT    Port number"
-msgstr "  IPPFIND_SERVICE_PORT    Номер порта"
-
-msgid "  IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
-msgstr "  IPPFIND_SERVICE_REGTYPE Тип регистрации DNS-SD"
-
-msgid "  IPPFIND_SERVICE_SCHEME  URI scheme"
-msgstr "  IPPFIND_SERVICE_SCHEME  Схема URI"
-
-msgid "  IPPFIND_SERVICE_URI     URI"
-msgstr "  IPPFIND_SERVICE_URI     URI"
-
-msgid "  IPPFIND_TXT_*           Value of TXT record key"
-msgstr "  IPPFIND_TXT_*           Значение TXT записи key"
-
-msgid ""
-"  expression --and expression\n"
-"                          Logical AND."
-msgstr ""
-"  expression --and expression\n"
-"                          Логическое И."
-
-msgid ""
-"  expression --or expression\n"
-"                          Logical OR."
-msgstr ""
-"  expression --or expression\n"
-"                          Логическое ИЛИ."
-
-msgid "  expression expression   Logical AND."
-msgstr "  expression expression   Логическое И."
-
-msgid "  {service_domain}        Domain name"
-msgstr "  {service_domain}        Имя домена"
-
-msgid "  {service_hostname}      Fully-qualified domain name"
-msgstr "  {service_hostname}      Полный путь с учетом домена"
-
-msgid "  {service_name}          Service instance name"
-msgstr "  {service_name}          Имя сервиса"
-
-msgid "  {service_port}          Port number"
-msgstr "  {service_port}          Номер порта"
-
-msgid "  {service_regtype}       DNS-SD registration type"
-msgstr "  {service_regtype}       Тип регистрации DNS-SD"
-
-msgid "  {service_scheme}        URI scheme"
-msgstr "  {service_scheme}        Схема URI"
-
-msgid "  {service_uri}           URI"
-msgstr "  {service_uri}           URI"
-
-msgid "  {txt_*}                 Value of TXT record key"
-msgstr "  {txt_*}                 Значение TXT записи key"
-
-msgid "  {}                      URI"
-msgstr "  {}                      URI"
 
 msgid " FAIL"
 msgstr " FAIL"
 
 msgid " PASS"
 msgstr " PASS"
+
+msgid "! expression            Unary NOT of expression"
+msgstr ""
 
 #, c-format
 msgid "\"%s\": Bad URI value \"%s\" - %s (RFC 8011 section 5.1.6)."
@@ -1440,6 +983,12 @@ msgid ""
 msgstr ""
 
 #, c-format
+msgid ""
+"\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section "
+"8.1)."
+msgstr ""
+
+#, c-format
 msgid "\"%s\": Bad name value \"%s\" - bad length %d (RFC 8011 section 5.1.3)."
 msgstr ""
 
@@ -1487,6 +1036,12 @@ msgstr ""
 #, c-format
 msgid ""
 "\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."
+msgstr ""
+
+#, c-format
+msgid ""
+"\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section "
+"8.3)."
 msgstr ""
 
 #, c-format
@@ -1853,6 +1408,10 @@ msgid "%s: Unable to open PPD file: %s on line %d."
 msgstr "%s: Не удается открыть PPD-файл: %s в строке %d."
 
 #, c-format
+msgid "%s: Unable to query printer: %s"
+msgstr ""
+
+#, c-format
 msgid "%s: Unable to read MIME database from \"%s\" or \"%s\"."
 msgstr "%s: Не удается прочитать базу данных MIME из \"%s\" или \"%s\"."
 
@@ -1912,6 +1471,136 @@ msgstr "%s: Внимание - параметр формы пропущен."
 msgid "%s: Warning - mode option ignored."
 msgstr "%s: Внимание - параметр режима пропущен."
 
+msgid "( expressions )         Group expressions"
+msgstr ""
+
+msgid "-                       Cancel all jobs"
+msgstr ""
+
+msgid "-# num-copies           Specify the number of copies to print"
+msgstr ""
+
+msgid "--[no-]debug-logging    Turn debug logging on/off"
+msgstr ""
+
+msgid "--[no-]remote-admin     Turn remote administration on/off"
+msgstr ""
+
+msgid "--[no-]remote-any       Allow/prevent access from the Internet"
+msgstr ""
+
+msgid "--[no-]share-printers   Turn printer sharing on/off"
+msgstr ""
+
+msgid "--[no-]user-cancel-any  Allow/prevent users to cancel any job"
+msgstr ""
+
+msgid ""
+"--device-id device-id   Show models matching the given IEEE 1284 device ID"
+msgstr ""
+
+msgid "--domain regex          Match domain to regular expression"
+msgstr ""
+
+msgid ""
+"--exclude-schemes scheme-list\n"
+"                        Exclude the specified URI schemes"
+msgstr ""
+
+msgid ""
+"--exec utility [argument ...] ;\n"
+"                        Execute program if true"
+msgstr ""
+
+msgid "--false                 Always false"
+msgstr ""
+
+msgid "--hold                  Hold new jobs"
+msgstr ""
+
+msgid "--host regex            Match hostname to regular expression"
+msgstr ""
+
+msgid ""
+"--include-schemes scheme-list\n"
+"                        Include only the specified URI schemes"
+msgstr ""
+
+msgid "--ippserver filename    Produce ippserver attribute file"
+msgstr ""
+
+msgid "--language locale       Show models matching the given locale"
+msgstr ""
+
+msgid "--local                 True if service is local"
+msgstr ""
+
+msgid "--ls                    List attributes"
+msgstr ""
+
+msgid ""
+"--make-and-model name   Show models matching the given make and model name"
+msgstr ""
+
+msgid "--name regex            Match service name to regular expression"
+msgstr ""
+
+msgid "--not expression        Unary NOT of expression"
+msgstr ""
+
+msgid "--path regex            Match resource path to regular expression"
+msgstr ""
+
+msgid "--port number[-number]  Match port to number or range"
+msgstr ""
+
+msgid "--print                 Print URI if true"
+msgstr ""
+
+msgid "--print-name            Print service name if true"
+msgstr ""
+
+msgid ""
+"--product name          Show models matching the given PostScript product"
+msgstr ""
+
+msgid "--quiet                 Quietly report match via exit code"
+msgstr ""
+
+msgid "--release               Release previously held jobs"
+msgstr ""
+
+msgid "--remote                True if service is remote"
+msgstr ""
+
+msgid ""
+"--stop-after-include-error\n"
+"                        Stop tests after a failed INCLUDE"
+msgstr ""
+
+msgid ""
+"--timeout seconds       Specify the maximum number of seconds to discover "
+"devices"
+msgstr ""
+
+msgid "--true                  Always true"
+msgstr ""
+
+msgid "--txt key               True if the TXT record contains the key"
+msgstr ""
+
+msgid "--txt-* regex           Match TXT record key to regular expression"
+msgstr ""
+
+msgid "--uri regex             Match URI to regular expression"
+msgstr ""
+
+msgid "--version               Show program version"
+msgstr ""
+
+msgid "--version               Show version"
+msgstr ""
+
 msgid "-1"
 msgstr "-1"
 
@@ -1969,6 +1658,9 @@ msgstr "-35"
 msgid "-4"
 msgstr "-4"
 
+msgid "-4                      Connect using IPv4"
+msgstr ""
+
 msgid "-40"
 msgstr "-40"
 
@@ -1986,6 +1678,9 @@ msgstr "-55"
 
 msgid "-6"
 msgstr "-6"
+
+msgid "-6                      Connect using IPv6"
+msgstr ""
 
 msgid "-60"
 msgstr "-60"
@@ -2019,6 +1714,434 @@ msgstr "-90"
 
 msgid "-95"
 msgstr "-95"
+
+msgid "-C                      Send requests using chunking (default)"
+msgstr ""
+
+msgid "-D description          Specify the textual description of the printer"
+msgstr ""
+
+msgid ""
+"-E                      Enable and accept jobs on the printer (after -p)"
+msgstr ""
+
+msgid "-E                      Encrypt the connection to the server"
+msgstr ""
+
+msgid "-E                      Test with encryption using HTTP Upgrade to TLS"
+msgstr ""
+
+msgid "-F                      Run in the foreground but detach from console."
+msgstr ""
+
+msgid "-H                      Show the default server and port"
+msgstr ""
+
+msgid "-H HH:MM                Hold the job until the specified UTC time"
+msgstr ""
+
+msgid "-H hold                 Hold the job until released/resumed"
+msgstr ""
+
+msgid "-H immediate            Print the job as soon as possible"
+msgstr ""
+
+msgid "-H restart              Reprint the job"
+msgstr ""
+
+msgid "-H resume               Resume a held job"
+msgstr ""
+
+msgid "-H server[:port]        Connect to the named server and port"
+msgstr ""
+
+msgid "-I                      Ignore errors"
+msgstr ""
+
+msgid ""
+"-I {filename,filters,none,profiles}\n"
+"                          Ignore specific warnings"
+msgstr ""
+
+msgid "-L                      Send requests using content-length"
+msgstr ""
+
+msgid "-L location             Specify the textual location of the printer"
+msgstr ""
+
+msgid "-P destination          Show status for the specified destination"
+msgstr ""
+
+msgid "-P destination          Specify the destination"
+msgstr ""
+
+msgid ""
+"-P filename.plist       Produce XML plist to a file and test report to "
+"standard output"
+msgstr ""
+
+msgid "-P number[-number]      Match port to number or range"
+msgstr ""
+
+msgid "-P page-list            Specify a list of pages to print"
+msgstr ""
+
+msgid "-R                      Show the ranking of jobs"
+msgstr ""
+
+msgid "-R name-default         Remove the default value for the named option"
+msgstr ""
+
+msgid "-R root-directory       Set alternate root"
+msgstr ""
+
+msgid "-S                      Test with encryption using HTTPS"
+msgstr ""
+
+msgid "-T seconds              Set the browse timeout in seconds"
+msgstr ""
+
+msgid "-T seconds              Set the receive/send timeout in seconds"
+msgstr ""
+
+msgid "-T title                Specify the job title"
+msgstr ""
+
+msgid "-U username             Specify the username to use for authentication"
+msgstr ""
+
+msgid "-U username             Specify username to use for authentication"
+msgstr ""
+
+msgid "-V version              Set default IPP version"
+msgstr ""
+
+msgid "-W completed            Show completed jobs"
+msgstr ""
+
+msgid "-W not-completed        Show pending jobs"
+msgstr ""
+
+msgid ""
+"-W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
+"translations}\n"
+"                          Issue warnings instead of errors"
+msgstr ""
+
+msgid "-X                      Produce XML plist instead of plain text"
+msgstr ""
+
+msgid "-a                      Cancel all jobs"
+msgstr ""
+
+msgid "-a                      Show jobs on all destinations"
+msgstr ""
+
+msgid "-a [destination(s)]     Show the accepting state of destinations"
+msgstr ""
+
+msgid "-c                      Make a copy of the print file(s)"
+msgstr ""
+
+msgid "-c                      Produce CSV output"
+msgstr ""
+
+msgid "-c [class(es)]          Show classes and their member printers"
+msgstr ""
+
+msgid "-c class                Add the named destination to a class"
+msgstr ""
+
+msgid "-c cupsd.conf           Set cupsd.conf file to use."
+msgstr ""
+
+msgid "-d                      Show the default destination"
+msgstr ""
+
+msgid "-d destination          Set default destination"
+msgstr ""
+
+msgid "-d destination          Set the named destination as the server default"
+msgstr ""
+
+msgid "-d name=value           Set named variable to value"
+msgstr ""
+
+msgid "-d regex                Match domain to regular expression"
+msgstr ""
+
+msgid "-e                      Show available destinations on the network"
+msgstr ""
+
+msgid "-f                      Run in the foreground."
+msgstr ""
+
+msgid "-f filename             Set default request filename"
+msgstr ""
+
+msgid "-h                      Show this usage message."
+msgstr ""
+
+msgid "-h                      Validate HTTP response headers"
+msgstr ""
+
+msgid "-h regex                Match hostname to regular expression"
+msgstr ""
+
+msgid "-h server[:port]        Connect to the named server and port"
+msgstr ""
+
+msgid "-i id                   Specify an existing job ID to modify"
+msgstr ""
+
+msgid "-i ppd-file             Specify a PPD file for the printer"
+msgstr ""
+
+msgid ""
+"-i seconds              Repeat the last file with the given time interval"
+msgstr ""
+
+msgid "-l                      List attributes"
+msgstr ""
+
+msgid "-l                      Produce plain text output"
+msgstr ""
+
+msgid "-l                      Run cupsd on demand."
+msgstr ""
+
+msgid "-l                      Show supported options and values"
+msgstr ""
+
+msgid "-l                      Show verbose (long) output"
+msgstr ""
+
+msgid ""
+"-m                      Send an email notification when the job completes"
+msgstr ""
+
+msgid "-m                      Show models"
+msgstr ""
+
+msgid ""
+"-m everywhere           Specify the printer is compatible with IPP Everywhere"
+msgstr ""
+
+msgid ""
+"-m model                Specify a standard model/PPD file for the printer"
+msgstr ""
+
+msgid "-n count                Repeat the last file the given number of times"
+msgstr ""
+
+msgid "-n num-copies           Specify the number of copies to print"
+msgstr ""
+
+msgid "-n regex                Match service name to regular expression"
+msgstr ""
+
+msgid ""
+"-o Name=Value           Specify the default value for the named PPD option "
+msgstr ""
+
+msgid "-o [destination(s)]     Show jobs"
+msgstr ""
+
+msgid ""
+"-o cupsIPPSupplies=false\n"
+"                        Disable supply level reporting via IPP"
+msgstr ""
+
+msgid ""
+"-o cupsSNMPSupplies=false\n"
+"                        Disable supply level reporting via SNMP"
+msgstr ""
+
+msgid "-o job-k-limit=N        Specify the kilobyte limit for per-user quotas"
+msgstr ""
+
+msgid "-o job-page-limit=N     Specify the page limit for per-user quotas"
+msgstr ""
+
+msgid "-o job-quota-period=N   Specify the per-user quota period in seconds"
+msgstr ""
+
+msgid "-o job-sheets=standard  Print a banner page with the job"
+msgstr ""
+
+msgid "-o media=size           Specify the media size to use"
+msgstr ""
+
+msgid "-o name-default=value   Specify the default value for the named option"
+msgstr ""
+
+msgid "-o name[=value]         Set default option and value"
+msgstr ""
+
+msgid ""
+"-o number-up=N          Specify that input pages should be printed N-up (1, "
+"2, 4, 6, 9, and 16 are supported)"
+msgstr ""
+
+msgid "-o option[=value]       Specify a printer-specific option"
+msgstr ""
+
+msgid ""
+"-o orientation-requested=N\n"
+"                        Specify portrait (3) or landscape (4) orientation"
+msgstr ""
+
+msgid ""
+"-o print-quality=N      Specify the print quality - draft (3), normal (4), "
+"or best (5)"
+msgstr ""
+
+msgid ""
+"-o printer-error-policy=name\n"
+"                        Specify the printer error policy"
+msgstr ""
+
+msgid ""
+"-o printer-is-shared=true\n"
+"                        Share the printer"
+msgstr ""
+
+msgid ""
+"-o printer-op-policy=name\n"
+"                        Specify the printer operation policy"
+msgstr ""
+
+msgid "-o sides=one-sided      Specify 1-sided printing"
+msgstr ""
+
+msgid ""
+"-o sides=two-sided-long-edge\n"
+"                        Specify 2-sided portrait printing"
+msgstr ""
+
+msgid ""
+"-o sides=two-sided-short-edge\n"
+"                        Specify 2-sided landscape printing"
+msgstr ""
+
+msgid "-p                      Print URI if true"
+msgstr ""
+
+msgid "-p [printer(s)]         Show the processing state of destinations"
+msgstr ""
+
+msgid "-p destination          Specify a destination"
+msgstr ""
+
+msgid "-p destination          Specify/add the named destination"
+msgstr ""
+
+msgid "-q                      Quietly report match via exit code"
+msgstr ""
+
+msgid "-q                      Run silently"
+msgstr ""
+
+msgid "-q                      Specify the job should be held for printing"
+msgstr ""
+
+msgid "-q priority             Specify the priority from low (1) to high (100)"
+msgstr ""
+
+msgid "-r                      Remove the file(s) after submission"
+msgstr ""
+
+msgid "-r                      Show whether the CUPS server is running"
+msgstr ""
+
+msgid "-r                      True if service is remote"
+msgstr ""
+
+msgid "-r                      Use 'relaxed' open mode"
+msgstr ""
+
+msgid "-r class                Remove the named destination from a class"
+msgstr ""
+
+msgid "-r reason               Specify a reason message that others can see"
+msgstr ""
+
+msgid "-s                      Be silent"
+msgstr ""
+
+msgid "-s                      Print service name if true"
+msgstr ""
+
+msgid "-s                      Show a status summary"
+msgstr ""
+
+msgid "-s cups-files.conf      Set cups-files.conf file to use."
+msgstr ""
+
+msgid "-t                      Produce a test report"
+msgstr ""
+
+msgid "-t                      Show all status information"
+msgstr ""
+
+msgid "-t                      Test the configuration file."
+msgstr ""
+
+msgid "-t key                  True if the TXT record contains the key"
+msgstr ""
+
+msgid "-t title                Specify the job title"
+msgstr ""
+
+msgid ""
+"-u [user(s)]            Show jobs queued by the current or specified users"
+msgstr ""
+
+msgid "-u allow:all            Allow all users to print"
+msgstr ""
+
+msgid ""
+"-u allow:list           Allow the list of users or groups (@name) to print"
+msgstr ""
+
+msgid ""
+"-u deny:list            Prevent the list of users or groups (@name) to print"
+msgstr ""
+
+msgid "-u owner                Specify the owner to use for jobs"
+msgstr ""
+
+msgid "-u regex                Match URI to regular expression"
+msgstr ""
+
+msgid "-v                      Be verbose"
+msgstr ""
+
+msgid "-v                      Show devices"
+msgstr ""
+
+msgid "-v [printer(s)]         Show the devices for each destination"
+msgstr ""
+
+msgid "-v device-uri           Specify the device URI for the printer"
+msgstr ""
+
+msgid "-vv                     Be very verbose"
+msgstr ""
+
+msgid "-x                      Purge jobs rather than just canceling"
+msgstr ""
+
+msgid "-x destination          Remove default options for destination"
+msgstr ""
+
+msgid "-x destination          Remove the named destination"
+msgstr ""
+
+msgid ""
+"-x utility [argument ...] ;\n"
+"                        Execute program if true"
+msgstr ""
 
 msgid "/etc/cups/lpoptions file names default destination that does not exist."
 msgstr ""
@@ -2709,7 +2832,14 @@ msgid "Bad \"printer-id\" value %d."
 msgstr ""
 
 #, c-format
+msgid "Bad '%s' value."
+msgstr ""
+
+#, c-format
 msgid "Bad 'document-format' value \"%s\"."
+msgstr ""
+
+msgid "Bad CloseUI/JCLCloseUI"
 msgstr ""
 
 msgid "Bad NULL dests pointer"
@@ -2807,12 +2937,12 @@ msgid "Bad notify-recipient-uri \"%s\"."
 msgstr "Неверный notify-recipient-uri \"%s\"."
 
 #, c-format
-msgid "Bad number-up value %d."
-msgstr "Неверное значение number-up %d."
+msgid "Bad notify-user-data \"%s\"."
+msgstr ""
 
 #, c-format
-msgid "Bad option + choice on line %d."
-msgstr "Неверный параметр + выбор в строке %d."
+msgid "Bad number-up value %d."
+msgstr "Неверное значение number-up %d."
 
 #, c-format
 msgid "Bad page-ranges values %d-%d."
@@ -3063,9 +3193,6 @@ msgstr "Принтер для печати этикеток EPL2"
 msgid "Edit Configuration File"
 msgstr "Редактировать файл конфигурации"
 
-msgid "Empty PPD file."
-msgstr "Пустой PPD файл."
-
 msgid "Encryption is not supported."
 msgstr "Шифрование не поддерживается."
 
@@ -3310,9 +3437,6 @@ msgstr "Экспортировать принтеры в Samba"
 msgid "Expressions:"
 msgstr "Выражение:"
 
-msgid "FAIL"
-msgstr "FAIL"
-
 msgid "Fast Grayscale"
 msgstr ""
 
@@ -3468,6 +3592,32 @@ msgstr "IPP textWithLanguage меньше минимума 4 байт."
 msgid "IPP value larger than 32767 bytes."
 msgstr "IPP значение больше чем 32767 байт."
 
+msgid "IPPFIND_SERVICE_DOMAIN  Domain name"
+msgstr ""
+
+msgid ""
+"IPPFIND_SERVICE_HOSTNAME\n"
+"                        Fully-qualified domain name"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_NAME    Service instance name"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_PORT    Port number"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_SCHEME  URI scheme"
+msgstr ""
+
+msgid "IPPFIND_SERVICE_URI     URI"
+msgstr ""
+
+msgid "IPPFIND_TXT_*           Value of TXT record key"
+msgstr ""
+
 msgid "ISOLatin1"
 msgstr "UTF-8"
 
@@ -3512,6 +3662,9 @@ msgstr "Наклейки Internet Postage 3-Part"
 
 msgid "Internet Printing Protocol"
 msgstr "Протокол интернет-печати"
+
+msgid "Invalid group tag."
+msgstr ""
 
 msgid "Invalid media name arguments."
 msgstr "Неверные аргументы имени бумаги."
@@ -3705,6 +3858,9 @@ msgstr "Ошибка выделения памяти"
 msgid "Missing CloseGroup"
 msgstr "Пропущен CloseGroup"
 
+msgid "Missing CloseUI/JCLCloseUI"
+msgstr ""
+
 msgid "Missing PPD-Adobe-4.x header"
 msgstr "Отсутствует заголовок PPD-Adobe-4.x"
 
@@ -3713,10 +3869,6 @@ msgstr "Отсутствует звездочка в колонке 1"
 
 msgid "Missing document-number attribute."
 msgstr "Отсутствует атрибут document-number"
-
-#, c-format
-msgid "Missing double quote on line %d."
-msgstr "Отсутствует двойная кавычка в строке %d"
 
 msgid "Missing form variable"
 msgstr "Отсутствует переменная формы"
@@ -3751,10 +3903,6 @@ msgstr "Отсутствует resource в URI"
 
 msgid "Missing scheme in URI"
 msgstr "Отсутствует scheme в URI"
-
-#, c-format
-msgid "Missing value on line %d."
-msgstr "Отсутствует значение в строке %d."
 
 msgid "Missing value string"
 msgstr "Отсутствует строка значения"
@@ -3827,9 +3975,6 @@ msgstr "Нет имени PPD"
 
 msgid "No VarBind SEQUENCE"
 msgstr "Нет последовательности VarBind"
-
-msgid "No Windows printer drivers are installed."
-msgstr "Нет установленных драйверов принтера Windows."
 
 msgid "No active connection"
 msgstr "Нет рабочего подключения"
@@ -3956,13 +4101,6 @@ msgstr "Не разрешено печатать."
 msgid "Note"
 msgstr "Примечание"
 
-msgid ""
-"Note: this program only validates the DSC comments, not the PostScript "
-"itself."
-msgstr ""
-"Примечание: данная программа проверяет только комментарии DSC, а не сам "
-"PostScript."
-
 msgid "OK"
 msgstr "ОК"
 
@@ -4016,9 +4154,6 @@ msgstr "Недостаточно памяти."
 msgid "Output Mode"
 msgstr "Режим вывода"
 
-msgid "PASS"
-msgstr "PASS"
-
 msgid "PCL Laser Printer"
 msgstr "Лазерный принтер PCL"
 
@@ -4059,10 +4194,6 @@ msgstr "ParamCustominTearInterval"
 #, c-format
 msgid "Password for %s on %s? "
 msgstr "Пароль для %s на %s? "
-
-#, c-format
-msgid "Password for %s required to access %s via SAMBA: "
-msgstr "Для доступа к %s через SAMBA требуется пароль для %s: "
 
 msgid "Pause Class"
 msgstr "Приостановить группу"
@@ -4604,32 +4735,11 @@ msgstr ""
 "принтере в группе."
 
 #, c-format
-msgid "Unable to copy 64-bit CUPS printer driver files (%d)."
-msgstr "Не удается копировать 64-битовые файлы драйвера принтера CUPS (%d)."
-
-#, c-format
-msgid "Unable to copy 64-bit Windows printer driver files (%d)."
-msgstr ""
-"Не удается копировать 64-битовые файлы драйвера принтера для Windows (%d)."
-
-#, c-format
-msgid "Unable to copy CUPS printer driver files (%d)."
-msgstr "Не удается копировать файлы драйвера принтера CUPS (%d)"
-
-#, c-format
 msgid "Unable to copy PPD file - %s"
 msgstr "Не удается копировать PPD-файл - %s"
 
 msgid "Unable to copy PPD file."
 msgstr "Не удается копировать PPD-файл."
-
-#, c-format
-msgid "Unable to copy Windows 2000 printer driver files (%d)."
-msgstr "Не удается копировать файлы драйвера принтера Windows 2000 (%d)"
-
-#, c-format
-msgid "Unable to copy Windows 9x printer driver files (%d)."
-msgstr "Не удается копировать файлы драйвера принтера Windows 9x (%d)"
 
 msgid "Unable to create credentials from array."
 msgstr ""
@@ -4728,14 +4838,6 @@ msgstr "Не удается получить статус принтера"
 msgid "Unable to get printer status."
 msgstr "Не удается получить статус принтера."
 
-#, c-format
-msgid "Unable to install Windows 2000 printer driver files (%d)."
-msgstr "Не удается установить файлы драйвера принтера Windows 2000 (%d)"
-
-#, c-format
-msgid "Unable to install Windows 9x printer driver files (%d)."
-msgstr "Не удается установить файлы драйвера принтера Windows 9x (%d)"
-
 msgid "Unable to load help index."
 msgstr "Не удается загрузить содержание справки."
 
@@ -4804,10 +4906,6 @@ msgstr "Не удается отправить команду драйверу �
 
 msgid "Unable to send data to printer."
 msgstr "Не удается отправить данные на принтер."
-
-#, c-format
-msgid "Unable to set Windows printer driver (%d)."
-msgstr "Не удается настроить драйвер принтера Windows (%d)."
 
 msgid "Unable to set options"
 msgstr "Не удается настроить параметры"
@@ -4906,6 +5004,9 @@ msgstr "Неподдерживаемое значение 'compression' \"%s\"."
 msgid "Unsupported 'document-format' value \"%s\"."
 msgstr "Неподдерживаемое значение'document-format' \"%s\"."
 
+msgid "Unsupported 'job-hold-until' value."
+msgstr ""
+
 msgid "Unsupported 'job-name' value."
 msgstr "Неподдерживаемое значение 'job-name'."
 
@@ -4982,10 +5083,17 @@ msgstr ""
 "\n"
 
 #, c-format
+msgid "Usage: %s [options] destination(s)"
+msgstr ""
+
+#, c-format
 msgid "Usage: %s job-id user title copies options [file]"
 msgstr ""
 
-msgid "Usage: cupsaddsmb [options] printer1 ... printerN"
+msgid ""
+"Usage: cancel [options] [id]\n"
+"       cancel [options] [destination]\n"
+"       cancel [options] [destination-id]"
 msgstr ""
 
 msgid "Usage: cupsctl [options] [param=value ... paramN=valueN]"
@@ -4997,11 +5105,9 @@ msgstr ""
 msgid "Usage: cupsfilter [ options ] [ -- ] filename"
 msgstr ""
 
-msgid "Usage: cupstestdsc [options] filename.ps [... filename.ps]"
-msgstr ""
-
 msgid ""
-"Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]"
+"Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]\n"
+"       program | cupstestppd [options] -"
 msgstr ""
 
 msgid ""
@@ -5019,23 +5125,48 @@ msgstr ""
 msgid "Usage: ipptool [options] URI filename [ ... filenameN ]"
 msgstr ""
 
-msgid "Usage: lpmove job/src dest"
+msgid ""
+"Usage: lp [options] [--] [file(s)]\n"
+"       lp [options] -i id"
 msgstr ""
 
 msgid ""
-"Usage: lpoptions [-h server] [-E] -d printer\n"
-"       lpoptions [-h server] [-E] [-p printer] -l\n"
-"       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
-"       lpoptions [-h server] [-E] -x printer"
+"Usage: lpadmin [options] -d destination\n"
+"       lpadmin [options] -p destination\n"
+"       lpadmin [options] -p destination -c class\n"
+"       lpadmin [options] -p destination -r class\n"
+"       lpadmin [options] -x destination"
 msgstr ""
-"Использование:\n"
-"       lpoptions [-h server] [-E] -d printer\n"
-"       lpoptions [-h server] [-E] [-p printer] -l\n"
-"       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
-"       lpoptions [-h server] [-E] -x printer"
 
 msgid ""
-"Usage: lpq [-P dest] [-U username] [-h hostname[:port]] [-l] [+interval]"
+"Usage: lpinfo [options] -m\n"
+"       lpinfo [options] -v"
+msgstr ""
+
+msgid ""
+"Usage: lpmove [options] job destination\n"
+"       lpmove [options] source-destination destination"
+msgstr ""
+
+msgid ""
+"Usage: lpoptions [options] -d destination\n"
+"       lpoptions [options] [-p destination] [-l]\n"
+"       lpoptions [options] [-p destination] -o option[=value]\n"
+"       lpoptions [options] -x destination"
+msgstr ""
+
+msgid "Usage: lpq [options] [+interval]"
+msgstr ""
+
+msgid "Usage: lpr [options] [file(s)]"
+msgstr ""
+
+msgid ""
+"Usage: lprm [options] [id]\n"
+"       lprm [options] -"
+msgstr ""
+
+msgid "Usage: lpstat [options]"
 msgstr ""
 
 msgid "Usage: ppdc [options] filename.drv [ ... filenameN.drv ]"
@@ -5075,8 +5206,8 @@ msgstr "Ожидание доступа к принтеру."
 msgid "Waiting for printer to finish."
 msgstr "Ожидание окончания работы принтера."
 
-msgid "Warning, no Windows 2000 printer drivers are installed."
-msgstr "Внимание, драйверы принтера Windows 2000 не установлены"
+msgid "Warning: This program will be removed in a future version of CUPS."
+msgstr ""
 
 msgid "Web Interface is Disabled"
 msgstr "Web интерфейс отключен"
@@ -5314,10 +5445,6 @@ msgstr "Не удалось выполнить cups-deviced."
 msgid "cups-driverd failed to execute."
 msgstr "Не удалось выполнить cups-driverd."
 
-#, c-format
-msgid "cupsaddsmb: No PPD file for printer \"%s\" - %s"
-msgstr "cupsaddsmb: Нет PPD-файла для принтера \"%s\" - %s"
-
 msgid "cupsctl: Cannot set Listen or Port directly."
 msgstr "cupsctl: Не удается задать Listen или Port."
 
@@ -5533,6 +5660,19 @@ msgstr "Для error-index длина не установлена"
 
 msgid "error-status uses indefinite length"
 msgstr "Для error-status длина не установлена"
+
+msgid ""
+"expression --and expression\n"
+"                        Logical AND"
+msgstr ""
+
+msgid ""
+"expression --or expression\n"
+"                        Logical OR"
+msgstr ""
+
+msgid "expression expression   Logical AND"
+msgstr ""
 
 msgid "feed-orientation"
 msgstr "Feed Orientation"
@@ -7119,6 +7259,9 @@ msgstr "lpadmin: Имя принтера может содержать толь�
 msgid ""
 "lpadmin: Raw queues are deprecated and will stop working in a future version "
 "of CUPS."
+msgstr ""
+
+msgid "lpadmin: Raw queues are no longer supported on macOS."
 msgstr ""
 
 msgid ""
@@ -12461,5 +12604,545 @@ msgstr "Z Dimension"
 msgid "z-offset"
 msgstr "Z Offset"
 
+msgid "{service_domain}        Domain name"
+msgstr ""
+
+msgid "{service_hostname}      Fully-qualified domain name"
+msgstr ""
+
+msgid "{service_name}          Service instance name"
+msgstr ""
+
+msgid "{service_port}          Port number"
+msgstr ""
+
+msgid "{service_regtype}       DNS-SD registration type"
+msgstr ""
+
+msgid "{service_scheme}        URI scheme"
+msgstr ""
+
+msgid "{service_uri}           URI"
+msgstr ""
+
+msgid "{txt_*}                 Value of TXT record key"
+msgstr ""
+
+msgid "{}                      URI"
+msgstr ""
+
 msgid "~/.cups/lpoptions file names default destination that does not exist."
 msgstr ""
+
+#~ msgid "                          Ignore specific warnings."
+#~ msgstr "                Игнорировать конкретные предупреждения"
+
+#~ msgid "                          Issue warnings instead of errors."
+#~ msgstr "                     Выдавать предупреждения вместо ошибки"
+
+#~ msgid "       cupsaddsmb [options] -a"
+#~ msgstr "\tcupsaddsmb [options] -a"
+
+#~ msgid "       cupstestdsc [options] -"
+#~ msgstr "\tcupstestdsc [options] -"
+
+#~ msgid "       program | cupstestppd [options] -"
+#~ msgstr "\tprogram | cupstestppd [options] -"
+
+#~ msgid "    -h       Show program usage"
+#~ msgstr "    -h       Показать справку по использованию программы"
+
+#~ msgid ""
+#~ "    Bad %%%%BoundingBox: on line %d.\n"
+#~ "        REF: Page 39, %%%%BoundingBox:"
+#~ msgstr ""
+#~ "    Неверный %%%%BoundingBox: в строке %d\n"
+#~ "        REF: Стр. 39, %%%%BoundingBox:"
+
+#~ msgid ""
+#~ "    Bad %%%%Page: on line %d.\n"
+#~ "        REF: Page 53, %%%%Page:"
+#~ msgstr ""
+#~ "    Неверная %%%%Page: в строке %d\n"
+#~ "        REF: Стр. 53, %%%%Page:"
+
+#~ msgid ""
+#~ "    Bad %%%%Pages: on line %d.\n"
+#~ "        REF: Page 43, %%%%Pages:"
+#~ msgstr ""
+#~ "    Неверная %%%%Pages: в строке %d\n"
+#~ "        REF: Стр. 43, %%%%Pages:"
+
+#~ msgid ""
+#~ "    Line %d is longer than 255 characters (%d).\n"
+#~ "        REF: Page 25, Line Length"
+#~ msgstr ""
+#~ "    Длина строки %d больше 255 символов (%d)\n"
+#~ "        REF: Стр. 25, Длина строки "
+
+#~ msgid ""
+#~ "    Missing %!PS-Adobe-3.0 on first line.\n"
+#~ "        REF: Page 17, 3.1 Conforming Documents"
+#~ msgstr ""
+#~ "    %!PS-Adobe-3.0 отсутствует в первой строке.\n"
+#~ "        REF: Стр. 17, 3.1 Соответствующие документы"
+
+#~ msgid ""
+#~ "    Missing or bad %%BoundingBox: comment.\n"
+#~ "        REF: Page 39, %%BoundingBox:"
+#~ msgstr ""
+#~ "    Отсутствует или неверный %%BoundingBox: комментарий.\n"
+#~ "        REF: Стр. 39, %%BoundingBox:"
+
+#~ msgid ""
+#~ "    Missing or bad %%Page: comments.\n"
+#~ "        REF: Page 53, %%Page:"
+#~ msgstr ""
+#~ "    Отсутствует или неверная %%Page: комментарий.\n"
+#~ "        REF: Стр. 53, %%Page:"
+
+#~ msgid ""
+#~ "    Missing or bad %%Pages: comment.\n"
+#~ "        REF: Page 43, %%Pages:"
+#~ msgstr ""
+#~ "    Отсутствуют или неверные %%Pages:  комментарий.\n"
+#~ "        REF: Стр. 43, %%Pages:"
+
+#~ msgid "    Saw %d lines that exceeded 255 characters."
+#~ msgstr "\tНайдено %d строк, длина которых превышает 255 символов."
+
+#~ msgid "    Too many %%BeginDocument comments."
+#~ msgstr "\tСлишком много комментариев %%BeginDocument"
+
+#~ msgid "    Too many %%EndDocument comments."
+#~ msgstr "\tСлишком много комментариев %%EndDocument"
+
+#~ msgid "    Warning: file contains binary data."
+#~ msgstr "\tWARNING: файл содержит бинарные данные."
+
+#~ msgid "    Warning: no %%EndComments comment in file."
+#~ msgstr "    WARNING: нет комментария %%EndComments в файле."
+
+#~ msgid "    Warning: obsolete DSC version %.1f in file."
+#~ msgstr "    WARNING: устаревшая версия DSC %.1f в файле."
+
+#~ msgid "  ! expression            Unary NOT of expression."
+#~ msgstr "  ! expression            Логическое NOT для выражения."
+
+#~ msgid "  ( expressions )         Group expressions."
+#~ msgstr "  ( expressions )         Группа выражений."
+
+#~ msgid "  --[no-]debug-logging    Turn debug logging on/off."
+#~ msgstr "  --[no-]debug-logging    Вкл./откл. ведение журнала."
+
+#~ msgid "  --[no-]remote-admin     Turn remote administration on/off."
+#~ msgstr "  --[no-]remote-admin     Вкл./откл. удаленное администрирование."
+
+#~ msgid "  --[no-]remote-any       Allow/prevent access from the Internet."
+#~ msgstr ""
+#~ "  --[no-]remote-any       Разрешается/запрещается доступ из Интернет."
+
+#~ msgid "  --[no-]share-printers   Turn printer sharing on/off."
+#~ msgstr ""
+#~ "  --[no-]share-printers   Вкл./откл. совместное использование принтеров."
+
+#~ msgid "  --[no-]user-cancel-any  Allow/prevent users to cancel any job."
+#~ msgstr ""
+#~ "  --[no-]user-cancel-any  Пользователям разрешается/запрещается отменять "
+#~ "задания."
+
+#~ msgid "  --domain regex          Match domain to regular expression."
+#~ msgstr "  --domain regex          Искать домен по регулярному выражению."
+
+#~ msgid ""
+#~ "  --exec utility [argument ...] ;\n"
+#~ "                          Execute program if true."
+#~ msgstr ""
+#~ "  --exec utility [argument ...] ;\n"
+#~ "                          Выполнить программу."
+
+#~ msgid "  --false                 Always false."
+#~ msgstr "  --false                 Всегда Ложь."
+
+#~ msgid "  --help                  Show help."
+#~ msgstr "  --help                  Показать справку."
+
+#~ msgid "  --help                  Show this help."
+#~ msgstr "  --help                  Показать эту справку."
+
+#~ msgid "  --host regex            Match hostname to regular expression."
+#~ msgstr "  --host regex            Найти hostname по регулярному выражению."
+
+#~ msgid "  --local                 True if service is local."
+#~ msgstr "  --local                 \"Истина\" если сервис локальный."
+
+#~ msgid "  --ls                    List attributes."
+#~ msgstr "  --ls                    Список атрибутов."
+
+#~ msgid "  --name regex            Match service name to regular expression."
+#~ msgstr "  --name regex            Найти имя по регулярному выражению."
+
+#~ msgid "  --not expression        Unary NOT of expression."
+#~ msgstr "  --not expression        Логическое NOT для выражения."
+
+#~ msgid "  --path regex            Match resource path to regular expression."
+#~ msgstr ""
+#~ "  --path regex            Найти путь к ресурсу по регулярному выражению."
+
+#~ msgid "  --port number[-number]  Match port to number or range."
+#~ msgstr ""
+#~ "  --port number[-number]  Найти номер порта по номеру или диапазону "
+#~ "портов."
+
+#~ msgid "  --print                 Print URI if true."
+#~ msgstr "  --print                 Печать URI при соответствии."
+
+#~ msgid "  --print-name            Print service name if true."
+#~ msgstr "  --print-name            Печать имени сервиса если соответствует."
+
+#~ msgid "  --quiet                 Quietly report match via exit code."
+#~ msgstr ""
+#~ "  --quiet                 Кратко уведомлять о совпадении через код выхода."
+
+#~ msgid "  --remote                True if service is remote."
+#~ msgstr "  --remote                \"Истина\" если сервис удаленный."
+
+#~ msgid ""
+#~ "  --stop-after-include-error\n"
+#~ "                          Stop tests after a failed INCLUDE."
+#~ msgstr ""
+#~ "  --stop-after-include-error\n"
+#~ "                          Останавливать проверку после ошибки INCLUDE."
+
+#~ msgid "  --true                  Always true."
+#~ msgstr "  --true                  Всегда Истина."
+
+#~ msgid "  --txt key               True if the TXT record contains the key."
+#~ msgstr "  --txt key               \"Истина\" если TXT запись содержит key."
+
+#~ msgid ""
+#~ "  --txt-* regex           Match TXT record key to regular expression."
+#~ msgstr ""
+#~ "  --txt-* regex           Найти запись TXT по регулярному выражению."
+
+#~ msgid "  --uri regex             Match URI to regular expression."
+#~ msgstr "  --uri regex             Найти URI по регулярному выражению."
+
+#~ msgid "  --version               Show program version."
+#~ msgstr "  --version               Показать версию программы."
+
+#~ msgid "  --version               Show version."
+#~ msgstr "  --version               Показать версию."
+
+#~ msgid "  -4                      Connect using IPv4."
+#~ msgstr "  -4                      Соединение используя IPv4."
+
+#~ msgid "  -6                      Connect using IPv6."
+#~ msgstr "  -6                      Соединение используя IPv6."
+
+#~ msgid "  -C                      Send requests using chunking (default)."
+#~ msgstr ""
+#~ "  -C                      Передача запроса с использованием chunking (по "
+#~ "умолчанию)"
+
+#~ msgid "  -E                      Encrypt the connection."
+#~ msgstr "  -E                      Подключение к серверу шифруется."
+
+#~ msgid ""
+#~ "  -F                      Run in the foreground but detach from console."
+#~ msgstr ""
+#~ "  -F                      Запускать с высоким приоритетом и отдельно от "
+#~ "консоли."
+
+#~ msgid "  -H samba-server         Use the named SAMBA server."
+#~ msgstr "  -H samba-server         Использовать заданный сервер SAMBA."
+
+#~ msgid "  -I                      Ignore errors."
+#~ msgstr "  -I                      Игнорировать ошибки."
+
+#~ msgid "  -I {filename,filters,none,profiles}"
+#~ msgstr "  -I {filename,filters,none,profiles}"
+
+#~ msgid "  -L                      Send requests using content-length."
+#~ msgstr ""
+#~ "  -L                      Передача запроса с использованием content-"
+#~ "length."
+
+#~ msgid ""
+#~ "  -P filename.plist       Produce XML plist to a file and test report to "
+#~ "standard output."
+#~ msgstr ""
+#~ "  -P filename.plist       Вывести XML plist в файл и проверить результат "
+#~ "на стандартном выводе."
+
+#~ msgid "  -P number[-number]      Match port to number or range."
+#~ msgstr ""
+#~ "  -P number[-number]      Найти номер порта по номеру или диапазону "
+#~ "портов."
+
+#~ msgid "  -R root-directory       Set alternate root."
+#~ msgstr "  -R root-directory       Задать корневой каталог."
+
+#~ msgid "  -T seconds              Set the browse timeout in seconds."
+#~ msgstr "  -T seconds              Задать время ожидания в секундах."
+
+#~ msgid "  -T seconds              Set the receive/send timeout in seconds."
+#~ msgstr ""
+#~ "  -T seconds              Задать время ожидания приема/передачи в "
+#~ "секундах."
+
+#~ msgid "  -V version              Set default IPP version."
+#~ msgstr "  -V version              Задать версию IPP по умолчанию."
+
+#~ msgid ""
+#~ "  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
+#~ "translations}"
+#~ msgstr ""
+#~ "  -W {all,none,constraints,defaults,duplex,filters,profiles,sizes,"
+#~ "translations}"
+
+#~ msgid "  -X                      Produce XML plist instead of plain text."
+#~ msgstr ""
+#~ "  -X                      Выводить XML plist вместо обычного текста."
+
+#~ msgid "  -a                      Export all printers."
+#~ msgstr "  -a                      Экспорт всех принтеров."
+
+#~ msgid "  -c                      Produce CSV output."
+#~ msgstr "  -c                      Вывод в формате CSV."
+
+#~ msgid "  -c cupsd.conf           Set cupsd.conf file to use."
+#~ msgstr "  -c cupsd.conf           Использовать заданный cupsd.conf"
+
+#~ msgid "  -d name=value           Set named variable to value."
+#~ msgstr ""
+#~ "  -d name=value           Указанной переменной присваивается значение."
+
+#~ msgid "  -d regex                Match domain to regular expression."
+#~ msgstr "  -d regex                Искать домен по регулярному выражению."
+
+#~ msgid "  -f                      Run in the foreground."
+#~ msgstr "  -f                      Запускать с высоким приоритетом."
+
+#~ msgid "  -f filename             Set default request filename."
+#~ msgstr "  -f filename             Задать имя файла по умолчанию."
+
+#~ msgid "  -h                      Show this usage message."
+#~ msgstr "  -h                      Show this usage message."
+
+#~ msgid "  -h regex                Match hostname to regular expression."
+#~ msgstr "  -h regex                Найти hostname по регулярному выражению."
+
+#~ msgid "  -h server[:port]        Specify server address."
+#~ msgstr "  -h server[:port]        Задать адрес и порт сервера."
+
+#~ msgid ""
+#~ "  -i seconds              Repeat the last file with the given time "
+#~ "interval."
+#~ msgstr ""
+#~ "  -i seconds              Повтор последнего файла через заданный интервал "
+#~ "в сек."
+
+#~ msgid "  -l                      List attributes."
+#~ msgstr "  -l                      Список атрибутов."
+
+#~ msgid "  -l                      Produce plain text output."
+#~ msgstr "  -l                      Вывод в формате простого текста."
+
+#~ msgid "  -l                      Run cupsd on demand."
+#~ msgstr "  -l                      Запускать cupsd по запросу."
+
+#~ msgid ""
+#~ "  -n count                Repeat the last file the given number of times."
+#~ msgstr ""
+#~ "  -n count                Повтор последнего файла заданное число раз."
+
+#~ msgid "  -n regex                Match service name to regular expression."
+#~ msgstr "  -n regex                Найти имя по регулярному выражению."
+
+#~ msgid "  -p                      Print URI if true."
+#~ msgstr "  -p                      Печать URI при соответствии."
+
+#~ msgid "  -q                      Quietly report match via exit code."
+#~ msgstr ""
+#~ "  -q                      Кратко уведомлять о совпадении через код выхода."
+
+#~ msgid "  -q                      Run silently."
+#~ msgstr "  -q                      Команда выполняется в «тихом» режиме."
+
+#~ msgid "  -r                      True if service is remote."
+#~ msgstr "  -r                      \"Истина\" если сервис удаленный."
+
+#~ msgid "  -r                      Use 'relaxed' open mode."
+#~ msgstr "  -r                      Используется открытый режим."
+
+#~ msgid "  -s                      Print service name if true."
+#~ msgstr "  -s                      Печать имени сервиса если соответствует."
+
+#~ msgid "  -t                      Produce a test report."
+#~ msgstr "  -t                      Создать тестовый отчет."
+
+#~ msgid "  -t                      Test the configuration file."
+#~ msgstr "  -t                      Проверка файла конфигурации."
+
+#~ msgid "  -t key                  True if the TXT record contains the key."
+#~ msgstr "  -t key                  \"Истина\" если TXT запись содержит key."
+
+#~ msgid "  -u regex                Match URI to regular expression."
+#~ msgstr "  -u regex                Найти URI по регулярному выражению."
+
+#~ msgid "  -vv                     Be very verbose."
+#~ msgstr "  -vv                     Очень подробный вывод лога."
+
+#~ msgid ""
+#~ "  -x utility [argument ...] ;\n"
+#~ "                          Execute program if true."
+#~ msgstr ""
+#~ "  -x utility [argument ...] ;\n"
+#~ "                          Выполнить программу."
+
+#~ msgid "  IPPFIND_SERVICE_DOMAIN  Domain name"
+#~ msgstr "  IPPFIND_SERVICE_DOMAIN  Имя домена"
+
+#~ msgid ""
+#~ "  IPPFIND_SERVICE_HOSTNAME\n"
+#~ "                          Fully-qualified domain name"
+#~ msgstr ""
+#~ "  IPPFIND_SERVICE_HOSTNAME\n"
+#~ "                          Полный путь с учетом домена"
+
+#~ msgid "  IPPFIND_SERVICE_NAME    Service instance name"
+#~ msgstr "  IPPFIND_SERVICE_NAME    Имя сервиса"
+
+#~ msgid "  IPPFIND_SERVICE_PORT    Port number"
+#~ msgstr "  IPPFIND_SERVICE_PORT    Номер порта"
+
+#~ msgid "  IPPFIND_SERVICE_REGTYPE DNS-SD registration type"
+#~ msgstr "  IPPFIND_SERVICE_REGTYPE Тип регистрации DNS-SD"
+
+#~ msgid "  IPPFIND_SERVICE_SCHEME  URI scheme"
+#~ msgstr "  IPPFIND_SERVICE_SCHEME  Схема URI"
+
+#~ msgid "  IPPFIND_SERVICE_URI     URI"
+#~ msgstr "  IPPFIND_SERVICE_URI     URI"
+
+#~ msgid "  IPPFIND_TXT_*           Value of TXT record key"
+#~ msgstr "  IPPFIND_TXT_*           Значение TXT записи key"
+
+#~ msgid ""
+#~ "  expression --and expression\n"
+#~ "                          Logical AND."
+#~ msgstr ""
+#~ "  expression --and expression\n"
+#~ "                          Логическое И."
+
+#~ msgid ""
+#~ "  expression --or expression\n"
+#~ "                          Logical OR."
+#~ msgstr ""
+#~ "  expression --or expression\n"
+#~ "                          Логическое ИЛИ."
+
+#~ msgid "  expression expression   Logical AND."
+#~ msgstr "  expression expression   Логическое И."
+
+#~ msgid "  {service_domain}        Domain name"
+#~ msgstr "  {service_domain}        Имя домена"
+
+#~ msgid "  {service_hostname}      Fully-qualified domain name"
+#~ msgstr "  {service_hostname}      Полный путь с учетом домена"
+
+#~ msgid "  {service_name}          Service instance name"
+#~ msgstr "  {service_name}          Имя сервиса"
+
+#~ msgid "  {service_port}          Port number"
+#~ msgstr "  {service_port}          Номер порта"
+
+#~ msgid "  {service_regtype}       DNS-SD registration type"
+#~ msgstr "  {service_regtype}       Тип регистрации DNS-SD"
+
+#~ msgid "  {service_scheme}        URI scheme"
+#~ msgstr "  {service_scheme}        Схема URI"
+
+#~ msgid "  {service_uri}           URI"
+#~ msgstr "  {service_uri}           URI"
+
+#~ msgid "  {txt_*}                 Value of TXT record key"
+#~ msgstr "  {txt_*}                 Значение TXT записи key"
+
+#~ msgid "  {}                      URI"
+#~ msgstr "  {}                      URI"
+
+#~ msgid "Bad option + choice on line %d."
+#~ msgstr "Неверный параметр + выбор в строке %d."
+
+#~ msgid "Empty PPD file."
+#~ msgstr "Пустой PPD файл."
+
+#~ msgid "FAIL"
+#~ msgstr "FAIL"
+
+#~ msgid "Missing double quote on line %d."
+#~ msgstr "Отсутствует двойная кавычка в строке %d"
+
+#~ msgid "Missing value on line %d."
+#~ msgstr "Отсутствует значение в строке %d."
+
+#~ msgid "No Windows printer drivers are installed."
+#~ msgstr "Нет установленных драйверов принтера Windows."
+
+#~ msgid ""
+#~ "Note: this program only validates the DSC comments, not the PostScript "
+#~ "itself."
+#~ msgstr ""
+#~ "Примечание: данная программа проверяет только комментарии DSC, а не сам "
+#~ "PostScript."
+
+#~ msgid "PASS"
+#~ msgstr "PASS"
+
+#~ msgid "Password for %s required to access %s via SAMBA: "
+#~ msgstr "Для доступа к %s через SAMBA требуется пароль для %s: "
+
+#~ msgid "Unable to copy 64-bit CUPS printer driver files (%d)."
+#~ msgstr "Не удается копировать 64-битовые файлы драйвера принтера CUPS (%d)."
+
+#~ msgid "Unable to copy 64-bit Windows printer driver files (%d)."
+#~ msgstr ""
+#~ "Не удается копировать 64-битовые файлы драйвера принтера для Windows (%d)."
+
+#~ msgid "Unable to copy CUPS printer driver files (%d)."
+#~ msgstr "Не удается копировать файлы драйвера принтера CUPS (%d)"
+
+#~ msgid "Unable to copy Windows 2000 printer driver files (%d)."
+#~ msgstr "Не удается копировать файлы драйвера принтера Windows 2000 (%d)"
+
+#~ msgid "Unable to copy Windows 9x printer driver files (%d)."
+#~ msgstr "Не удается копировать файлы драйвера принтера Windows 9x (%d)"
+
+#~ msgid "Unable to install Windows 2000 printer driver files (%d)."
+#~ msgstr "Не удается установить файлы драйвера принтера Windows 2000 (%d)"
+
+#~ msgid "Unable to install Windows 9x printer driver files (%d)."
+#~ msgstr "Не удается установить файлы драйвера принтера Windows 9x (%d)"
+
+#~ msgid "Unable to set Windows printer driver (%d)."
+#~ msgstr "Не удается настроить драйвер принтера Windows (%d)."
+
+#~ msgid ""
+#~ "Usage: lpoptions [-h server] [-E] -d printer\n"
+#~ "       lpoptions [-h server] [-E] [-p printer] -l\n"
+#~ "       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
+#~ "       lpoptions [-h server] [-E] -x printer"
+#~ msgstr ""
+#~ "Использование:\n"
+#~ "       lpoptions [-h server] [-E] -d printer\n"
+#~ "       lpoptions [-h server] [-E] [-p printer] -l\n"
+#~ "       lpoptions [-h server] [-E] -p printer -o option[=value] ...\n"
+#~ "       lpoptions [-h server] [-E] -x printer"
+
+#~ msgid "Warning, no Windows 2000 printer drivers are installed."
+#~ msgstr "Внимание, драйверы принтера Windows 2000 не установлены"
+
+#~ msgid "cupsaddsmb: No PPD file for printer \"%s\" - %s"
+#~ msgstr "cupsaddsmb: Нет PPD-файла для принтера \"%s\" - %s"

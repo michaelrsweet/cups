@@ -1,7 +1,7 @@
 #
 # Library Makefile for CUPS.
 #
-# Copyright 2007-2018 by Apple Inc.
+# Copyright 2007-2019 by Apple Inc.
 # Copyright 1997-2006 by Easy Software Products, all rights reserved.
 #
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -15,12 +15,9 @@ include ../Makedefs
 # Object files...
 #
 
-LIBOBJS	=	\
-		adminutil.o \
+COREOBJS	=	\
 		array.o \
 		auth.o \
-		backchannel.o \
-		backend.o \
 		debug.o \
 		dest.o \
 		dest-job.o \
@@ -29,8 +26,6 @@ LIBOBJS	=	\
 		dir.o \
 		encode.o \
 		file.o \
-		getdevices.o \
-		getifaddrs.o \
 		getputfile.o \
 		globals.o \
 		hash.o \
@@ -48,6 +43,26 @@ LIBOBJS	=	\
 		md5passwd.o \
 		notify.o \
 		options.o \
+		pwg-media.o \
+		raster-error.o \
+		raster-stream.o \
+		raster-stubs.o \
+		request.o \
+		snprintf.o \
+		string.o \
+		tempfile.o \
+		thread.o \
+		tls.o \
+		transcode.o \
+		usersys.o \
+		util.o
+
+DRIVEROBJS	=	\
+		adminutil.o \
+		backchannel.o \
+		backend.o \
+		getdevices.o \
+		getifaddrs.o \
 		ppd.o \
 		ppd-attr.o \
 		ppd-cache.o \
@@ -58,22 +73,18 @@ LIBOBJS	=	\
 		ppd-mark.o \
 		ppd-page.o \
 		ppd-util.o \
-		pwg-media.o \
-		request.o \
+		raster-interpret.o \
+		raster-interstub.o \
 		sidechannel.o \
-		snmp.o \
-		snprintf.o \
-		string.o \
-		tempfile.o \
-		thread.o \
-		tls.o \
-		transcode.o \
-		usersys.o \
-		util.o
+		snmp.o
+
+LIBOBJS		= \
+		$(LIBCUPSOBJS)
+
 IMAGEOBJS	= \
-		error.o \
-		interpret.o \
-		raster.o
+		raster-interstub.o \
+		raster-stubs.o
+
 TESTOBJS	= \
 		rasterbench.o \
 		testadmin.o \
@@ -131,7 +142,6 @@ HEADERSPRIV =	\
 		http-private.h \
 		ipp-private.h \
 		language-private.h \
-		md5-private.h \
 		ppd-private.h \
 		pwg-private.h \
 		raster-private.h \
@@ -268,7 +278,7 @@ install-headers:
 # Install libraries...
 #
 
-install-libs: $(INSTALLSTATIC)
+install-libs: $(LIBTARGETS) $(INSTALLSTATIC)
 	echo Installing libraries in $(LIBDIR)...
 	$(INSTALL_DIR) -m 755 $(LIBDIR)
 	$(INSTALL_LIB) $(LIBCUPS) $(LIBDIR)
@@ -280,23 +290,25 @@ install-libs: $(INSTALLSTATIC)
 		$(RM) $(LIBDIR)/libcups.dylib; \
 		$(LN) $(LIBCUPS) $(LIBDIR)/libcups.dylib; \
 	fi
-	$(INSTALL_DIR) -m 755 $(LIBDIR)
-	$(INSTALL_LIB) $(LIBCUPSIMAGE) $(LIBDIR)
-	-if test $(LIBCUPSIMAGE) = "libcupsimage.so.2" -o $(LIBCUPSIMAGE) = "libcupsimage.sl.2"; then \
+	-if test "x$(LIBCUPSIMAGE)" != x; then \
+		$(INSTALL_LIB) $(LIBCUPSIMAGE) $(LIBDIR); \
+	fi
+	-if test "x$(LIBCUPSIMAGE)" = "xlibcupsimage.so.2"; then \
 		$(RM) $(LIBDIR)/`basename $(LIBCUPSIMAGE) .2`; \
 		$(LN) $(LIBCUPSIMAGE) $(LIBDIR)/`basename $(LIBCUPSIMAGE) .2`; \
 	fi
-	-if test $(LIBCUPSIMAGE) = "libcupsimage.2.dylib"; then \
+	-if test "x$(LIBCUPSIMAGE)" = "xlibcupsimage.2.dylib"; then \
 		$(RM) $(LIBDIR)/libcupsimage.dylib; \
 		$(LN) $(LIBCUPSIMAGE) $(LIBDIR)/libcupsimage.dylib; \
 	fi
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
-		$(INSTALL_DIR) $(SYMROOT); \
 		cp $(LIBCUPS) $(SYMROOT); \
 		dsymutil $(SYMROOT)/$(LIBCUPS); \
-		cp $(LIBCUPSIMAGE) $(SYMROOT); \
-		dsymutil $(SYMROOT)/$(LIBCUPSIMAGE); \
+		if test "x$(LIBCUPSIMAGE)" != x; then \
+			cp $(LIBCUPSIMAGE) $(SYMROOT); \
+			dsymutil $(SYMROOT)/$(LIBCUPSIMAGE); \
+		fi; \
 	fi
 
 installstatic:
@@ -315,7 +327,7 @@ installstatic:
 
 uninstall:
 	$(RM) $(LIBDIR)/libcups.2.dylib
-	$(RM) $(LIBDIR)/$(LIBCUPSSTATIC)
+	$(RM) $(LIBDIR)/libcups.a
 	$(RM) $(LIBDIR)/libcups.dylib
 	$(RM) $(LIBDIR)/libcups.so
 	$(RM) $(LIBDIR)/libcups.so.2
@@ -329,6 +341,12 @@ uninstall:
 		$(RM) $(INCLUDEDIR)/cups/$$file; \
 	done
 	-$(RMDIR) $(INCLUDEDIR)/cups
+	if test "x$(privateinclude)" != x; then \
+		for file in $(HEADERSPRIV); do \
+			$(RM) $(PRIVATEINCLUDE)/cups/$$file; \
+		done
+		$(RMDIR) $(PRIVATEINCLUDE)/cups; \
+	fi
 
 
 #
@@ -337,8 +355,8 @@ uninstall:
 
 libcups.so.2:	$(LIBOBJS)
 	echo Linking $@...
-	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
-		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) \
+		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 
@@ -347,21 +365,16 @@ libcups.so.2:	$(LIBOBJS)
 # libcups.2.dylib
 #
 
-libcups.2.dylib:	$(LIBOBJS) $(LIBCUPSORDER)
-	echo Creating export list for $@...
-	nm -gm $(LIBOBJS) 2>/dev/null | grep "__text" | grep -v weak | \
-		awk '{print $$NF}' | \
-		grep -v -E -e '^(_cupsConnect|_cupsCharset|_cupsEncodingName|_cupsSetDefaults|_cupsSetHTTPError|_cupsUserDefault)$$' | \
-		sort >t.exp
+libcups.2.dylib:	$(LIBOBJS)
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ \
 		-install_name $(libdir)/$@ \
 		-current_version 2.14.0 \
 		-compatibility_version 2.0.0 \
-		-exported_symbols_list t.exp \
-		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
-		$(COMMONLIBS) $(LIBZ)
-	$(RM) libcups.dylib t.exp
+		$(LIBOBJS) \
+		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
+	$(RM) libcups.dylib
 	$(LN) $@ libcups.dylib
 
 
@@ -399,7 +412,7 @@ libcups2.def: $(LIBOBJS) $(IMAGEOBJS) Makefile
 	(nm $(LIBOBJS) $(IMAGEOBJS) 2>/dev/null | grep "T _" | awk '{print $$3}'; \
 	 echo __cups_strcpy; echo __cups_strlcat; echo __cups_strlcpy) | \
 		grep -v -E \
-		    -e 'cups_debug|Apple|BackChannel|Backend|FileCheck|Filter|GSSService|SetNegotiate|SideChannel' \
+		    -e 'cups_debug|Apple|BackChannel|Backend|FileCheck|Filter|GSSService|SetNegotiate|SideChannel|SNMP' \
 		    -e 'Block$$' | \
 		sed -e '1,$$s/^_//' | sort >>libcups2.def
 
@@ -410,8 +423,7 @@ libcups2.def: $(LIBOBJS) $(IMAGEOBJS) Makefile
 
 libcupsimage.so.2:	$(IMAGEOBJS) libcups.so.2
 	echo Linking $@...
-	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) \
-		-L../cups $(LINKCUPS)
+	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) $(LINKCUPS)
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 
@@ -426,7 +438,8 @@ libcupsimage.2.dylib:	$(IMAGEOBJS) libcups.2.dylib
 		-install_name $(libdir)/$@ \
 		-current_version 2.3.0 \
 		-compatibility_version 2.0.0 \
-		$(IMAGEOBJS) $(DSOLIBS) -L../cups $(LINKCUPS)
+		$(IMAGEOBJS) $(DSOLIBS) $(LINKCUPS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	$(RM) libcupsimage.dylib
 	$(LN) $@ libcupsimage.dylib
 
@@ -438,8 +451,7 @@ libcupsimage.2.dylib:	$(IMAGEOBJS) libcups.2.dylib
 libcupsimage.la:       $(IMAGEOBJS) libcups.la
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS:.o=.lo) $(DSOLIBS) \
-		-L../cups $(LINKCUPS) \
-		-rpath $(LIBDIR) -version-info 2:3
+		$(LINKCUPS) -rpath $(LIBDIR) -version-info 2:3
 
 
 #
@@ -454,12 +466,14 @@ libcupsimage.a:	$(IMAGEOBJS)
 
 
 #
-# rasterbench
+# rasterbench (dependency on static CUPS library is intentional)
 #
 
-rasterbench:	rasterbench.o libcupsimage.a
+rasterbench:	rasterbench.o $(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o $@ rasterbench.o libcupsimage.a $(LIBS)
+	$(LD_CC) $(LDFLAGS) -o $@ rasterbench.o $(LIBCUPSSTATIC) \
+		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -470,6 +484,7 @@ testadmin:	testadmin.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testadmin.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -480,6 +495,7 @@ testarray:	testarray.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testarray.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running array API tests...
 	./testarray
 
@@ -492,17 +508,18 @@ testcache:	testcache.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testcache.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
 # testclient (dependency on static libraries is intentional)
 #
 
-testclient:	testclient.o $(LIBCUPSSTATIC) libcupsimage.a
+testclient:	testclient.o $(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o $@ testclient.o \
-		libcupsimage.a $(LIBCUPSSTATIC) \
+	$(LD_CC) $(LDFLAGS) -o $@ testclient.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -513,6 +530,7 @@ testconflicts:	testconflicts.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testconflicts.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -523,6 +541,7 @@ testcreds:	testcreds.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testcreds.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -533,6 +552,7 @@ testcups:	testcups.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testcups.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -543,6 +563,7 @@ testdest:	testdest.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testdest.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -553,6 +574,7 @@ testfile:	testfile.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testfile.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running file API tests...
 	./testfile
 
@@ -565,6 +587,7 @@ testgetdests:	testgetdests.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testgetdests.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -575,6 +598,7 @@ testhttp:	testhttp.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testhttp.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running HTTP API tests...
 	./testhttp
 
@@ -587,6 +611,7 @@ testipp:	testipp.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testipp.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running IPP API tests...
 	./testipp
 
@@ -599,6 +624,7 @@ testi18n:	testi18n.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testi18n.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running internationalization API tests...
 	./testi18n
 
@@ -611,6 +637,7 @@ testlang:	testlang.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testlang.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Creating locale directory structure...
 	$(RM) -r locale
 	$(MKDIR) locale/en
@@ -635,6 +662,7 @@ testoptions:	testoptions.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testoptions.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running option API tests...
 	./testoptions
 
@@ -647,6 +675,7 @@ testppd:	testppd.o $(LIBCUPSSTATIC) test.ppd test2.ppd
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testppd.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running PPD API tests...
 	./testppd
 
@@ -659,19 +688,21 @@ testpwg:	testpwg.o $(LIBCUPSSTATIC) test.ppd
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testpwg.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running PWG API tests...
 	./testpwg test.ppd
 
 
 #
-# testraster
+# testraster (dependency on static CUPS library is intentional)
 #
 
-testraster:	testraster.o $(LIBCUPSSTATIC) libcupsimage.a
+testraster:	testraster.o $(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testraster.o libcupsimage.a \
+	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testraster.o \
 		$(LIBCUPSSTATIC) $(IMGLIBS) $(DSOLIBS) $(COMMONLIBS) \
 		$(SSLLIBS) $(DNSSDLIBS) $(LIBGSSAPI)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running raster API tests...
 	./testraster
 
@@ -684,6 +715,7 @@ testsnmp:	testsnmp.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ testsnmp.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -694,6 +726,7 @@ tlscheck:	tlscheck.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ tlscheck.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -703,35 +736,34 @@ tlscheck:	tlscheck.o $(LIBCUPSSTATIC)
 apihelp:
 	echo Generating CUPS API help files...
 	$(RM) cupspm.xml
-	mxmldoc --section "Programming" --body cupspm.md \
+	codedoc --section "Programming" --body cupspm.md \
 		cupspm.xml \
 		auth.c cups.h dest*.c encode.c http.h http*.c ipp.h ipp*.c \
 		options.c tls-darwin.c usersys.c util.c \
 		--coverimage cupspm.png \
 		--epub ../doc/help/cupspm.epub
-	mxmldoc --section "Programming" --body cupspm.md \
+	codedoc --section "Programming" --body cupspm.md \
 		cupspm.xml > ../doc/help/cupspm.html
 	$(RM) cupspm.xml
-	mxmldoc --section "Programming" --title "Administration APIs" \
+	codedoc --section "Programming" --title "Administration APIs" \
 		--css ../doc/cups-printable.css \
 		--header api-admin.header --intro api-admin.shtml \
 		api-admin.xml \
 		adminutil.c adminutil.h getdevices.c >../doc/help/api-admin.html
 	$(RM) api-admin.xml
-	mxmldoc --section "Programming" --title "PPD API (DEPRECATED)" \
+	codedoc --section "Programming" --title "PPD API (DEPRECATED)" \
 		--css ../doc/cups-printable.css \
 		--header api-ppd.header --intro api-ppd.shtml \
 		api-ppd.xml ppd.h ppd-*.c >../doc/help/api-ppd.html
 	$(RM) api-ppd.xml
-	mxmldoc --section "Programming" --title "Raster API" \
+	codedoc --section "Programming" --title "Raster API" \
 		--css ../doc/cups-printable.css \
 		--header api-raster.header --intro api-raster.shtml \
 		api-raster.xml \
 		../cups/raster.h interpret.c raster.c \
 		>../doc/help/api-raster.html
-	mxmldoc --tokens help/api-raster.html api-raster.xml >../doc/help/api-raster.tokens
 	$(RM) api-raster.xml
-	mxmldoc --section "Programming" \
+	codedoc --section "Programming" \
 		--title "Filter and Backend Programming" \
 		--css ../doc/cups-printable.css \
 		--header api-filter.header --intro api-filter.shtml \

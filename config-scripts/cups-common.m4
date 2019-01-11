@@ -223,16 +223,31 @@ COMPONENTS="all"
 
 AC_ARG_WITH(components, [  --with-components       set components to build:
 			    - "all" (default) builds everything
-			    - "core" builds libcups and IPP tools],
+			    - "core" builds libcups and IPP tools
+			    - "libcups" builds just libcups
+			    - "libcupslite" builds just libcups without driver support],
 	COMPONENTS="$withval")
 
+cupsimagebase="cupsimage"
+LIBCUPSOBJS="\$(COREOBJS) \$(DRIVEROBJS)"
 case "$COMPONENTS" in
 	all)
-		BUILDDIRS="berkeley scheduler systemv conf data locale man"
+		BUILDDIRS="test berkeley scheduler systemv conf data locale man"
 		;;
 
 	core)
-		BUILDDIRS="data locale"
+		BUILDDIRS="test locale"
+		;;
+
+	libcups)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		;;
+
+	libcupslite)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		LIBCUPSOBJS="\$(COREOBJS)"
 		;;
 
 	*)
@@ -241,3 +256,4 @@ case "$COMPONENTS" in
 esac
 
 AC_SUBST(BUILDDIRS)
+AC_SUBST(LIBCUPSOBJS)

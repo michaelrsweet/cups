@@ -1,10 +1,11 @@
 /*
  * PPD command interpreter for CUPS.
  *
- * Copyright 2007-2015 by Apple Inc.
- * Copyright 1993-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1993-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -12,7 +13,8 @@
  */
 
 #include <cups/raster-private.h>
-#include <cups/ppd.h>
+#include <cups/ppd-private.h>
+#include "debug-internal.h"
 
 
 /*
@@ -90,7 +92,7 @@ static void		DEBUG_stack(const char *prefix, _cups_ps_stack_t *st);
 
 
 /*
- * 'cupsRasterInterpretPPD()' - Interpret PPD commands to create a page header.
+ * '_cupsRasterInterpretPPD()' - Interpret PPD commands to create a page header.
  *
  * This function is used by raster image processing (RIP) filters like
  * cgpdftoraster and imagetoraster when writing CUPS raster data for a page.
@@ -120,7 +122,7 @@ static void		DEBUG_stack(const char *prefix, _cups_ps_stack_t *st);
  */
 
 int					/* O - 0 on success, -1 on failure */
-cupsRasterInterpretPPD(
+_cupsRasterInterpretPPD(
     cups_page_header2_t *h,		/* O - Page header to create */
     ppd_file_t          *ppd,		/* I - PPD file */
     int                 num_options,	/* I - Number of options */

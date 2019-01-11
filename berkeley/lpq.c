@@ -1,10 +1,11 @@
 /*
  * "lpq" command for CUPS.
  *
- * Copyright 2007-2016 by Apple Inc.
- * Copyright 1997-2006 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -22,7 +23,7 @@ static http_t	*connect_server(const char *, http_t *);
 static int	show_jobs(const char *, http_t *, const char *,
 		          const char *, const int, const int);
 static void	show_printer(const char *, http_t *, const char *);
-static void	usage(void) __attribute__((noreturn));
+static void	usage(void) _CUPS_NORETURN;
 
 
 /*
@@ -67,6 +68,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     {
       interval = atoi(argv[i] + 1);
     }
+    else if (!strcmp(argv[i], "--help"))
+      usage();
     else if (argv[i][0] == '-')
     {
       for (opt = argv[i] + 1; *opt; opt ++)
@@ -347,9 +350,6 @@ show_jobs(const char *command,		/* I - Command name */
 		  "th"
 		};
 
-
-  DEBUG_printf(("show_jobs(http=%p, dest=%p, user=%p, id=%d, longstatus%d)\n",
-                http, dest, user, id, longstatus));
 
   if (http == NULL)
     return (0);
@@ -638,8 +638,14 @@ show_printer(const char *command,	/* I - Command name */
 static void
 usage(void)
 {
-  _cupsLangPuts(stderr,
-                _("Usage: lpq [-P dest] [-U username] [-h hostname[:port]] "
-		  "[-l] [+interval]"));
+  _cupsLangPuts(stderr, _("Usage: lpq [options] [+interval]"));
+  _cupsLangPuts(stdout, _("Options:"));
+  _cupsLangPuts(stdout, _("-a                      Show jobs on all destinations"));
+  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
+  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
+  _cupsLangPuts(stdout, _("-l                      Show verbose (long) output"));
+  _cupsLangPuts(stdout, _("-P destination          Show status for the specified destination"));
+  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
+
   exit(1);
 }

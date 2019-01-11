@@ -176,3 +176,4 @@ mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o \
 		../cups/$(LIBCUPSSTATIC) $(TLSLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@

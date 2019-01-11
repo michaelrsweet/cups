@@ -16,13 +16,14 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #include <fcntl.h>
 #include <sys/stat.h>
-#if defined(WIN32) || defined(__EMX__)
+#if defined(_WIN32) || defined(__EMX__)
 #  include <io.h>
 #else
 #  include <unistd.h>
-#endif /* WIN32 || __EMX__ */
+#endif /* _WIN32 || __EMX__ */
 
 #if defined(SO_PEERCRED) && defined(AF_LOCAL)
 #  include <pwd.h>
@@ -59,9 +60,7 @@ cupsDoAuthentication(
 		*www_auth,		/* WWW-Authenticate header */
 		*schemedata;		/* Scheme-specific data */
   char		scheme[256],		/* Scheme name */
-		prompt[1024],		/* Prompt for user */
-		realm[HTTP_MAX_VALUE],	/* realm="xyz" string */
-		nonce[HTTP_MAX_VALUE];	/* nonce="xyz" string */
+		prompt[1024];		/* Prompt for user */
   int		localauth;		/* Local authentication result */
   _cups_globals_t *cg;			/* Global data */
 
@@ -182,6 +181,7 @@ cupsDoAuthentication(
 
       httpEncode64_2(encode, sizeof(encode), http->userpass, (int)strlen(http->userpass));
       httpSetAuthString(http, "Basic", encode);
+      break;
     }
     else if (!_cups_strcasecmp(scheme, "Digest"))
     {
@@ -189,124 +189,15 @@ cupsDoAuthentication(
       * Digest authentication...
       */
 
-      int		i;		/* Looping var */
-      char		algorithm[65],	/* Hashing algorithm */
-			opaque[HTTP_MAX_VALUE],
-					/* Opaque data from server */
-			cnonce[65],	/* cnonce value */
-			kd[65],		/* Final MD5/SHA-256 digest */
-			ha1[65],	/* Hash of username:realm:password */
-			ha2[65],	/* Hash of method:request-uri */
-			hdata[65],	/* Hash of auth data */
-			temp[1024],	/* Temporary string */
-			digest[1024];	/* Digest auth data */
-      unsigned char	hash[32];	/* Hash buffer */
-      const char	*hashalg;	/* Hashing algorithm */
-      size_t		hashsize;	/* Size of hash */
+      char nonce[HTTP_MAX_VALUE];	/* nonce="xyz" string */
 
-      if (strcmp(nonce, http->nonce))
-      {
-        strlcpy(http->nonce, nonce, sizeof(http->nonce));
-        http->nonce_count = 1;
-      }
-      else
-        http->nonce_count ++;
-
-      cups_auth_param(schemedata, "opaque", opaque, sizeof(opaque));
+      cups_auth_param(schemedata, "algorithm", http->algorithm, sizeof(http->algorithm));
+      cups_auth_param(schemedata, "opaque", http->opaque, sizeof(http->opaque));
       cups_auth_param(schemedata, "nonce", nonce, sizeof(nonce));
-      cups_auth_param(schemedata, "realm", realm, sizeof(realm));
+      cups_auth_param(schemedata, "realm", http->realm, sizeof(http->realm));
 
-      for (i = 0; i < 64; i ++)
-        cnonce[i] = "0123456789ABCDEF"[CUPS_RAND() & 15];
-      cnonce[64] = '\0';
-
-      if (cups_auth_param(schemedata, "algorithm", algorithm, sizeof(algorithm)))
-      {
-       /*
-        * Follow RFC 2617/7616...
-        */
-
-        if (!_cups_strcasecmp(algorithm, "MD5"))
-        {
-         /*
-          * RFC 2617 Digest with MD5
-          */
-
-          hashalg = "md5";
-	}
-	else if (!_cups_strcasecmp(algorithm, "SHA-256"))
-	{
-	 /*
-	  * RFC 7616 Digest with SHA-256
-	  */
-
-          hashalg = "sha2-256";
-	}
-	else
-	{
-	 /*
-	  * Some other algorithm we don't support, skip this one...
-	  */
-
-	  continue;
-	}
-
-       /*
-        * Calculate digest value...
-        */
-
-        /* H(A1) = H(username:realm:password) */
-        snprintf(temp, sizeof(temp), "%s:%s:%s", cupsUser(), realm, strchr(http->userpass, ':') + 1);
-        hashsize = (size_t)cupsHashData(hashalg, (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, ha1, sizeof(ha1));
-
-        /* H(A2) = H(method:uri) */
-	snprintf(temp, sizeof(temp), "%s:%s", method, resource);
-        hashsize = (size_t)cupsHashData(hashalg, (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, ha2, sizeof(ha2));
-
-        /* H(data) = H(nonce:nc:cnonce:qop:H(A2)) */
-	snprintf(temp, sizeof(temp), "%s:%08x:%s:auth:%s", nonce, http->nonce_count, cnonce, ha2);
-        hashsize = (size_t)cupsHashData(hashalg, (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, hdata, sizeof(hdata));
-
-        /* KD = H(H(A1):H(data)) */
-	snprintf(temp, sizeof(temp), "%s:%s", ha1, hdata);
-        hashsize = (size_t)cupsHashData(hashalg, (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, kd, sizeof(kd));
-
-        /* Pass the RFC 2617/7616 WWW-Authenticate header */
-        if (opaque[0])
-	  snprintf(digest, sizeof(digest), "username=\"%s\", realm=\"%s\", nonce=\"%s\", algorithm=%s, qop=auth, opaque=\"%s\", cnonce=\"%s\", nc=%08x, uri=\"%s\", response=\"%s\"", cupsUser(), realm, nonce, algorithm, opaque, cnonce, http->nonce_count, resource, kd);
-	else
-	  snprintf(digest, sizeof(digest), "username=\"%s\", realm=\"%s\", nonce=\"%s\", algorithm=%s, qop=auth, cnonce=\"%s\", nc=%08x, uri=\"%s\", response=\"%s\"", cupsUser(), realm, nonce, algorithm, cnonce, http->nonce_count, resource, kd);
-      }
-      else
-      {
-       /*
-        * Use old RFC 2069 Digest method...
-        */
-
-        /* H(A1) = H(username:realm:password) */
-        snprintf(temp, sizeof(temp), "%s:%s:%s", cupsUser(), realm, strchr(http->userpass, ':') + 1);
-        hashsize = (size_t)cupsHashData("md5", (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, ha1, sizeof(ha1));
-
-        /* H(A2) = H(method:uri) */
-	snprintf(temp, sizeof(temp), "%s:%s", method, resource);
-        hashsize = (size_t)cupsHashData("md5", (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, ha2, sizeof(ha2));
-
-        /* KD = H(H(A1):nonce:H(A2)) */
-	snprintf(temp, sizeof(temp), "%s:%s:%s", ha1, nonce, ha2);
-	hashsize = (size_t)cupsHashData("md5", (unsigned char *)temp, strlen(temp), hash, sizeof(hash));
-	cupsHashString(hash, hashsize, kd, sizeof(kd));
-
-        /* Pass the RFC 2069 WWW-Authenticate header */
-	snprintf(digest, sizeof(digest), "username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", response=\"%s\"", cupsUser(), realm, nonce, resource, kd);
-      }
-
-      httpSetAuthString(http, "Digest", digest);
+      if (_httpSetDigestAuthString(http, nonce, method, resource))
+        break;
     }
   }
 
@@ -585,9 +476,9 @@ static int				/* O - 0 if available */
 					/*    -1 error */
 cups_local_auth(http_t *http)		/* I - HTTP connection to server */
 {
-#if defined(WIN32) || defined(__EMX__)
+#if defined(_WIN32) || defined(__EMX__)
  /*
-  * Currently WIN32 and OS-2 do not support the CUPS server...
+  * Currently _WIN32 and OS-2 do not support the CUPS server...
   */
 
   return (1);
@@ -691,11 +582,6 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
   }
 #  endif /* HAVE_AUTHORIZATION_H */
 
-#  ifdef HAVE_AUTHORIZATION_H
-  if (cups_auth_find(www_auth, "AuthRef"))
-    return (1);
-#  endif /* HAVE_AUTHORIZATION_H */
-
 #  if defined(SO_PEERCRED) && defined(AF_LOCAL)
  /*
   * See if we can authenticate using the peer credentials provided over a
@@ -744,7 +630,7 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
     * No certificate for this PID; see if we can get the root certificate...
     */
 
-    DEBUG_printf(("9cups_local_auth: Unable to open file %s: %s", filename, strerror(errno)));
+    DEBUG_printf(("9cups_local_auth: Unable to open file \"%s\": %s", filename, strerror(errno)));
 
     if (!cups_auth_param(schemedata, "trc", trc, sizeof(trc)))
     {
@@ -756,7 +642,8 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
     }
 
     snprintf(filename, sizeof(filename), "%s/certs/0", cg->cups_statedir);
-    fp = fopen(filename, "r");
+    if ((fp = fopen(filename, "r")) == NULL)
+      DEBUG_printf(("9cups_local_auth: Unable to open file \"%s\": %s", filename, strerror(errno)));
   }
 
   if (fp)
@@ -787,5 +674,5 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
   }
 
   return (1);
-#endif /* WIN32 || __EMX__ */
+#endif /* _WIN32 || __EMX__ */
 }

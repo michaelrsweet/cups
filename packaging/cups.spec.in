@@ -215,7 +215,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 /usr/bin/cancel
-/usr/bin/cupstestdsc
 /usr/bin/cupstestppd
 /usr/bin/ipptool
 /usr/bin/lp*
@@ -333,7 +332,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/man/man1
 /usr/share/man/man1/cancel.1.gz
 /usr/share/man/man1/cups.1.gz
-/usr/share/man/man1/cupstestdsc.1.gz
 /usr/share/man/man1/cupstestppd.1.gz
 %if %{?_with_dnssd:1}%{!?_with_dnssd:0}
 # DNS-SD
@@ -357,7 +355,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man8/cups-driverd.8.gz
 /usr/share/man/man8/cups-exec.8.gz
 /usr/share/man/man8/cups-snmp.8.gz
-/usr/share/man/man8/cupsaddsmb.8.gz
 /usr/share/man/man8/cupsaccept.8.gz
 /usr/share/man/man8/cupsctl.8.gz
 /usr/share/man/man8/cupsfilter.8.gz

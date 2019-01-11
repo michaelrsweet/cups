@@ -2,7 +2,7 @@
 #
 # Test the lpadmin command.
 #
-# Copyright © 2007-2013 by Apple Inc.
+# Copyright © 2007-2018 by Apple Inc.
 # Copyright © 1997-2005 by Easy Software Products, all rights reserved.
 #
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -12,7 +12,7 @@
 echo "Add Printer Test"
 echo ""
 echo "    lpadmin -p Test3 -v file:/dev/null -E -m drv:///sample.drv/deskjet.ppd"
-$VALGRIND ../systemv/lpadmin -p Test3 -v file:/dev/null -E -m drv:///sample.drv/deskjet.ppd 2>&1
+$runcups $VALGRIND ../systemv/lpadmin -p Test3 -v file:/dev/null -E -m drv:///sample.drv/deskjet.ppd 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -29,7 +29,7 @@ echo ""
 echo "Modify Printer Test"
 echo ""
 echo "    lpadmin -p Test3 -v file:/tmp/Test3 -o PageSize=A4"
-$VALGRIND ../systemv/lpadmin -p Test3 -v file:/tmp/Test3 -o PageSize=A4 2>&1
+$runcups $VALGRIND ../systemv/lpadmin -p Test3 -v file:/tmp/Test3 -o PageSize=A4 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -41,7 +41,7 @@ echo ""
 echo "Delete Printer Test"
 echo ""
 echo "    lpadmin -x Test3"
-$VALGRIND ../systemv/lpadmin -x Test3 2>&1
+$runcups $VALGRIND ../systemv/lpadmin -x Test3 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -52,8 +52,8 @@ echo ""
 
 echo "Add Shared Printer Test"
 echo ""
-echo "    lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw"
-$VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw 2>&1
+echo "    lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m everywhere"
+$runcups $VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m everywhere 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
